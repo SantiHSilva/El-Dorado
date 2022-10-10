@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel = "stylesheet" href="{% static '/menu2.css' %}">
+
+</head>
+<body class="body-collapsed">
+    <div id="sidemenu" class="menu-collapsed">
+        <!-- HEADER -->
+        <div id="header">
+            <div id="title"><span>El Dorado</span></div>
+            <div id="menu-btn">
+                <div class="btn-hamburger"></div>
+                <div class="btn-hamburger"></div>
+                <div class="btn-hamburger"></div>
+            </div>
+        </div>
+        
+        <!-- PROFILE -->
+        <div id="profile" title="Panel Administrativo">
+            <a href="http://127.0.0.1:8000/admin/">
+                <div id="photo"><img src="../static/user.png" alt=""></div>
+            </a>
+            {% if user.is_authenticated %}
+
+            <div id="name"><span>{{user.first_name}} {{user.last_name}}</span></div>
+
+            {% else %}
+            <a href="http://127.0.0.1:8000/admin/login/?next=/">
+                <div id="name"><span>Iniciar Sesión</span></div>
+            </a>
+        
+            {% endif %}
+        </div>
+
+        <!-- ITEMS -->
+        {% if user.is_authenticated %}
+
+        <div id="menu-items">
+            <div class="item">
+                <a href="http://127.0.0.1:8000/lista/" title="Abre la información general de los productos">
+                    <div class="icon"><img src="../static/information.png" alt=""> </div>
+                    <div class="title"><span>Información general</span></div>
+                </a>
+            </div>
+
+            <div class="item">
+                <a href="http://127.0.0.1:8000/buscar/" title="Lista los productos mostrando su información">
+                    <div class="icon"><img src="../static/lupa.png"     /></div>
+                    <div class="title"><span>Buscar Productos</span></div>
+                </a>
+            </div>
+
+            <div class="item">
+                <a href="http://127.0.0.1:8000/admin/gestionInventario/informacion/add/" title="Añade un producto al inventario">
+                    <div class="icon"><img src="../static/add.png"/></div>
+                    <div class="title"><span>Añadir Producto</span></div>
+                </a>
+            </div>
+
+            <div class="item">
+                <a href="http://127.0.0.1:8000/remover" title="Remueve un producto del inventario">
+                    <div class="icon"><img src="../static/remove.png" /></div>
+                    <div class="title"><span>Remover Producto</span></div>
+                </a>
+            </div>
+
+            <div class="item separator">   
+            </div>
+
+            <div class="item">
+                <a href="#" title="Muestra el equipo que conforma el grupo">
+                    <div class="icon"><img src="../static/group.png" /></div>
+                    <div class="title"><span>Equipo</span></div>
+                </a>
+            </div>
+
+            <div class="item" title="Muestra los recursos utilizados durante el proyecto">
+                <a href="#">
+                    <div class="icon"><img src="../static/resources.png" /></div>
+                    <div class="title"><span>Recursos</span></div>
+                </a>
+            </div>
+            <div class="item" title="Cerrar Sesión">
+                <a href="http://127.0.0.1:8000/admin/logout">
+                    <div class="icon"><img src="../static/logout.png" /></div>
+                    <div class="title"><span>Cerrar Sesión</span></div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-container">
+    </div>
+    {% endif %}
+
+    <script>
+        const btn = document.querySelector('#menu-btn');
+        const menu = document.querySelector('#sidemenu');
+        btn.addEventListener('click', e =>{
+            menu.classList.toggle("menu-expanded");
+            menu.classList.toggle("menu-collapsed");
+
+            document.querySelector('body').classList.toggle('body-collapsed');
+        });
+    </script>
+</body>
+</html>

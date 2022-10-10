@@ -1,0 +1,212 @@
+:root{
+    --width: 300px;
+    --padding: 10px;
+    --bgcolor: rgb(21, 21, 21);
+    --hovercolor: rgb(79, 79, 79);
+    --width-collapsed: 50px;
+}
+body{
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 18px;
+    padding: 0;
+    margin: 0;
+    margin-left: var(--width-collapsed);
+    transition: 0.4s;
+}
+.body-expanded{
+    margin-left: var(--width);
+    transition: 0.4s;
+}
+#main-container{
+    color: white;
+    transition: 0.4s;
+}
+
+#sidemenu{
+    background-color: var(--bgcolor);
+    color: white;
+    position: fixed;
+    height: 100%;
+    left: 0;
+    top: 0;
+    transition: 0.4s;
+}
+
+#sidemenu a{
+    color: white;
+    text-decoration: none;
+    transition: 0.4s;
+}
+
+/*
+        HEADER
+*/
+
+#sidemenu #header{
+    box-sizing: border-box;
+    border-bottom: solid 1px var(--hovercolor);
+    transition: 0.4s;
+}
+#sidemenu #header #title{
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: 0.4s;
+}
+#sidemenu #header #title, #sidemenu #header #menu-btn{
+    vertical-align: middle;
+    transition: 0.4s;
+}
+#sidemenu #header #menu-btn{
+    display: inline-block;
+    transition: 0.4s;
+}
+#sidemenu #header #menu-btn{
+    cursor: pointer;
+    padding: 10px;
+    width: var(--width-collapsed);
+    box-sizing: border-box;
+    transition: 0.4s;
+}
+#sidemenu #header #menu-btn:hover{
+    background-color: var(--hovercolor);
+    transition: 0.4s;
+}
+
+#sidemenu #header #menu-btn .btn-hamburger{
+    background-color: #fff;
+    width: 100%;
+    height: 2px;
+    margin: 5px 0;
+    transition: 0.4s;
+}
+
+/*
+        PROFILE
+*/
+#sidemenu #profile{
+    border-bottom: solid 1px var(--hovercolor);
+    padding: var(--padding) 0;
+    text-align: center;
+    transition: 0.4s;
+}
+#sidemenu #profile #photo{
+    box-sizing: border-box;
+    padding: var(--padding);
+    margin: 0 auto;
+    transition: 0.4s;
+}
+
+#sidemenu #profile #photo img{
+    border-radius: 50%;
+    width: 60%;
+    transition: 0.4s;
+}
+
+#sidemenu #profile #photo,#sidemenu #profile #name{
+    font-size: 24px;
+    padding: var(--padding) 0;
+    overflow: hidden;
+    transition: 0.4s;
+}
+/*
+        ITEM
+*/
+#sidemenu #menu-items{
+    overflow: hidden;
+    transition: 0.4s;
+}
+#sidemenu #menu-items .item{
+    width: var(--width);
+    transition: 0.4s;
+}
+#sidemenu #menu-items .item .icon{
+    display: inline-block;
+    transition: 0.4s;
+}
+#sidemenu #menu-items .item .icon, 
+#sidemenu #menu-items .item .title{
+    font-size: 14px;
+    vertical-align: middle;
+    overflow: hidden;
+    display: inline-block;
+    transition: 0.4s;
+}
+#sidemenu #menu-items .item a{
+    display: block;
+    transition: 0.4s;
+}
+#sidemenu #menu-items .item a:hover{
+    background-color: var(--hovercolor);
+    transition: 0.4s;
+}
+#sidemenu #menu-items .item .icon{
+    box-sizing: border-box;
+    padding: var(--padding);
+    width: var(--width-collapsed);
+    transition: 0.4s;
+}
+#sidemenu #menu-items .item .icon img{
+    width: 100%;
+    transition: 0.4s;
+}
+#sidemenu #menu-items .item .title{
+    padding: var(--padding) 0;
+    transition: 0.4s;
+}
+#sidemenu #menu-items .item.separator{
+    height: 1px;
+    border-bottom: solid 1px var(--hovercolor);
+    margin: 15px 0;
+    transition: 0.4s;
+}
+
+.menu-expanded{
+    width: var(--width);
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    transition: 0.4s;
+}
+
+.menu-expanded #header #title {
+    display: inline-block;
+    width: calc(100% - 50px);
+    margin-right: -5px;
+    padding: var(--padding);
+    transition: 0.4s;
+}
+
+.menu-expanded #header #title span{
+    width: calc(var(--width) - var(--width-collapsed) - 5px);
+    overflow: hidden;
+    transition: 0.4s;
+}
+
+.menu-expanded #profile #photo{
+    width: 200px;
+    transition: 0.4s;
+}
+.menu-expanded #profile #name{
+    width: 100%;
+    transition: 0.4s;
+}
+
+.menu-collapsed{
+    width: var(--width-collapsed);
+    transition: 0.4s;
+}
+
+.menu-collapsed #header #title{
+    width: 0;
+    height: 0;
+    padding: 0;
+    margin: 0;
+    transition: 0.4s;
+}
+
+.menu-collapsed #profile #name{
+    display: none;
+    transition: 0.4s;
+}
+.menu-collapsed .item{
+    width: 100px;
+    transition: 0.4s;
+}

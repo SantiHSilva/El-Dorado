@@ -1,0 +1,64 @@
+.roundedTable table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+.roundedTable th, td {
+    text-decoration: none;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: rgb(0, 0, 0);
+    padding: 5px;
+    text-align:center;
+}
+.roundedTable table#t01 {
+    width: 100%;    
+    background-color: #f1f1c1;
+}
+.roundedTable th {
+    background-color: #f3c68e;
+    color: rgb(0, 0, 0);
+    align-content: center;
+}
+
+table tbody tr:nth-child(odd){
+    background: #f3c68e;
+}
+
+.roundedTable
+{
+    border-radius: 6px 6px 6px 6px ;
+    border: 1px solid #000;  
+    border-spacing: 0;
+    width: 300px;
+    border-width: 2px;
+}
+
+.roundedTable tr:first-child td:first-child 
+{
+    border-top-left-radius: 5px;
+    border-color:0000;
+}
+
+.roundedTable tr:first-child td:last-child 
+{
+    border-top-right-radius: 5px;
+    border-color:#000;
+
+}
+
+.roundedTable tr:last-child td:first-child 
+{
+    border-bottom-left-radius: 5px;
+    border-color:#000;
+}
+
+.roundedTable tr:last-child td:last-child 
+{
+    border-bottom-right-radius: 5px;
+    border-color:#000;
+
+}
+/* optional setting to pad the table cells */
+.roundedTable th, td
+{
+    padding: 10px 10px 10px 10px; 
+}

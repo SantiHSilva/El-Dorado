@@ -1,0 +1,21 @@
+{% extends "base.html"%}
+{% block title %} Buscador {% endblock %}
+
+{%block content %}
+<style>
+    body{
+    background-image: url(../static/fondo.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+</style>
+    <form action="/resultados/" method="GET">
+        <section class="form_register">
+            <h4>Busqueda de productos</h4>
+            <input type="text" class="controls" name="prd" maxlength="20" size="40" placeholder="Ingresa el nombre del producto">
+            <input type="submit" class="botons" value="Buscar">
+        </section>
+    </form>
+{%endblock%}

@@ -1,0 +1,24 @@
+{% extends "base.html"%}
+{% block title %} Resultado {% endblock %}
+
+{%block content %}
+<p>Estás buscando: <strong>{{name}}</strong></p>
+
+    {% if info %}
+
+    <ul>
+        <p>Resultados: </p>
+        {% for info in info %}
+        <li>
+            ID: {{info.id}} &nbsp;&nbsp;&nbsp;&nbsp; Nombre: {{info.nombre_descripcion}} &nbsp; <a href="http://127.0.0.1:8000/admin/gestionInventario/informacion/{{info.id}}/change/">
+                <button>Editar</button>
+              </a> 
+        </li>
+        {% endfor %}
+    </ul>   
+    {% else %}
+
+    <p>No está el artículo encontrado</p>
+
+    {% endif %}
+{%endblock%}

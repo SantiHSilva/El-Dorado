@@ -1,0 +1,69 @@
+{% extends "base.html"%}
+{% load filter%}
+{% load static %}
+
+{% block title %} Resultado {% endblock %}
+<link rel = "stylesheet" href="{% static 'lista.css' %}">
+
+{%block content %}
+<style>
+    body{
+        background-color: #CCCCCC;
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 1600 1200'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0' x2='0' y1='0' y2='100%25' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%23c8c8c8'/%3E%3Cstop offset='0.02' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.02' stop-color='%23b6b6b6'/%3E%3Cstop offset='0.032' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.032' stop-color='%23888888'/%3E%3Cstop offset='0.056' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.056' stop-color='%23cccccc'/%3E%3Cstop offset='0.07' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.07' stop-color='%23dadada'/%3E%3Cstop offset='0.1' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.1' stop-color='%23e0e0e0'/%3E%3Cstop offset='0.126' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.126' stop-color='%23eeeeee'/%3E%3Cstop offset='0.142' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.142' stop-color='%23bbbbbb'/%3E%3Cstop offset='0.159' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.159' stop-color='%23c2c2c2'/%3E%3Cstop offset='0.17' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.17' stop-color='%23efefef'/%3E%3Cstop offset='0.197' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.197' stop-color='%23d4d4d4'/%3E%3Cstop offset='0.218' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.218' stop-color='%23c6c6c6'/%3E%3Cstop offset='0.239' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.239' stop-color='%23b7b7b7'/%3E%3Cstop offset='0.254' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.254' stop-color='%23c8c8c8'/%3E%3Cstop offset='0.283' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.283' stop-color='%23c2c2c2'/%3E%3Cstop offset='0.294' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.294' stop-color='%23d0d0d0'/%3E%3Cstop offset='0.305' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.305' stop-color='%23bcbcbc'/%3E%3Cstop offset='0.332' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.332' stop-color='%23b1b1b1'/%3E%3Cstop offset='0.346' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.346' stop-color='%23c7c7c7'/%3E%3Cstop offset='0.362' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.362' stop-color='%23d2d2d2'/%3E%3Cstop offset='0.381' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.381' stop-color='%23cecece'/%3E%3Cstop offset='0.415' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.415' stop-color='%23c8c8c8'/%3E%3Cstop offset='0.428' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.428' stop-color='%23b4b4b4'/%3E%3Cstop offset='0.442' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.442' stop-color='%23c2c2c2'/%3E%3Cstop offset='0.456' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.456' stop-color='%23c1c1c1'/%3E%3Cstop offset='0.498' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.498' stop-color='%23bfbfbf'/%3E%3Cstop offset='0.511' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.511' stop-color='%23b6b6b6'/%3E%3Cstop offset='0.532' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.532' stop-color='%23d7d7d7'/%3E%3Cstop offset='0.541' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.541' stop-color='%23d9d9d9'/%3E%3Cstop offset='0.56' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.56' stop-color='%23d5d5d5'/%3E%3Cstop offset='0.581' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.581' stop-color='%23c8c8c8'/%3E%3Cstop offset='0.6' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.6' stop-color='%23cbcbcb'/%3E%3Cstop offset='0.618' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.618' stop-color='%23f0f0f0'/%3E%3Cstop offset='0.656' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.656' stop-color='%23cacaca'/%3E%3Cstop offset='0.679' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.679' stop-color='%23cccccc'/%3E%3Cstop offset='0.689' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.689' stop-color='%23e6e6e6'/%3E%3Cstop offset='0.720' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.720' stop-color='%23d9d9d9'/%3E%3Cstop offset='0.734' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.734' stop-color='%23cbcbcb'/%3E%3Cstop offset='0.748' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.748' stop-color='%23bababa'/%3E%3Cstop offset='0.764' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.764' stop-color='%23c7c7c7'/%3E%3Cstop offset='0.788' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.788' stop-color='%23c4c4c4'/%3E%3Cstop offset='0.808' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.808' stop-color='%23c9c9c9'/%3E%3Cstop offset='0.831' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.831' stop-color='%23cdcdcd'/%3E%3Cstop offset='0.856' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.856' stop-color='%23e5e5e5'/%3E%3Cstop offset='0.872' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.872' stop-color='%23f1f1f1'/%3E%3Cstop offset='0.894' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.894' stop-color='%23c5c5c5'/%3E%3Cstop offset='0.914' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.914' stop-color='%23bdbdbd'/%3E%3Cstop offset='0.942' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.942' stop-color='%23909090'/%3E%3Cstop offset='0.957' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.957' stop-color='%23d8d8d8'/%3E%3Cstop offset='0.973' stop-color='%23CCCCCC'/%3E%3Cstop offset='0.973' stop-color='%23c2c2c2'/%3E%3Cstop offset='1' stop-color='%23CCCCCC'/%3E%3Cstop offset='1' stop-color='%239d9d9d'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23a)' x='0' y='0' width='100%25' height='100%25'/%3E%3C/svg%3E");
+background-attachment: fixed;
+background-size: cover;
+    }
+    table tbody tr:nth-child(even){
+    background: #ffff;
+}
+
+</style>
+&nbsp;
+<div style="text-align: center;">
+        <table id="tablaXD" border="1" style="margin: 0 auto" class="roundedTable">
+            <tr>
+                <th>ID</th>
+                <th>Nombre y descripción</th>
+                <th>Cantidad</th>
+                <th>Categoria</th>
+                <th>Distribuidor</th>
+                <th>Unidad de medida</th>
+                <th>Fecha de modificación</th>
+                <th>Fecha de vencimiento</th>
+                <th>Stock Minimo</th>
+                <th>Stock de reserva</th>
+                <th>Stock Maximo</th>
+                <th>Acciones</th>
+            </tr>
+            {% for info in info %}
+            <tr :nth-child>
+                <td>{{info.id}}</td>
+                <td>{{info.nombre_descripcion}}</td>
+                <td>{{info.cantidad_productos}}</td>
+                <td>{{info.categoria_producto}}</td>
+                <td>{{info.proveedor}}</td>
+                <td>{{info.unidades}}</td>
+                <td>{{info.fecha_modificacion}}</td>
+                {{info.fecha_vencimiento | calcular_vencimiento}}
+                <td>{{info.stock_minimo}}</td>
+                <td>{{info.stock_reserva}}</td>
+                <td>{{info.stock_maximo}}</td>
+                <td><a href="#" title="Editar {{info.nombre_descripcion}}"><img src="../static/edit2.png" style="width: 50%;"><a href="#" title="Remover {{info.nombre_descripcion}}"><img src="../static/remove2.png" style="width: 50%;"></a></td>
+            </tr>
+            {% endfor %}
+    </table>
+</div>
+&nbsp;
+
+<script>
+    let tabla = document.getElementById("tablaXD")
+    function muestraTodasLasID(tabla, numeroColumna, inicio){
+        for(let i = inicio, celda; i < tabla.rows.length; i++){
+            celda = tabla.rows[i].cells[numeroColumna];
+            console.log(celda.innerHTML);
+            celda[i] = "XD"
+        }
+    }
+    muestraTodasLasID(tabla,2,1)
+</script>
+    {%endblock%}

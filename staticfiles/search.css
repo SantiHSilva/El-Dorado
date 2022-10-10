@@ -1,0 +1,55 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+.form_register{
+    width: 400px;
+    background: rgb(12, 12, 12);
+    padding: 40px;
+    margin: 0 auto;
+    margin-top: 200px;
+    border-radius: 10px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    box-shadow: 7px 13px 37px #000;
+    border-color: none;
+}
+
+.form_register h4{
+font-size: 22px;
+margin-bottom: 20px;
+color: white;
+}
+
+.controls{
+    width: 100%;
+    background: white;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    border: 1px solid white;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 18px;
+}
+
+.form_register p{
+    height: 40px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.form_register .botons {
+    width: 100%;
+    background: #f3c68e;
+    border: none;
+    padding: 12px;
+    color: black;
+    margin: 16px 0;
+    font-size: 16px;
+    align-items: center;
+    border-radius: 10px;
+
+}
