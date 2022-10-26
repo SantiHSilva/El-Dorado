@@ -1,14 +1,16 @@
-from django.http import HttpResponse
-from django.template import Context, Library
+# from django.http import HttpResponse
+# from django.template import Context, Library
 from django.shortcuts import render
-from inventario import data_files
 from gestion.models import Informacion
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
+def modal(request):
+    return render(request, "modal.html")
 
 def inicial(request):
     return render(request,"base.html")
+
 def menu2(request):
     return render(request,"menu_derecha.html", {"username": User.objects.all()})
 
@@ -18,12 +20,10 @@ def buscar(request):
 
 @login_required
 def lista_completa(request):
-
     info = []
     for objeto in Informacion.objects.values():
         objeto["stock_reserva"] = int(objeto["cantidad_productos"]*0.2)
         info.append(objeto)
-
     return render(request,"lista_completa.html", {"info": info})
 
 @login_required

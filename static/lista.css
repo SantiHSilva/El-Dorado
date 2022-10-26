@@ -14,7 +14,7 @@
     background-color: #f1f1c1;
 }
 .roundedTable th {
-    background-color: #f3c68e;
+    background-color: #ffff;
     color: rgb(0, 0, 0);
     align-content: center;
 }
@@ -24,7 +24,7 @@ table tbody tr:nth-child(odd){
 }
 
 table tbody tr:nth-child(even){
-    background: #ffff;
+    background: #f3c68e;
 }
 
 .roundedTable

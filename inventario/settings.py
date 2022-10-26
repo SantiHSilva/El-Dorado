@@ -35,16 +35,19 @@ ALLOWED_HOSTS = []
 # Application definition
 
 DEFAULT_APPS = [
-        "admin_interface",
-    "colorfield",
-     'django.contrib.admin',
-     'django.contrib.auth',
-     'django.contrib.contenttypes',
-     'django.contrib.sessions',
-     'django.contrib.messages',
-     'django.contrib.staticfiles',
-     "gestion",
+    'admin_interface',
+    'colorfield',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'gestion',
+    'crispy_forms',
  ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 THIRD_PARTY_APPS =[
      # add apps which you install using pip

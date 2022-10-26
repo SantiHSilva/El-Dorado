@@ -1,0 +1,25 @@
+{% extends "base.html"%}
+{% load crispy_forms_tags %}
+{% block title %} ResultadoXD {% endblock %}
+{%block content %}
+
+    {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            papu hay un problema
+        </div>
+    {% endif %}
+
+    <h1>registro informacion</h1>
+
+    <form action="{% url 'guardarProducto' %}" method="POST">
+    {% csrf_token %}
+    {% if mensaje %}
+        <div class="alert alert-success" role="alert">
+            se logro papu
+        </div>
+    {% endif %}
+
+    {{ form | crispy}}
+    <button type="submit" class="btn btn-primary">ward</button> 
+    </form>
+{%endblock%}

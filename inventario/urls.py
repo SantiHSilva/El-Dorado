@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from gestion.views import FormularioInformacionView
 from inventario import views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -31,6 +32,9 @@ urlpatterns = [
     path('buscar/', views.buscar),
     path('resultados/', views.resultado),
     path('lista/', views.lista_completa),
+    path('modal/', views.modal),
+    path('registrarProductos/', FormularioInformacionView.index, name='registrarProductos'),
+    path('guardarProducto/', FormularioInformacionView.procesar_formulario, name='guardarProducto'),
 ]
 
 if settings.DEBUG:
