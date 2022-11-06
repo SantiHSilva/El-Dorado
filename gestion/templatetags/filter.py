@@ -37,6 +37,8 @@ def transform_date(fecha):
 
 @register.filter(name="calcular_vencimiento")
 def calcular_vencimiento(fecha):
+    print(type(fecha))
+    print(fecha)
     date_now = datetime.now()
     fmt = "%Y-%m-%d %H:%M:%S"
     now = time.mktime(date_now.timetuple())
