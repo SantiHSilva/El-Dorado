@@ -55,5 +55,38 @@ def calcular_vencimiento(fecha):
         else:
             print(f"¡Le quedan {(date_now - tstamp2).days} días para que caduque!") #si vence en el lapso de 10 días
 
-calcular_vencimiento("2005-04-10")
+# calcular_vencimiento("2005-04-10")
+
+
+
+
+
+
+def suma ():
+    a = int(input("Inserte un numero entero a sumar: "))
+    b = int(input("Inserte el siguiente numero entero a sumar: "))
+    operacion = a+b
+    return operacion
+    
+print ("EL resultsdo de la suma es: " + str(suma()))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
