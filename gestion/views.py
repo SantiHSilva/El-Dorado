@@ -29,7 +29,7 @@ class FormularioInformacionView(HttpRequest):
             if formulario.is_valid():
                 formulario.save()
                 producto.save()
-                return redirect(to='index')
+                return redirect(to='http://127.0.0.1:8000/lista/')
             data["form"] = formulario
         return render(request, 'modificar_producto.html', data)
                 
