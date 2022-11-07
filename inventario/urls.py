@@ -32,7 +32,7 @@ urlpatterns = [
     path('buscar/', views.buscar),
     path('resultados/', views.resultado),
     path('lista/', views.lista_completa),
-    path('modal/', views.modal),
+    path('modificar/<id>/', FormularioInformacionView.modificar_producto),
     path('registrarProductos/', FormularioInformacionView.index, name='registrarProductos'),
     path('guardarProducto/', FormularioInformacionView.procesar_formulario, name='guardarProducto'),
 ]

@@ -57,20 +57,14 @@ def calcular_vencimiento(fecha):
 
 # calcular_vencimiento("2005-04-10")
 
+#función declarada
 
+def suma(a,b):
+    return str(a+b)
 
+print("La suma entre los valores es: " + suma(1,3))
 
-
-
-def suma ():
-    a = int(input("Inserte un numero entero a sumar: "))
-    b = int(input("Inserte el siguiente numero entero a sumar: "))
-    operacion = a+b
-    return operacion
-    
-print ("EL resultsdo de la suma es: " + str(suma()))
-
-
+def 
 
 
 
@@ -82,11 +76,34 @@ print ("EL resultsdo de la suma es: " + str(suma()))
 
 
 
+import os
 
+a = 1
+i = 0
 
+def separar(a):
+    return ("{:2}".format(a))
 
+os.system("cls")
+while a != 0:
+    while ((a>10) or (a<0)) or (a!=0):
+        try:
+            a = int(input("Ingresa un número entre 1 y 10: "))
+        except:
+            print("Ingresa un número válido")
+    if a == 0:
+        break
+    print()
+    if a == 1:
+        for i in range(11):
+            print(f"1 * {separar(i)} = {separar(i)}     2 * {separar(i)} = {separar(2*i)}")
+    elif a == 10:
+        for i in range(11):
+            print(f"9 * {separar(i)} = {separar(9*i)}     10 * {separar(i)} = {separar(10*i)}")
+    else:
+        for i in range(11):
+            print(str(a-1) + "*" + str(i) + "=" + str((a-1)*i) + str(a)+" * "str(i)+"=" str(a*i)+str(a+1)+" * "+ str(i)+ "=" + str((a+1)*i))
+        input("\nPresiona enter para continuar")
 
-
-
-
-
+os.system("cls")
+print("Fin del programa")

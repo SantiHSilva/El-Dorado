@@ -31,6 +31,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+#ya vuelvo
+
 
 # Application definition
 
@@ -90,8 +92,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'inventario.wsgi.application'
-
-DATE_INPUT_FORMATS = ['%d-%m-%Y']
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

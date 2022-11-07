@@ -27,6 +27,12 @@ def lista_completa(request):
     return render(request,"lista_completa.html", {"info": info})
 
 @login_required
+def eliminar_productos(request, id):
+    producto = Informacion.objects.get(id=id)
+    producto.delete()
+    return redirect("/lista_completa")
+
+@login_required
 def resultado(request):
     if request.GET["prd"]:
         resultado = Informacion.objects.filter(nombre_descripcion__icontains=(request.GET["prd"]))
