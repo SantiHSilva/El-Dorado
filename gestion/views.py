@@ -21,13 +21,16 @@ class FormularioInformacionView(HttpRequest):
 
     def modificar_producto(request, id):
         producto = get_object_or_404(Informacion, id=id)
+        print('producto:',producto.cantidad_productos)
         data = {
             'form': formularioInformacion(instance=producto)
         }
+        print('data:',data['form'])
         if request.method == 'POST':
             formulario = formularioInformacion(data=request.POST, instance=producto, files = request.FILES)
+            print("formulario:", formulario)
             if formulario.is_valid():
-                formulario.save()
+                producto.update(**formulario.cleaned_data)
                 producto.save()
                 return redirect(to='http://127.0.0.1:8000/lista/')
             data["form"] = formulario
