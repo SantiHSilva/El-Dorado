@@ -92,7 +92,7 @@
         width: 90%;
     }
 }
-
+/* 
 body{
     margin: 0;
 	width: 100%;
@@ -100,7 +100,7 @@ body{
 	background: linear-gradient(-45deg, #f4eeed, #cbc7c8, #87898a, #e1e1e1);
 	background-size: 400% 400%;
 	animation: gradiente 15s ease infinite;
-}
+} */
 
 @keyframes gradiente {
 	0% {
@@ -127,6 +127,13 @@ th.resaltar{
 </style>
 &nbsp;
 <div style="text-align: center;">
+
+    <select>
+        <option value="0">Seleccione una categoria</option>
+        {% for info in '1234' %}
+        <option value="{{info|transform_categoria}}">{{info|transform_categoria}}</option>
+        {% endfor %}
+    </select>
         <table id="mi-tablaXD" border="1" style="margin: 0 auto" class="roundedTable">
             <thead>
                 <tr title="Organiza de mayor a menor o lo contrario">

@@ -35,19 +35,24 @@ def transform_date(fecha):
         mes = "Diciembre"
     return dia + " de " + mes + " de " + ano
 
+@register.filter(name="transform_categoria")
+def transform_categoria(categoria):
+    if categoria == "1":
+        return "Alimentos"
+    elif categoria == "2":
+        return "Bebidas"
+    elif categoria == "3":
+        return "Limpieza"
+    elif categoria == "4":
+        return "Otros"
+
 @register.filter(name="calcular_vencimiento")
 def calcular_vencimiento(fecha):
-    print(type(fecha))
-    print(fecha)
     date_now = datetime.now()
     fmt = "%Y-%m-%d %H:%M:%S"
     now = time.mktime(date_now.timetuple())
-    # fecha = fecha + " 00:00:00"
-    # fecha = datetime.strptime(str(fecha), fmt)
     fecha_vencimiento = time.mktime(fecha.timetuple())
     date_venc = datetime.fromtimestamp(fecha_vencimiento)
-    print("Fecha de hoy: " + str(date_now))
-    print("Fecha ingresada: " + str(date_venc))
     dia_vencimiento = datetime.strptime(str(date_venc), fmt)
     color = "color: red;"
     if((fecha_vencimiento-now ) >= 864000):
