@@ -1,18 +1,35 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest
-
+from gestion.models import Informacion
 from gestion.forms import formularioInformacion
 
 # Create your views here.
 
 class FormularioInformacionView(HttpRequest):
     def index(request):
-        info = formularioInformacion()
-        return render(request, 'informacionIndex.html', {'form': info})
+        data = {
+            'form': formularioInformacion()
+        }
+        if request.method == 'POST':
+            formulario = formularioInformacion(data=request.POST, files=request.FILES)
+            if formulario.is_valid():
+                formulario.save()
+                data["mensaje"] = "Guardado Correctamente"
+            else:
+                data["form"] = formulario
+        return render(request, 'informacionIndex.html', data)
 
-    def procesar_formulario(request):
-        info = formularioInformacion(request.POST)
-        if info.is_valid():
-            info.save()
-            info = formularioInformacion()
-        return render(request, 'informacionIndex.html', {'form': info, 'mensaje': 'OK'})
+    def modificar_producto(request, id):
+        producto = get_object_or_404(Informacion, id=id)
+        data = {
+            'form': formularioInformacion(instance=producto)
+        }
+        if request.method == 'POST':
+            formulario = formularioInformacion(data=request.POST, instance=producto, files = request.FILES)
+            if formulario.is_valid():
+                formulario.save()
+                producto.save()
+                return redirect(to='index')
+            data["form"] = formulario
+        return render(request, 'modificar_producto.html', data)
+                

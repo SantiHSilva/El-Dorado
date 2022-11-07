@@ -24,7 +24,7 @@
         <!-- PROFILE -->
         <div id="profile" title="Panel Administrativo">
             <a href="http://127.0.0.1:8000/admin/">
-                <div id="photo"><img src="../static/user.png" alt=""></div>
+                <div id="photo"><img src="{% static '/user.png'%}" alt=""></div>
             </a>
             {% if user.is_authenticated %}
 
@@ -44,28 +44,28 @@
         <div id="menu-items">
             <div class="item">
                 <a href="http://127.0.0.1:8000/lista/" title="Abre la información general de los productos">
-                    <div class="icon"><img src="../static/information.png" alt=""> </div>
+                    <div class="icon"><img src="{% static '/information.png'%}" alt=""> </div>
                     <div class="title"><span>Información general</span></div>
                 </a>
             </div>
 
             <div class="item">
                 <a href="http://127.0.0.1:8000/buscar/" title="Lista los productos mostrando su información">
-                    <div class="icon"><img src="../static/lupa.png"     /></div>
+                    <div class="icon"><img src="{% static '/lupa.png'%}"     /></div>
                     <div class="title"><span>Buscar Productos</span></div>
                 </a>
             </div>
 
             <div class="item">
                 <a href="http://127.0.0.1:8000/admin/gestion/informacion/add/" title="Añade un producto al inventario">
-                    <div class="icon"><img src="../static/add.png"/></div>
+                    <div class="icon"><img src="{% static '/add.png'%}"/></div>
                     <div class="title"><span>Añadir Producto</span></div>
                 </a>
             </div>
 
             <div class="item">
                 <a href="http://127.0.0.1:8000/remover" title="Remueve un producto del inventario">
-                    <div class="icon"><img src="../static/remove.png" /></div>
+                    <div class="icon"><img src="{% static '/remove.png'%}" /></div>
                     <div class="title"><span>Remover Producto</span></div>
                 </a>
             </div>
@@ -75,20 +75,20 @@
 
             <div class="item">
                 <a href="#" title="Muestra el equipo que conforma el grupo">
-                    <div class="icon"><img src="../static/group.png" /></div>
+                    <div class="icon"><img src="{% static '/group.png'%}" /></div>
                     <div class="title"><span>Equipo</span></div>
                 </a>
             </div>
 
             <div class="item" title="Muestra los recursos utilizados durante el proyecto">
                 <a href="#">
-                    <div class="icon"><img src="../static/resources.png" /></div>
+                    <div class="icon"><img src="{% static '/resources.png'%}" /></div>
                     <div class="title"><span>Recursos</span></div>
                 </a>
             </div>
             <div class="item" title="Cerrar Sesión">
                 <a href="http://127.0.0.1:8000/admin/logout">
-                    <div class="icon"><img src="../static/logout.png" /></div>
+                    <div class="icon"><img src="{% static '/logout.png'%}" /></div>
                     <div class="title"><span>Cerrar Sesión</span></div>
                 </a>
             </div>
