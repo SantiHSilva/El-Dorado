@@ -128,10 +128,17 @@ th.resaltar{
 &nbsp;
 <div style="text-align: center;">
 
-    <select>
+    <select id="caducidad" onchange="manejadorVencimientos()">
+        <option value="0">Todos</option>
+        <option value="black">Sin caducar</option>
+        <option value="rgb(252, 115, 3)">Por caducar</option>
+        <option value="red">caducado</option>
+    </select>
+
+    <select id="XDXD" onchange="manejadorCategorias()">
         <option value="0">Seleccione una categoria</option>
         {% for info in '1234' %}
-        <option value="{{info|transform_categoria}}">{{info|transform_categoria}}</option>
+        <option id="{{info}}" value="{{info}}">{{info|transform_categoria}}</option>
         {% endfor %}
     </select>
         <table id="mi-tablaXD" border="1" style="margin: 0 auto" class="roundedTable">
@@ -153,11 +160,11 @@ th.resaltar{
             </thead>
             <tbody>
             {% for info in info %}
-            <tr>
+            <tr class="{{info.categoria_producto}}">
                 <td>{{info.id}}</td>
                 <td>{{info.nombre_descripcion}}</td>
                 <td>{{info.cantidad_productos}}</td>
-                <td>{{info.categoria_producto}}</td>
+                <td>{{info.categoria_producto | transform_categoria}}</td>
                 <!-- <td>{{info.proveedor}}</td> -->
                 <!-- <td>{{info.unidades}}</td> -->
                 <td>{{info.fecha_modificacion}}</td>
@@ -200,6 +207,59 @@ th.resaltar{
 <script type="text/javascript" src="https://mottie.github.io/tablesorter/js/jquery.tablesorter.js"></script>
 
 <script>
+
+//  Función para filtrar las fechas de vencimiento
+    function manejadorVencimientos(){
+        const value = document.getElementById("caducidad").value;
+        const table = document.querySelectorAll("#mi-tablaXD>tbody>tr>td");
+
+        for (const td of table){
+            //rgb(252, 115, 3)
+
+            if(td.hasAttribute('style')){
+
+                if(value != "0"){
+                    if(td.style.color === value){
+                        td.parentElement.style.display = ""
+                    }else{
+                        td.parentElement.style.display = "none"
+                    }
+                }else{
+                    td.parentElement.style.display = ""
+                }
+                
+            }
+               
+        }
+    }
+
+
+    function manejadorCategorias(){
+        
+        const value = document.getElementById("XDXD").value;
+        const table = document.querySelectorAll('#mi-tablaXD>tbody>tr');
+        
+       
+        console.log(table)
+        for (const tr of table) {
+
+            if(value != 0){
+                if (tr.classList.contains(value)) {
+                    tr.style.display = '';
+                } else {
+                    tr.style.display = 'none';
+                }
+                console.log(tr.classList.contains(value))
+                console.log(tr.classList.classList)
+                console.log("value" + value)
+            }else{
+                tr.style.display = '';
+            }
+            
+        }
+    }
+
+
     $(this).click(function() {
                     $(function(){
                     $('#mi-tablaXD').tablesorter(); 
@@ -220,19 +280,14 @@ th.resaltar{
             });
         });
 
+        //
 
         document.addEventListener('click', (e)=>{
             const $btn = document.querySelector('#'+e.target.id)
             const $modal = document.querySelector('#exampleModalLabel')
-
             $modal.textContent = $btn.textContent
-            
-
             const $url = document.querySelector('#url_modificar')
-            console.log($url.id)
-            $url.href = 'http://127.0.0.1:8000/modificar/'+ e.target.id.split('_')[1]
- 
-           
+            $url.href = 'http://127.0.0.1:8000/modificar/'+ e.target.id.split('_')[1]  
         })
         
 </script>

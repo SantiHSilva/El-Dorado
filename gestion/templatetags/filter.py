@@ -54,14 +54,12 @@ def calcular_vencimiento(fecha):
     fecha_vencimiento = time.mktime(fecha.timetuple())
     date_venc = datetime.fromtimestamp(fecha_vencimiento)
     dia_vencimiento = datetime.strptime(str(date_venc), fmt)
-    color = "color: red;"
+    vencio = "color: red;"
+    por_vencer = "color: #fc7303;"
     if((fecha_vencimiento-now ) >= 864000):
-        return mark_safe(f'<td title="Aun no vence, le queda {abs(date_now - dia_vencimiento).days} días para que caduque">{transform_date(str(fecha))}</td>') # no vence ahora
+        return mark_safe(f'<td style="color: black;" title="Aun no vence, le queda {abs(date_now - dia_vencimiento).days} días para que caduque">{transform_date(str(fecha))}</td>') # no vence ahora
     else:
         if ((date_now - dia_vencimiento).days) > 10:
-            return mark_safe(f'<td style="{color}" title="Ya venció, venció hace {(date_now - dia_vencimiento).days} días"">{transform_date(str(fecha))}</td>') #si vence en el lapso de 10 días
+            return mark_safe(f'<td style="{vencio}" title="Ya venció, venció hace {(date_now - dia_vencimiento).days} días"">{transform_date(str(fecha))}</td>') #si vence en el lapso de 10 días
         else:
-            return mark_safe(f'<td style="{color}" title="Vence en {abs((date_now - dia_vencimiento).days)} días"">{transform_date(str(fecha))}</td>')
-
-
-
+            return mark_safe(f'<td style="{por_vencer}" title="Vence en {abs((date_now - dia_vencimiento).days)} días"">{transform_date(str(fecha))}</td>')
