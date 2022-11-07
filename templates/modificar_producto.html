@@ -1,6 +1,6 @@
 {% extends "base.html"%}
 {% load crispy_forms_tags %}
-{% block title %} Editar {% endblock %}
+{% block title %} ResultadoXD {% endblock %}
 {%block content %}
 <br>
 <br>
@@ -15,10 +15,10 @@
             {% endif %}
 
             &nbsp;
-            <h2>&nbsp;&nbsp;Editar producto</h2>
+            <h2>&nbsp;&nbsp;Registrar nuevo producto</h2>
             <hr>
             <div class="card-body">                
-                <form>
+                <form action="" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     {% if mensaje %}
                     <div class="alert alert-success" role="alert">
@@ -30,7 +30,7 @@
                     <div class="d-flex justify-content-center">
                         <input type="reset" value="Limpiar" class="btn btn-secondary">
                         &nbsp;
-                        <input type="submit" value="Editar" class="btn btn-primary">
+                        <input type="submit" value="Guardar" class="btn btn-primary">
                     </div>
                 </form>
             </div>
