@@ -32,7 +32,7 @@ class FormularioInformacionView(HttpRequest):
             if formulario.is_valid():
                 producto.update(**formulario.cleaned_data)
                 producto.save()
-                return redirect(to='/')
+                return redirect(to='http://127.0.0.1:8000/lista/')
             data["form"] = formulario
         return render(request, 'modificar_producto.html', data)
                 
