@@ -26,15 +26,14 @@ class FormularioInformacionView(HttpRequest):
             'form': formularioInformacion(instance=producto),
             'info': Informacion.objects.get(id=id)
         }
-        print(data['info'])
-        print('data:', data['info'].cantidad_productos)
-        print('data:',data['form'])
+        # print(data['info'])
+        # print('data:', data['info'].cantidad_productos)
+        # print('data:',data['form'])
         if request.method == 'POST':
             formulario = formularioInformacion(data=request.POST, instance=producto, files = request.FILES)
             if formulario.is_valid():
-                producto.update(**formulario.cleaned_data)
+                # producto.update(**formulario.cleaned_data)
                 producto.save()
                 return redirect(to='http://127.0.0.1:8000/lista/')
             data["form"] = formulario
         return render(request, 'modificar_producto.html', data)
-                
