@@ -158,32 +158,31 @@ th.resaltar{
                 <!-- <td>{{info.stock_minimo}}</td> -->
                 <!-- <td>{{info.stock_reserva}}</td> -->
                 <!-- <td>{{info.stock_maximo}}</td> -->
-                <td><a href="#" title="Editar {{info.nombre_descripcion}}">
-                    <!--Boton-->
-                    <div class="boton-modal">
-                        <label for="btn-modal"><img src="../static/edit2.png" style="width: 40px;"> </label>
-                    </div>
-                <!--Fin de Boton-->
-                <!--Ventana Modal-->
-                    <input type="checkbox" id="btn-modal">
-                    <div class="container-modal">
-                        <div class="content-modal">
-                            <h2>¡Bienvenido!</h2>
-
-                            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consequatur, nostrum!</p>
-                            <div class="content-modal">
-                                <a href="youtube.com">
-                                    XD
-                                </a>
+                <td>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Modificar {{info.nombre_descripcion}}
+                    </button>
+                    
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Información de {{info.nombre_descripcion}}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="btn-cerrar">
-                                <label for="btn-modal">Cerrar</label>
+                            <div class="modal-body">
+                            ...
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-secondary"><a href="http://127.0.0.1:8000/modificar/{{info.id}}">Editar</a></button>
                             </div>
                         </div>
-                        <label for="btn-modal" class="cerrar-modal"></label>
+                        </div>
                     </div>
-                <!--Fin de Ventana Modal-->
-                </a></td>
+            </td>
             </tr>
             {% endfor %}
             </tbody>
