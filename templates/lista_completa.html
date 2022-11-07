@@ -181,7 +181,7 @@ th.resaltar{
                         </div>
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-secondary"><a href="http://127.0.0.1:8000/modificar/{{info.id}}">Editar</a></button>
+                        <a id="url_modificar" href="#"></a><button type="button" class="btn btn-secondary">Editar</button></a>
                         </div>
                     </div>
                     </div>
@@ -215,11 +215,18 @@ th.resaltar{
 
 
         document.addEventListener('click', (e)=>{
-            $btn = document.querySelector('#'+e.target.id)
-
-            $modal = document.querySelector('#exampleModalLabel')
+            const $btn = document.querySelector('#'+e.target.id)
+            const $modal = document.querySelector('#exampleModalLabel')
 
             $modal.textContent = $btn.textContent
+            
+
+            const $url = document.querySelector('#url_modificar')
+            $url.id = "url_" + e.target.id.split('_')[1]
+            console.log($url.id)
+            $url.href = 'http://127.0.0.1:8000/modificar/'+ e.target.id.split('_')[1]
+ 
+           
         })
         
 </script>
