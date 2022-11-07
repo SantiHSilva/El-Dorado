@@ -3,22 +3,37 @@
 {% load static %}
 {% block title %} Resultado {% endblock %}
 {%block content %}
+
+<style>
+
+    .contain{
+        display: flex;
+    }
+
+    .wrapper{
+        position: relative;
+        width: 15%;
+    }
+
+    .selects{
+        position: fixed;
+        right: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: start;
+    }
+
+    select{
+        padding: .5rem;
+        margin: .5rem;
+    }
+</style>
+
 &nbsp;
-<div style="text-align: center;">
+<div class="contain" style="text-align: center;">
 
-    <select id="caducidad" onchange="manejadorVencimientos()">
-        <option value="0">Todos</option>
-        <option value="black">Sin caducar</option>
-        <option value="rgb(252, 115, 3)">Por caducar</option>
-        <option value="red">caducado</option>
-    </select>
-
-    <select id="XDXD" onchange="manejadorCategorias()">
-        <option value="0">Seleccione una categoria</option>
-        {% for info in '1234' %}
-        <option id="{{info}}" value="{{info}}">{{info|transform_categoria}}</option>
-        {% endfor %}
-    </select>
+   
         <table id="mi-tablaXD" border="1" style="margin: 0 auto" class="roundedTable">
             <thead>
                 <tr title="Organiza de mayor a menor o lo contrario">
@@ -52,14 +67,36 @@
                 <!-- <td>{{info.stock_maximo}}</td> -->
                 <td>
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id="click_{{info.id}}">
-                        Modificar {{info.nombre_descripcion}}
+                    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <img width="25" height="25"
+                        src="{% static '/edit2.png'%}" alt="{{info.nombre_descripcion}}" id="click_{{info.id}}">
                     </button>
             </td>
             </tr>
             {% endfor %}
             </tbody>
     </table>
+    <div class="wrapper">
+        <div class="selects">
+
+                <select id="XDXD" onchange="manejadorCategorias()" >
+                    <option value="0">Seleccione una categoria</option>
+                    {% for info in '1234' %}
+                    <option id="{{info}}" value="{{info}}">{{info|transform_categoria}}</option>
+                    {% endfor %}
+                </select>
+    
+                <select id="caducidad" onchange="manejadorVencimientos()">
+                    <option value="0">Todos</option>
+                    <option value="black">Sin caducar</option>
+                    <option value="rgb(252, 115, 3)">Por caducar</option>
+                    <option value="red">caducado</option>
+                </select>
+
+           
+        </div>
+    </div>
+    
                  <!-- Modal -->
                  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -78,6 +115,7 @@
                     </div>
                     </div>
                 </div>
+
 </div>
 &nbsp;
 
@@ -86,7 +124,7 @@
 
 <script>
 
-//  Función para filtrar las fechas de vencimiento
+    //  Función para filtrar las fechas de vencimiento
     function manejadorVencimientos(){
         const value = document.getElementById("caducidad").value;
         const table = document.querySelectorAll("#mi-tablaXD>tbody>tr>td");
@@ -95,9 +133,10 @@
             //rgb(252, 115, 3)
 
             if(td.hasAttribute('style')){
-
+                
                 if(value != "0"){
                     if(td.style.color === value){
+
                         td.parentElement.style.display = ""
                     }else{
                         td.parentElement.style.display = "none"
@@ -109,14 +148,14 @@
             }
                
         }
+
+
     }
 
 
     function manejadorCategorias(){
-        
         const value = document.getElementById("XDXD").value;
         const table = document.querySelectorAll('#mi-tablaXD>tbody>tr');
-        
        
         console.log(table)
         for (const tr of table) {
@@ -135,6 +174,7 @@
             }
             
         }
+
     }
 
 
@@ -161,9 +201,9 @@
         //
 
         document.addEventListener('click', (e)=>{
-            const $btn = document.querySelector('#'+e.target.id)
+            const $img = document.querySelector('#'+e.target.id)
             const $modal = document.querySelector('#exampleModalLabel')
-            $modal.textContent = $btn.textContent
+            $modal.textContent = $img.getAttribute("alt")
             const $url = document.querySelector('#url_modificar')
             $url.href = 'http://127.0.0.1:8000/modificar/'+ e.target.id.split('_')[1]  
         })

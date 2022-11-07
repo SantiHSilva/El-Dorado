@@ -5,8 +5,10 @@ body{
 	background: linear-gradient(-45deg, #f4eeed, #cbc7c8, #87898a, #e1e1e1);
 	background-size: 400% 400%;
 	animation: gradiente 15s ease infinite;
-}
+    overflow-y: scroll;
+    overflow-x: hidden;
 
+}
 @keyframes gradiente {
 	0% {
 		background-position: 0% 50%;
