@@ -111,6 +111,7 @@
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                         <a id="url_modificar" href="#"><button type="button" class="btn btn-secondary">Editar</button></a>
+                        <a onclick="eliminarProducto({{ info.id }})" id="url_modificar2" href="#"><button type="button" class="btn btn-secondary">Eliminar</button></a>
                         </div>
                     </div>
                     </div>
@@ -123,7 +124,7 @@
 <script type="text/javascript" src="https://mottie.github.io/tablesorter/js/jquery.tablesorter.js"></script>
 
 <script>
-
+    // $(document).ready(function(){
     //  Función para filtrar las fechas de vencimiento
     function manejadorVencimientos(){
         const value = document.getElementById("caducidad").value;
@@ -205,8 +206,12 @@
             const $modal = document.querySelector('#exampleModalLabel')
             $modal.textContent = $img.getAttribute("alt")
             const $url = document.querySelector('#url_modificar')
+            const $url2 = document.querySelector('#url_modificar2')
             $url.href = 'http://127.0.0.1:8000/modificar/'+ e.target.id.split('_')[1]  
+            $url2.href = 'http://127.0.0.1:8000/eliminar/'+ e.target.id.split('_')[1]  
         })
+
+
         
 </script>
     {%endblock%}
