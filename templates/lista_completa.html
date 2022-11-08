@@ -67,10 +67,11 @@
                 <!-- <td>{{info.stock_maximo}}</td> -->
                 <td>
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        <img width="25" height="25"
-                        src="{% static '/edit2.png'%}" alt="{{info.nombre_descripcion}}" id="click_{{info.id}}">
-                    </button>
+                        <button type="button" aria-label="{{info.nombre_descripcion}}" class="btn" id="click_{{info.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <img width="25" height="25"
+                            src="{% static '/edit2.png'%}" id="click-img_{{info.id}}" alt="{{info.nombre_descripcion}}">
+                        </button>                 
+
             </td>
             </tr>
             {% endfor %}
@@ -111,7 +112,7 @@
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                         <a id="url_modificar" href="#"><button type="button" class="btn btn-secondary">Editar</button></a>
-                        <a onclick="eliminarProducto({{ info.id }})" id="url_modificar2" href="#"><button type="button" class="btn btn-secondary">Eliminar</button></a>
+                        <a onclick="eliminarProducto()" id="url_modificar2" href="#"><button type="button" class="btn btn-secondary">Eliminar</button></a>
                         </div>
                     </div>
                     </div>
@@ -124,7 +125,27 @@
 <script type="text/javascript" src="https://mottie.github.io/tablesorter/js/jquery.tablesorter.js"></script>
 
 <script>
-    // $(document).ready(function(){
+
+    function eliminarProducto(id){
+        console.log(id)
+        Swal.fire({
+            title: '¿Estas seguro de eliminar este producto?',
+            text: "No podras revertir esta accion",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, eliminar',
+            cancelButtonText: 'Cancelar',
+            reversebuttons: true
+        })
+        .then(function(result){
+            if(result.isConfirmed){
+                window.location.href = "http://127.0.0.1:8000/eliminar/" + id + "/";
+            }
+        })
+    }
+
     //  Función para filtrar las fechas de vencimiento
     function manejadorVencimientos(){
         const value = document.getElementById("caducidad").value;
@@ -199,19 +220,15 @@
             });
         });
 
-        //
-
         document.addEventListener('click', (e)=>{
-            const $img = document.querySelector('#'+e.target.id)
-            const $modal = document.querySelector('#exampleModalLabel')
-            $modal.textContent = $img.getAttribute("alt")
-            const $url = document.querySelector('#url_modificar')
-            const $url2 = document.querySelector('#url_modificar2')
-            $url.href = 'http://127.0.0.1:8000/modificar/'+ e.target.id.split('_')[1]  
-            $url2.href = 'http://127.0.0.1:8000/eliminar/'+ e.target.id.split('_')[1]  
-        })
+                const $element = document.querySelector('#'+e.target.id)
+                const $modal = document.querySelector('#exampleModalLabel')
+                const $product = document.querySelector('#nombre_producto')
+                if($element.nodeName.toLowerCase() === "button") $modal.textContent = $element.getAttribute("aria-label")
+                if($element.nodeName.toLowerCase() === "img") $modal.textContent= $element.alt
+                $('#url_modificar2').attr('onclick', 'eliminarProducto('+ e.target.id.split('_')[1] +')')
+                $('#url_modificar').attr('href', 'http://127.0.0.1:8000/modificar/'+ e.target.id.split('_')[1]  )
+            });
 
-
-        
 </script>
     {%endblock%}

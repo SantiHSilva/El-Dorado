@@ -15,7 +15,8 @@ class FormularioInformacionView(HttpRequest):
             formulario = formularioInformacion(data=request.POST, files=request.FILES)
             if formulario.is_valid():
                 formulario.save()
-                data["mensaje"] = "Guardado Correctamente"
+                messages.success(request, "Producto registrado correctamente")
+                return redirect(to='http://127.0.0.1:8000/lista/')
             else:
                 data["form"] = formulario
         return render(request, 'informacionIndex.html', data)
