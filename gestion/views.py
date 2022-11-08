@@ -14,6 +14,7 @@ class FormularioInformacionView(HttpRequest):
         if request.method == 'POST':
             formulario = formularioInformacion(data=request.POST, files=request.FILES)
             if formulario.is_valid():
+                print(formulario)
                 formulario.save()
                 messages.success(request, "Producto registrado correctamente")
                 return redirect(to='http://127.0.0.1:8000/lista/')

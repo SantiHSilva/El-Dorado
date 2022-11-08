@@ -35,6 +35,32 @@ def transform_date(fecha):
         mes = "Diciembre"
     return dia + " de " + mes + " de " + ano
 
+@register.simple_tag
+def conversion_g_a_kg(value, unidades, *args, **kwargs):
+    print(f'Peso: {value}')
+    print(f'Unidades: {unidades}')
+    if unidades == "2":
+        print("Transformado a kg")
+        return (f"{round(value / 1000,2)}kg")
+    else:
+        print("No se transforma")
+        return value
+
+
+@register.filter(name='transform_unidades')
+def transform_unidades(unidades):
+    print(type(unidades))
+    if unidades == "1":
+        return "Kilogramos"
+    elif unidades == "2":
+        return "Gramos"
+    elif unidades == "3":
+        return "Litros"
+    elif unidades == "4":
+        return "Unidades"
+    elif unidades == "5":
+        return "Otros"
+
 @register.filter(name="transform_categoria")
 def transform_categoria(categoria):
     if categoria == "1":

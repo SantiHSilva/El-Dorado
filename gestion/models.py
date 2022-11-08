@@ -4,7 +4,7 @@ from django.db import models
 
 class Informacion(models.Model):
     opciones_categoria = (('1', 'Alimentos'), ('2', 'Bebidas'), ('3', 'Limpieza'), ('4', 'Otros'))
-    opciones_unidades = (('1', 'Kg'), ('2', 'L'), ('3', 'Unidades'), ('4', 'Otros'))
+    opciones_unidades = (('1', 'Kg'), ('2', 'g'), ('3', 'L'), ('4', 'Unidades'), ('5', 'Otros'))
     #como se vera el modelo en la página
     class Meta:
         verbose_name_plural = 'Información'
@@ -19,6 +19,7 @@ class Informacion(models.Model):
     categoria_producto = models.CharField(max_length = 100, verbose_name="Categoria del producto", choices = opciones_categoria)
     cantidad_productos = models.IntegerField(verbose_name="Cantidad actual")
     stock_maximo = models.IntegerField(verbose_name="Stock minima")
+    peso_unidad = models.FloatField(verbose_name="Peso por unidad")
     stock_minimo = models.IntegerField(verbose_name="Stock maxima")
     unidades = models.CharField(max_length = 255, choices = opciones_unidades, verbose_name="Unidades")
     #El nombre para reflejarlo en la página, en este caso que muestre el nombre y descripción

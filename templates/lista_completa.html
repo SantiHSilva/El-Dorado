@@ -39,15 +39,12 @@
                 <tr title="Organiza de mayor a menor o lo contrario">
                     <th>ID</th>
                     <th>Nombre y descripción</th>
-                    <th>Cantidad</th>
+                    <th>Unidades</th>
                     <th>Categoria</th>
-                    <!-- <th>Distribuidor</th> -->
-                    <!-- <th>Unidad de medida</th> -->
+                    <th>Peso/u</th>
+                    <th>Unidad de proveedor</th>
                     <th>Fecha de modificación</th>
                     <th>Fecha de vencimiento</th>
-                    <!-- <th>Stock Minimo</th> -->
-                    <!-- <th>Stock de reserva</th> -->
-                    <!-- <th>Stock Maximo</th> -->
                     <th>Editar</th>
                 </tr>    
             </thead>
@@ -58,8 +55,8 @@
                 <td>{{info.nombre_descripcion}}</td>
                 <td>{{info.cantidad_productos}}</td>
                 <td>{{info.categoria_producto | transform_categoria}}</td>
-                <!-- <td>{{info.proveedor}}</td> -->
-                <!-- <td>{{info.unidades}}</td> -->
+                <td>{% conversion_g_a_kg info.peso_unidad info.unidades %}</td>
+                <td>{{info.unidades  | transform_unidades }}</td>
                 <td>{{info.fecha_modificacion}}</td>
                 {{info.fecha_vencimiento|calcular_vencimiento}}
                 <!-- <td>{{info.stock_minimo}}</td> -->
@@ -78,8 +75,7 @@
             </tbody>
     </table>
     <div class="wrapper">
-        <div class="selects">
-
+        <div class="selects"> 
                 <select id="XDXD" onchange="manejadorCategorias()" >
                     <option value="0">Seleccione una categoria</option>
                     {% for info in '1234' %}
@@ -228,7 +224,7 @@
                 if($element.nodeName.toLowerCase() === "img") $modal.textContent= $element.alt
                 $('#url_modificar2').attr('onclick', 'eliminarProducto('+ e.target.id.split('_')[1] +')')
                 $('#url_modificar').attr('href', 'http://127.0.0.1:8000/modificar/'+ e.target.id.split('_')[1]  )
-            });
+        });
 
 </script>
     {%endblock%}
