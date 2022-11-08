@@ -5,6 +5,10 @@ import time
 
 register = Library()
 
+@register.simple_tag
+def conversion_g_a_kg(value, unidades, categoria):
+    return template_g_a_kg(value, unidades, categoria)
+
 @register.filter(name='transform_unidades')
 def transform_unidades(unidades):
     return (template_unidades(unidades))
@@ -16,6 +20,14 @@ def transform_categoria(categoria):
 @register.filter(name="calcular_vencimiento")
 def calcular_vencimiento(fecha):
     return (templateVencimiento(fecha))
+
+def template_g_a_kg(value, unidades, categoria):
+    if unidades == "2":
+        if categoria == "2":
+            return(f'{round(value/1000,2)}kg/m³')
+        return (f"{round(value / 1000,2)}kg")
+    else:
+        return round(value,2)
 
 def transform_date(fecha):
     ano = (fecha[0:4])
@@ -69,14 +81,6 @@ def template_categoria(categoria):
     elif categoria == "4":
         return "Otros"
 
-@register.simple_tag
-def conversion_g_a_kg(value, unidades, categoria):
-    if unidades == "2":
-        if categoria == "2":
-            return(f'{round(value/1000,2)}kg/m³')
-        return (f"{round(value / 1000,2)}kg")
-    else:
-        return round(value,2)
 
 def templateVencimiento(fecha):
     date_now = datetime.now()
