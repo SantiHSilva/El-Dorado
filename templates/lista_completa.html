@@ -55,7 +55,7 @@
                 <td>{{info.nombre_descripcion}}</td>
                 <td>{{info.cantidad_productos}}</td>
                 <td>{{info.categoria_producto | transform_categoria}}</td>
-                <td>{% conversion_g_a_kg info.peso_unidad info.unidades %}</td>
+                <td>{% conversion_g_a_kg info.peso_unidad info.unidades info.categoria_producto %}</td>
                 <td>{{info.unidades  | transform_unidades }}</td>
                 <td>{{info.fecha_modificacion}}</td>
                 {{info.fecha_vencimiento|calcular_vencimiento}}

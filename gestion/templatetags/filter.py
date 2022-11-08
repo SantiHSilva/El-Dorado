@@ -5,6 +5,18 @@ import time
 
 register = Library()
 
+@register.filter(name='transform_unidades')
+def transform_unidades(unidades):
+    return (template_unidades(unidades))
+
+@register.filter(name="transform_categoria")
+def transform_categoria(categoria):
+    return (template_categoria(categoria))
+
+@register.filter(name="calcular_vencimiento")
+def calcular_vencimiento(fecha):
+    return (templateVencimiento(fecha))
+
 def transform_date(fecha):
     ano = (fecha[0:4])
     mes = (fecha[5:7])
@@ -35,16 +47,7 @@ def transform_date(fecha):
         mes = "Diciembre"
     return dia + " de " + mes + " de " + ano
 
-@register.simple_tag
-def conversion_g_a_kg(value, unidades, *args, **kwargs):
-    if unidades == "2":
-        return (f"{round(value / 1000,2)}kg")
-    else:
-        return value
-
-
-@register.filter(name='transform_unidades')
-def transform_unidades(unidades):
+def template_unidades(unidades):
     if unidades == "1":
         return "Kilogramos"
     elif unidades == "2":
@@ -55,9 +58,8 @@ def transform_unidades(unidades):
         return "Unidades"
     elif unidades == "5":
         return "Otros"
-
-@register.filter(name="transform_categoria")
-def transform_categoria(categoria):
+    
+def template_categoria(categoria):
     if categoria == "1":
         return "Alimentos"
     elif categoria == "2":
@@ -67,8 +69,16 @@ def transform_categoria(categoria):
     elif categoria == "4":
         return "Otros"
 
-@register.filter(name="calcular_vencimiento")
-def calcular_vencimiento(fecha):
+@register.simple_tag
+def conversion_g_a_kg(value, unidades, categoria):
+    if unidades == "2":
+        if categoria == "2":
+            return(f'{round(value/1000,2)}kg/m³')
+        return (f"{round(value / 1000,2)}kg")
+    else:
+        return round(value,2)
+
+def templateVencimiento(fecha):
     date_now = datetime.now()
     fmt = "%Y-%m-%d %H:%M:%S"
     now = time.mktime(date_now.timetuple())
@@ -84,3 +94,4 @@ def calcular_vencimiento(fecha):
             return mark_safe(f'<td style="{vencio}" title="Ya venció, venció hace {(date_now - dia_vencimiento).days} días"">{transform_date(str(fecha))}</td>') #si vence en el lapso de 10 días
         else:
             return mark_safe(f'<td style="{por_vencer}" title="Vence en {abs((date_now - dia_vencimiento).days)} días"">{transform_date(str(fecha))}</td>')
+
