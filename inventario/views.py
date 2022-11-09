@@ -39,6 +39,9 @@ def algebraLineal(request):
     except:
         return render(request, "operaciones.html")
 
+def g_a_kg(valor):
+    return valor / 1000
+
 @login_required
 def lista_completa(request):
     info = []
@@ -48,11 +51,14 @@ def lista_completa(request):
         objeto["stock_reserva"] = int(objeto["cantidad_productos"]*0.2)
         info.append(objeto)
         suma_cantidad = int(objeto["cantidad_productos"]) + int(suma_cantidad)
-        suma_peso = int(objeto["peso_unidad"]) + int(suma_peso)
+        if objeto["unidades"] == "2":
+            suma_peso = g_a_kg(objeto["peso_unidad"]) + suma_peso
+        else:
+            suma_peso = float(objeto["peso_unidad"]) + suma_peso
     data = {
         'info' : info,
         'suma_cantidad' : suma_cantidad,
-        'suma_peso' : suma_peso,
+        'suma_peso' : round(suma_peso,2),
     }
     return render(request,"lista_completa.html", data)
 
