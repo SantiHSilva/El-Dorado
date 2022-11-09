@@ -1,3 +1,78 @@
-<div>Fecha de creación: {{ date }}
-</div>
-Hello world :d
+{% load filter%}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Resultados {{date}}</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+</head>
+<style>
+    .fecha {
+        /* display: flex; */
+        text-align: right;
+    }
+    .logo{
+        position: fixed;
+        text-align: center;
+        float: none !important;
+    }
+    .center{
+        text-align: center;
+        font-size: 15px;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+    .roundedTable th, td {
+        text-decoration: none;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        color: rgb(0, 0, 0);
+        padding: 1px;
+        text-align:center;
+    }
+</style>
+<body>
+    <p class="fecha">Fecha de creación: {{ date }}</p>
+    <div>
+        <img src="{{path}}\logo.png" width="50" height="50" class="logo"><p class="center">El Dorado</p>
+    </div>
+    <hr>
+    <H2 class="center">
+        Tabla General
+    </H2>
+    <table border="1" class="roundedTable">
+        <thead>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Proveedor</th>
+            <th>Contacto</th>
+            <th>Cantidad</th>
+            <th>Categoria</th>
+            <th>Peso/u</th>
+            <th>Unidad de proveedor</th>
+            <th>Fecha de modificación</th>
+            <th>Fecha de vencimiento</th>
+            <th>Stock Min</th>
+            <th>Stock Max</th>
+        </thead>
+        <tbody>
+            {% for informacion in informacion %}
+            <tr>
+                <td>{{informacion.id}}</td>
+                <td>{{informacion.nombre_descripcion}}</td>
+                <td>{{informacion.proveedor}}</td>
+                <td>{{informacion.numero_proveedor}}</td>
+                <td>{{informacion.cantidad_productos}}</td>
+                <td>{{informacion.categoria_producto | transform_categoria}}</td>
+                <td>{% conversion_g_a_kg informacion.peso_unidad informacion.unidades informacion.categoria_producto %}</td>
+                <td>{{informacion.unidades | transform_unidades}}</td>
+                <td>{{informacion.fecha_modificacion}}</td>
+                {{informacion.fecha_vencimiento|calcular_vencimiento}}
+                <td>{{informacion.stock_minimo}}</td>
+                <td>{{informacion.stock_maximo}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+
+

@@ -1,3 +1,26 @@
+body{
+    margin: 0;
+	width: 100%;
+	height: 100vh;
+	background: linear-gradient(-45deg, #f4eeed, #cbc7c8, #87898a, #e1e1e1);
+	background-size: 400% 400%;
+	animation: gradiente 15s ease infinite;
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+}
+@keyframes gradiente {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
 .roundedTable table, th, td {
     border: 1px solid black;
     border-collapse: collapse;
@@ -13,13 +36,18 @@
     width: 100%;    
     background-color: #f1f1c1;
 }
+
 .roundedTable th {
-    background-color: #f3c68e;
+    background-color: #ffff;
     color: rgb(0, 0, 0);
     align-content: center;
 }
 
 table tbody tr:nth-child(odd){
+    background: #f3c68e;
+}
+
+table tbody tr:nth-child(even){
     background: #f3c68e;
 }
 
@@ -61,4 +89,16 @@ table tbody tr:nth-child(odd){
 .roundedTable th, td
 {
     padding: 10px 10px 10px 10px; 
+}
+
+
+
+table tbody tr:nth-child(even){
+    background: #ffff;
+}
+
+th.resaltar{
+    cursor: default;
+    background: #F5DD5D;
+    color: rgb(0, 0, 0);
 }

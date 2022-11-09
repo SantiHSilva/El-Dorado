@@ -7,9 +7,9 @@
 /* VARIABLE DEFINITIONS */
 :root {
   --primary: #79aec8;
-  --secondary: #00000;
+  --secondary: #417690;
   --accent: #f5dd5d;
-  --primary-fg: #00000;
+  --primary-fg: #fff;
 
   --body-fg: #333;
   --body-bg: #fff;
@@ -21,7 +21,7 @@
   --header-bg: var(--secondary);
   --header-link-color: var(--primary-fg);
 
-  --breadcrumbs-fg: #000000;
+  --breadcrumbs-fg: #c4dce8;
   --breadcrumbs-link-fg: var(--body-bg);
   --breadcrumbs-bg: var(--primary);
 
@@ -678,7 +678,7 @@ div.breadcrumbs {
 }
 
 div.breadcrumbs a {
-    color: #121212;
+    color: var(--breadcrumbs-link-fg);
 }
 
 div.breadcrumbs a:focus, div.breadcrumbs a:hover {

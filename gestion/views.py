@@ -7,14 +7,17 @@ from django.contrib.auth.decorators import login_required
 from datetime import date
 from django.views.generic import View
 from .utils import render_to_pdf
-
+from pathlib import Path
+from os import path
 # Create your views here.
 
 class exportResultadosPDF(View):
     def get(self, request, *args, **kwargs):
+        BASE_DIR = Path(__file__).resolve().parent.parent
         data = {
             'informacion': Informacion.objects.all(),
             'date' : date.today(),
+            'path' : path.join(BASE_DIR, 'static')
         }
         pdf = render_to_pdf('exportTabla.html', data)
         return HttpResponse(pdf, content_type='application/pdf')
