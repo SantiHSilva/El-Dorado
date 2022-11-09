@@ -31,9 +31,7 @@
 </style>
 
 &nbsp;
-<div class="contain" style="text-align: center;">
-
-   
+<div class="contain" style="text-align: center;">   
         <table id="mi-tablaXD" border="1" style="margin: 0 auto" class="roundedTable">
             <thead>
                 <tr title="Organiza de mayor a menor o lo contrario">
@@ -59,19 +57,24 @@
                 <td>{{info.unidades  | transform_unidades }}</td>
                 <td>{{info.fecha_modificacion}}</td>
                 {{info.fecha_vencimiento|calcular_vencimiento}}
-                <!-- <td>{{info.stock_minimo}}</td> -->
-                <!-- <td>{{info.stock_reserva}}</td> -->
-                <!-- <td>{{info.stock_maximo}}</td> -->
                 <td>
                     <!-- Button trigger modal -->
-                        <button type="button" aria-label="{{info.nombre_descripcion}}" class="btn" id="click_{{info.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            <img width="25" height="25"
-                            src="{% static '/edit2.png'%}" id="click-img_{{info.id}}" alt="{{info.nombre_descripcion}}">
-                        </button>                 
-
-            </td>
+                    <button type="button" aria-label="{{info.nombre_descripcion}}" class="btn" id="click_{{info.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <img width="25" height="25"
+                        src="{% static '/edit2.png'%}" id="click-img_{{info.id}}" alt="{{info.nombre_descripcion}}">
+                    </button>                 
+                </td>
             </tr>
             {% endfor %}
+                <td></td>
+                <td>Total</td>
+                <td>{{suma_cantidad}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tbody>
     </table>
     <div class="wrapper">
@@ -119,6 +122,10 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="https://mottie.github.io/tablesorter/js/jquery.tablesorter.js"></script>
+
+
+
+
 
 <script>
 

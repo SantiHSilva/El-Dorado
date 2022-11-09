@@ -22,10 +22,16 @@ def calcular_vencimiento(fecha):
     return (templateVencimiento(fecha))
 
 def template_g_a_kg(value, unidades, categoria):
+    if unidades == "1":
+        return (f'{value}kg')
     if unidades == "2":
         if categoria == "2":
             return(f'{round(value/1000,2)}kg/m³')
         return (f"{round(value / 1000,2)}kg")
+    if unidades == "3":
+        return(f'{value}kg/m³')
+    if unidades == "4":
+        return(f'{value}u')
     else:
         return round(value,2)
 

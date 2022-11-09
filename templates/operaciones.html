@@ -1,0 +1,100 @@
+{% extends "base.html"%}
+{% block title %} XD {% endblock %}
+{% block content %}
+
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    .operar{
+        background-color: #f5f5f5;
+        padding: 5px;
+        margin: auto;
+        display: block;
+        justify-content: center;
+        align-items: center;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+    .resultados{
+        width: 150px;
+        margin: auto;
+        background-color: white;
+    }
+    .resultados h1{
+        
+        text-align: center;
+        /* font-size: 50px; */
+        color: #f5f5f5;
+        background-color: #3f51b5;
+        padding: 10px;
+    }
+    .proceso{
+        width: 750px;
+        margin: auto;
+        margin-top: 120px;
+        height: 50%;
+        border-radius: 10px;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        box-shadow: 7px 13px 50px #000;
+        background-color: #f5f5f5;
+        padding: 30px;
+    }
+    .proceso h2{
+        text-align: center;
+        margin-bottom: 20px;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+    .ecuacion{
+        width: 100%;
+        color: #000;
+        text-align: center;
+        font-size: 20px;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+    .ecuacion input{
+        width: 50px;
+        height: 30px;
+        border: 1px solid #000;
+        border-radius: 5px;
+        margin: 0 5px;
+        text-align: center;
+    }
+</style>
+
+    <form action="/algebra/" method="GET">
+    <div class="proceso">
+        <h2>Calcular la cantidad de productos</h2>
+        <div class="ecuacion">
+            <input type="text" name="x1" placeholder="x1"> +
+            <input type="text" name="y1" placeholder="y1"> +
+            <input type="text" name="z1" placeholder="z1"> =
+            <input type="text" name="n1" placeholder="n1">
+        </div>
+        <div class="ecuacion">
+            <input type="text" name="x2" placeholder="x2"> +
+            <input type="text" name="y2" placeholder="y2"> +
+            <input type="text" name="z2" placeholder="z2"> =
+            <input type="text" name="n2" placeholder="n2">
+        </div>
+        <div class="ecuacion">
+            <input type="text" name="x3" placeholder="x3"> +
+            <input type="text" name="y3" placeholder="y3"> +
+            <input type="text" name="z3" placeholder="z3"> =
+            <input type="text" name="n3" placeholder="n3">
+        </div>
+        &nbsp;
+        <input class="operar" type="submit" value="Operar">
+    </div>
+    </form>
+
+    {% if resultadoX %}
+    OMG PAPU SI HAY resultado
+    <div class="resultados">
+        <h1>X = {{resultadoX}}</h1>
+        <h1>Y = {{resultadoY}}</h1>
+        <h1>Z = {{resultadoZ}}</h1>
+    </div>
+    {% endif %}
+{% endblock %}
