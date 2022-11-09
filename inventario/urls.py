@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from gestion.views import FormularioInformacionView
+from gestion.views import FormularioInformacionView, exportResultadosPDF
 from inventario import views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -33,7 +33,7 @@ urlpatterns = [
     path('resultados/', views.resultado),
     path('lista/', views.lista_completa),
     path('algebra/', views.algebraLineal),
-    # path('aplicacion/', views.operaciones),
+    path('exportarInformaciónGeneral/', exportResultadosPDF.as_view()),
     path('modificar/<id>/', FormularioInformacionView.modificar_producto),
     path('eliminar/<id>/', FormularioInformacionView.eliminar_producto),
     path('registrar/', FormularioInformacionView.index, name='registrarProductos'),

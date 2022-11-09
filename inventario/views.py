@@ -10,8 +10,6 @@ def ecuacionlineal(x,y,z,n):
     matriz2 = np.array([n[0],n[1],n[2]])
     return lin.solve(matriz,matriz2)
 
-def modal(request):
-    return render(request, "modal.html")
 
 def inicial(request):
     return render(request,"base.html")
