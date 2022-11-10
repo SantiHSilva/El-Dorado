@@ -28,9 +28,6 @@ admin.site.index_title = "Panel de administración"
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.inicial),
-    path('test', views.menu2),
-    path('buscar/', views.buscar),
-    path('resultados/', views.resultado),
     path('lista/', views.lista_completa),
     path('algebra/', views.algebraLineal),
     path('exportarInformaciónGeneral/', exportResultadosPDF.as_view()),

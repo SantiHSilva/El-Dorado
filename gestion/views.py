@@ -10,7 +10,7 @@ from django.views.generic import View
 from .utils import render_to_pdf
 from pathlib import Path
 from os import path
-import math
+from datetime import datetime
 import matplotlib.pyplot as plt 
 # Create your views here.
 def make_autopct(values):
@@ -20,13 +20,69 @@ def make_autopct(values):
         return '{p:.2f}%\n({v:d})'.format(p=pct,v=val)
     return my_autopct
 
+def filter_max(productos):
+
+    cantidades =[] 
+    result = []
+
+    for producto in productos:
+        cantidades.append(producto[1])
+
+    maximo = max(cantidades)
+
+    for i in range(len(productos)):
+
+        if productos[i][1] == maximo:
+
+            result.append(productos[i])
+
+    return result
+
+def filter_min(productos):
+
+    cantidades =[] 
+    result = []
+
+    for producto in productos:
+        cantidades.append(producto[1])
+
+    minimo = min(cantidades)
+
+    for i in range(len(productos)):
+
+        if productos[i][1] == minimo:
+
+            result.append(productos[i])
+
+    return result
+
 class exportResultadosPDF(View):
     def get(self, request, *args, **kwargs):
         BASE_DIR = Path(__file__).resolve().parent.parent
-        cantidad = []
-        # print(Informacion.objects.values())
+        date_now = datetime.now()
+        productos = [] #[['pony',50],['arroz', 20]]
+        cantidades = []#[50, 20]
+        por_caducar = []
+        vencidos = []
+        fmt = "%Y-%m-%d"
         for objeto in Informacion.objects.values():
-            cantidad.append(objeto['cantidad_productos'])
+            auxiliar = []
+            auxiliar.append(objeto['nombre_descripcion'])
+            auxiliar.append(objeto['cantidad_productos'])
+            cantidades.append(objeto['cantidad_productos'])
+            productos.append(auxiliar)
+
+            fecha_vencimiento = time.mktime(objeto['fecha_vencimiento'].timetuple()) 
+            ahora = time.mktime(date_now.timetuple())
+#
+            if fecha_vencimiento < ahora:
+                # vencidos.append(objeto['nombre_descripcion'])
+                vencidos.append(f"Producto: {objeto['nombre_descripcion']}, vencio hace: {abs(datetime.strptime(str(objeto['fecha_vencimiento'].days), fmt) - date_now).days} días")
+            if (fecha_vencimiento - ahora) <= 864000:
+                if ahora < fecha_vencimiento:
+                    # por_caducar.append(objeto['nombre_descripcion'])
+                    por_caducar.append(f"Producto: {objeto['nombre_descripcion']}, vencera en: {(datetime.strptime(str(objeto['fecha_vencimiento'].days), fmt) - date_now).days} días")
+
         all_count = Informacion.objects.filter(categoria_producto="1").count()
         all_count2 = Informacion.objects.filter(categoria_producto="2").count()
         all_count3 = Informacion.objects.filter(categoria_producto="3").count()
@@ -43,8 +99,8 @@ class exportResultadosPDF(View):
             'date' : date.today(),
             'path' : path.join(BASE_DIR, 'static'),
             'time' : time.strftime("%H:%M:%S"),
-            'max' : max(cantidad),
-            'min' : min(cantidad),
+            'max' : filter_max(productos),
+            'min' : filter_min(productos),
             'total' : Informacion.objects.count(),
             'all_cat1' : Informacion.objects.filter(categoria_producto="1").values,
             'cont_cat1' : all_count,
@@ -54,8 +110,10 @@ class exportResultadosPDF(View):
             'cont_cat3' : all_count3,
             'all_cat4' : Informacion.objects.filter(categoria_producto="4").values,
             'cont_cat4' : all_count4,
+            'vencidos' : vencidos,
+            'por_caducar': por_caducar,
         }
-        print(data['all_cat1'])
+        print(vencidos)
         pdf = render_to_pdf('exportTabla.html', data)
         return HttpResponse(pdf, content_type='application/pdf')
 

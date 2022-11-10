@@ -1,5 +1,7 @@
 from django.shortcuts import render
 import numpy as np
+import sympy as sp
+from sympy.abc import x
 import numpy.linalg as lin
 from gestion.models import Informacion
 from django.contrib.auth.models import User
@@ -48,11 +50,11 @@ def lista_completa(request):
     for objeto in Informacion.objects.values():
         objeto["stock_reserva"] = int(objeto["cantidad_productos"]*0.2)
         info.append(objeto)
-        suma_cantidad = int(objeto["cantidad_productos"]) + int(suma_cantidad)
+        suma_cantidad = int((sp.integrate(1, (x,0,objeto["cantidad_productos"])))) + int(suma_cantidad)
         if objeto["unidades"] == "2":
-            suma_peso = g_a_kg(objeto["peso_unidad"]) + suma_peso
+            suma_peso = g_a_kg((sp.integrate(1, (x,0,objeto["peso_unidad"])))) + suma_peso
         else:
-            suma_peso = float(objeto["peso_unidad"]) + suma_peso
+            suma_peso = float((sp.integrate(1, (x,0,objeto["peso_unidad"])))) + suma_peso
     data = {
         'info' : info,
         'suma_cantidad' : suma_cantidad,

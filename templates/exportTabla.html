@@ -15,7 +15,6 @@
     .logo{
         position: fixed;
         text-align: center;
-        float: none !important;
     }
     .center{
         text-align: center;
@@ -73,17 +72,18 @@
             {% endfor %}
         </tbody>
     </table>
-    <h2 class="center">Analisis de datos</h2>
+
+    <h2 class="center">Análisis de datos</h2>
 
     <table border="1" class="roundedTable">
         <thead>
             <th>Total productos</th>
             <th>Mayor cantidad de los productos</th>
             <th>Menor cantidad de los productos</th>
-            <th>Conjuntos de producto tipo alimentos</th>
-            <th>Conjuntos de producto tipo bebidas</th>
-            <th>Conjuntos de producto tipo limpieza</th>
-            <th>Conjuntos de producto tipo otros</th>
+            <th>Producto(s) tipo alimentos</th>
+            <th>Producto(s) tipo bebidas</th>
+            <th>Producto(s) tipo limpieza</th>
+            <th>Producto(s) tipo otros</th>
         </thead>
         <tbody>
             <tr>
@@ -130,6 +130,27 @@
             </tr>
         </tbody>
     </table>
+    <table border="1" class="roundedTable">
+        <thead>
+            <th>Productos a vencer</th>
+            <th>Productos vencidos</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    Vencimiento: 
+                    {% for vencimiento in vencidos %}
+                        {{vencimiento}} 
+                    {% endfor %}
+                </td>
+                <td>
+                    Por caducar: {{por_caducar}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>Gráfico de cantidades de acuerdo a la categoria</h2>
+    <img src="{{path}}\grafico.png" width="250" height="250" class="logo"><p class="center">
     </body>
 </html>
 
