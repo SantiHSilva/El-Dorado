@@ -5,20 +5,40 @@ from gestion.forms import formularioInformacion
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from datetime import date
+import time
 from django.views.generic import View
 from .utils import render_to_pdf
 from pathlib import Path
 from os import path
+import math
 # Create your views here.
 
 class exportResultadosPDF(View):
     def get(self, request, *args, **kwargs):
         BASE_DIR = Path(__file__).resolve().parent.parent
+        cantidad = []
+        # print(Informacion.objects.values())
+        for objeto in Informacion.objects.values():
+            cantidad.append(objeto['cantidad_productos'])
+        
         data = {
             'informacion': Informacion.objects.all(),
             'date' : date.today(),
-            'path' : path.join(BASE_DIR, 'static')
+            'path' : path.join(BASE_DIR, 'static'),
+            'time' : time.strftime("%H:%M:%S"),
+            'max' : max(cantidad),
+            'min' : min(cantidad),
+            'total' : Informacion.objects.count(),
+            'all_cat1' : Informacion.objects.filter(categoria_producto="1").values,
+            'cont_cat1' : Informacion.objects.filter(categoria_producto="1").count(),
+            'all_cat2' : Informacion.objects.filter(categoria_producto="2").values,
+            'cont_cat2' : Informacion.objects.filter(categoria_producto="2").count(),
+            'all_cat3' : Informacion.objects.filter(categoria_producto="3").values,
+            'cont_cat3' : Informacion.objects.filter(categoria_producto="3").count(),
+            'all_cat4' : Informacion.objects.filter(categoria_producto="4").values,
+            'cont_cat4' : Informacion.objects.filter(categoria_producto="4").count(),
         }
+        print(data['all_cat1'])
         pdf = render_to_pdf('exportTabla.html', data)
         return HttpResponse(pdf, content_type='application/pdf')
 

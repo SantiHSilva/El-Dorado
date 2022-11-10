@@ -3,7 +3,8 @@
 <html>
 <head>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Resultados {{date}}</title>
+    <title>Resultados: {{date}}</title>
+    <link rel="icon" href="https://virtual.unipiloto.edu.co/pluginfile.php/1/theme_unipiloto/favicon/1663786604/favicon.ico" />
     <meta name='viewport' content='width=device-width, initial-scale=1'>
 </head>
 <style>
@@ -30,7 +31,7 @@
     }
 </style>
 <body>
-    <p class="fecha">Fecha de creación: {{ date }}</p>
+    <p class="fecha">Fecha de creación: {{ date }}, {{time}}</p>
     <div>
         <img src="{{path}}\logo.png" width="50" height="50" class="logo"><p class="center">El Dorado</p>
     </div>
@@ -72,6 +73,64 @@
             {% endfor %}
         </tbody>
     </table>
+    <h2 class="center">Analisis de datos</h2>
+
+    <table border="1" class="roundedTable">
+        <thead>
+            <th>Total productos</th>
+            <th>Mayor cantidad de los productos</th>
+            <th>Menor cantidad de los productos</th>
+            <th>Conjuntos de producto tipo alimentos</th>
+            <th>Conjuntos de producto tipo bebidas</th>
+            <th>Conjuntos de producto tipo limpieza</th>
+            <th>Conjuntos de producto tipo otros</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    Hay un total de: {{total}} productos
+                </td>
+            
+                <td>
+                    Cantidad mayor de los productos: {{max}}
+                </td>
+                
+                <td>
+                    Cantidad menor de los productos: {{min}}
+                </td>
+                
+                <td>
+                    Hay una cantidad de {{all_cat1|length}} productos las cuales son las siguientes:
+                        <p>
+                            {% for all_cat1 in all_cat1 %} {{all_cat1.nombre_descripcion}}, {% endfor %}
+                        </p>
+                </td>
+                
+                <td>
+                    Hay una cantidad de {{all_cat2|length}} productos las cuales son las siguientes:
+                        <p>
+                            {% for all_cat1 in all_cat2 %} {{all_cat1.nombre_descripcion}}, {% endfor %}
+                        </p>
+                </td>
+                
+                <td>
+                    Hay una cantidad de {{all_cat2|length}} productos las cuales son las siguientes:
+                        <p>
+                            {% for all_cat1 in all_cat3 %} {{all_cat1.nombre_descripcion}}, {% endfor %}
+                        </p>
+                </td>
+                
+                <td>
+                    Hay una cantidad de {{all_cat4|length}} productos las cuales son las siguientes:
+                        <p>
+                            {% for all_cat1 in all_cat4 %} {{all_cat1.nombre_descripcion}}, {% endfor %}
+                        </p>
+                </td>
+                
+            </tr>
+        </tbody>
+    </table>
+    
 </body>
 </html>
 

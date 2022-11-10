@@ -34,6 +34,7 @@ urlpatterns = [
     path('lista/', views.lista_completa),
     path('algebra/', views.algebraLineal),
     path('exportarInformaciónGeneral/', exportResultadosPDF.as_view()),
+    path('debugInformaciónGeneral/', views.debug),
     path('modificar/<id>/', FormularioInformacionView.modificar_producto),
     path('eliminar/<id>/', FormularioInformacionView.eliminar_producto),
     path('registrar/', FormularioInformacionView.index, name='registrarProductos'),

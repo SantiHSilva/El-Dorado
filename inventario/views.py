@@ -58,7 +58,11 @@ def lista_completa(request):
         'suma_cantidad' : suma_cantidad,
         'suma_peso' : round(suma_peso,2),
     }
+    print(data["info"])
     return render(request,"lista_completa.html", data)
+
+def debug(request):
+    return(render(request,"exportTabla.html"))
 
 @login_required
 def resultado(request):
