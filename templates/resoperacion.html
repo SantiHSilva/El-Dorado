@@ -12,6 +12,7 @@
         box-sizing: border-box;
     }
     .operar{
+        position: fixed;
         background-color: #f5f5f5;
         padding: 5px 50px;
         margin: auto;
@@ -28,6 +29,7 @@
         top: 420px;
         left: 525px;
         height: 33%;
+        position: fixed;
         border-radius: 10px;
         font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
         box-shadow: 7px 13px 50px #000;
@@ -40,7 +42,7 @@
     .proceso{
         width: 750px;
         margin: auto;
-        margin-top: 120px;
+        margin-top: 20px;
         height: 50%;
         border-radius: 10px;
         font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
@@ -78,46 +80,55 @@
 
 </style>
 
-    <form action="/resultado/" method="GET">
+    <form action="//" method="GET">
     <div class="proceso">
         <h2>Calcular la cantidad de productos</h2>
         <div class="ecuacion">
             <p>
-                Cordial saludo al sistema de creación de nuevos productos en base a otros productos,
-                para esta sección es necesario definir los 3 nuevos tipos de productos: 
-                <input type="text" name="p1" placeholder="p1"> 
-                <input type="text" name="p2" placeholder="p2"> 
-                <input type="text" name="p3" placeholder="p3">; hecho se requiere definir los 3 tipos de materiales que se aplicaran a los nuevos productos:
-                <input type="text" name="m1" placeholder="m1">
-                <input type="text" name="m2" placeholder="m2">
-                <input type="text" name="m3" placeholder="m3">; una vez definido se requiere saber que materiales se utilizaran para cada producto:
+                Se tuvo en cuenta que se creara los siguientes productos {{p1}}, {{p2}} y {{p3}}. Definido incluyendo los materiales que se utilizaran como lo son: {{m1}}, {{m2}} y {{m3}};
+                incluyendo los materiales se utilizaran para cada producto: como viene siendo:
             </p>
             <p>
-                Producto 1: Utiliza:
-                <input type="text" name="x1" placeholder="x1">,
-                <input type="text" name="y1" placeholder="y1">
-                <input type="text" name="z1" placeholder="z1">
+                (p1) {{p1}}: Utiliza {{x1}} de {{m1}}, {{x2}} de {{m2}} y {{x3}} de {{m3}}.
             </p>
             <p>
-                Producto 2: Utiliza:
-                <input type="text" name="x2" placeholder="x2">,
-                <input type="text" name="y2" placeholder="y2">
-                <input type="text" name="z2" placeholder="z2">
+                (p2) {{p2}}: Utiliza {{y1}} de {{m1}}, {{y2}} de {{m2}} y {{y3}} de {{m3}}.
             </p>
             <p>
-                Producto 3: Utiliza:
-                <input type="text" name="x3" placeholder="x3">,
-                <input type="text" name="y3" placeholder="y3">
-                <input type="text" name="z3" placeholder="z3">
+                (p3) {{p3}}: Utiliza {{z1}} de {{m1}}, {{z2}} de {{m2}} y {{z3}} de {{m3}}.
             </p>
-            Rellenado lo anterior, se debe definir la disponibilidad de los materiales en el inventario:
+            Rellenado lo anterior, se definio la disponibilidad de los materiales en el inventario:
             <p>
-                Material 1 <input type="text" name="n1" placeholder="n1"> &nbsp; Material 2 <input type="text" name="n2" placeholder="n2"> &nbsp; Material 3 <input type="text" name="n3" placeholder="n3">
+                {{m1}}: {{n1}} &nbsp;&nbsp; {{m2}}: {{n2}} &nbsp;&nbsp; {{m3}}: {{n3}}
             </p>
-            Hecho y rellenado todos los pasos se pulsara el botón de operar
+            Habiendo hecho el analisis de los materiales, se procedio a calcular la cantidad de productos que se podrian crear con los materiales disponibles, para ello se creo una sistema de ecuación líneal 3x3 quedando de la siguiente forma:
         </div>
         &nbsp;
-        <input class="operar" type="submit" value="Operar">
+        <div class="ecuacion">
+            <p>
+                {{x1}}x + {{y1}}y + {{z1}}z = {{n1}}
+            </p>
+            <p>
+                {{x2}}x + {{y2}}y + {{z2}}z = {{n2}}
+            </p>
+            <p>
+                {{x3}}x + {{y3}}y + {{z3}}z = {{n3}}
+            </p>
+        &nbsp;
+        Si realizamos la operación de la ecuación líneal nos daran las siguientes incognitas:
+        <p>
+            x = {{resultadoX}} &nbsp;&nbsp; y = {{resultadoY}} &nbsp;&nbsp; z = {{resultadoZ}}
+        </p>
+        <p>
+            Por lo tanto, la cantidad de productos que se podrian crear con los materiales disponibles son:
+        </p>
+        <p>
+            {{p1}}: {{resultadoX}} &nbsp;&nbsp; {{p2}}: {{resultadoY}} &nbsp;&nbsp; {{p3}}: {{resultadoZ}}
+        </p>
     </div>
     </form>
+
+    {% for info in '1234567' %}
+    &nbsp;
+    {% endfor %}
 {% endblock %}

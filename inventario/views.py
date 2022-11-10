@@ -39,6 +39,35 @@ def algebraLineal(request):
     except:
         return render(request, "operaciones.html")
 
+def resultadoCalculo(request):
+    x = [float(request.GET["x1"]), float(request.GET["x2"]), float(request.GET["x3"])]
+    y = [float(request.GET["y1"]), float(request.GET["y2"]), float(request.GET["y3"])]
+    z = [float(request.GET["z1"]), float(request.GET["z2"]), float(request.GET["z3"])]
+    n = [float(request.GET["n1"]), float(request.GET["n2"]), float(request.GET["n3"])]
+    data = {
+        'm1' : request.GET["m1"],
+        'm2' : request.GET["m2"],
+        'm3' : request.GET["m3"],
+        'p1' : request.GET["p1"],
+        'p2' : request.GET["p2"],
+        'p3' : request.GET["p3"],
+        'x1' : request.GET["x1"],
+        'x2' : request.GET["x2"],
+        'x3' : request.GET["x3"],
+        'y1' : request.GET["y1"],
+        'y2' : request.GET["y2"],
+        'y3' : request.GET["y3"],
+        'z1' : request.GET["z1"],
+        'z2' : request.GET["z2"],
+        'z3' : request.GET["z3"],
+        'n1' : request.GET["n1"],
+        'n2' : request.GET["n2"],
+        'n3' : request.GET["n3"],
+        'resultadoX' : str(round(ecuacionlineal(x,y,z,n)[0],1)),
+        'resultadoY' : str(round(ecuacionlineal(x,y,z,n)[1],1)),
+        'resultadoZ' : str(round(ecuacionlineal(x,y,z,n)[2],1)),
+    }
+    return render(request,"resoperacion.html", data)
 def g_a_kg(valor):
     return valor / 1000
 

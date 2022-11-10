@@ -49,14 +49,11 @@ class exportResultadosPDF(View):
 
             fecha_vencimiento = time.mktime(objeto['fecha_vencimiento'].timetuple()) 
             ahora = time.mktime(date_now.timetuple())
-#
             if fecha_vencimiento < ahora:
                 vencidos.append(f"ID: {objeto['id']}: {objeto['nombre_descripcion']}, vencio hace: {abs(datetime.strptime(str(objeto['fecha_vencimiento']), fmt) - date_now).days} días")
             if (fecha_vencimiento - ahora) <= 864000:
                 if ahora < fecha_vencimiento:
                     por_caducar.append(f"ID: {objeto['id']}: {objeto['nombre_descripcion']}, vencera en: {(datetime.strptime(str(objeto['fecha_vencimiento']), fmt) - date_now).days} días")
-        print(f"INFO::::{Informacion.objects.filter(cantidad_productos=min(cantidades))}")
-
         all_count = Informacion.objects.filter(categoria_producto="1").count()
         all_count2 = Informacion.objects.filter(categoria_producto="2").count()
         all_count3 = Informacion.objects.filter(categoria_producto="3").count()
