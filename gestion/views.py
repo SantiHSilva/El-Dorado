@@ -11,7 +11,14 @@ from .utils import render_to_pdf
 from pathlib import Path
 from os import path
 import math
+import matplotlib.pyplot as plt 
 # Create your views here.
+def make_autopct(values):
+    def my_autopct(pct):
+        total = sum(values)
+        val = int(round(pct*total/100.0))
+        return '{p:.2f}%\n({v:d})'.format(p=pct,v=val)
+    return my_autopct
 
 class exportResultadosPDF(View):
     def get(self, request, *args, **kwargs):
@@ -20,7 +27,17 @@ class exportResultadosPDF(View):
         # print(Informacion.objects.values())
         for objeto in Informacion.objects.values():
             cantidad.append(objeto['cantidad_productos'])
-        
+        all_count = Informacion.objects.filter(categoria_producto="1").count()
+        all_count2 = Informacion.objects.filter(categoria_producto="2").count()
+        all_count3 = Informacion.objects.filter(categoria_producto="3").count()
+        all_count4 = Informacion.objects.filter(categoria_producto="4").count()
+        labels = 'Alimentos', 'Bebidas', 'Limpieza', 'Otros'
+        sizes = [all_count, all_count2, all_count3, all_count4]
+        fig, ax = plt.subplots()
+        ax.pie(sizes, autopct=make_autopct(sizes))
+        ax.legend(labels, loc='upper right')
+        ax.set_aspect('equal')
+        plt.savefig("static/grafico.png" , bbox_inches='tight', pad_inches=0.0)
         data = {
             'informacion': Informacion.objects.all(),
             'date' : date.today(),
@@ -30,13 +47,13 @@ class exportResultadosPDF(View):
             'min' : min(cantidad),
             'total' : Informacion.objects.count(),
             'all_cat1' : Informacion.objects.filter(categoria_producto="1").values,
-            'cont_cat1' : Informacion.objects.filter(categoria_producto="1").count(),
+            'cont_cat1' : all_count,
             'all_cat2' : Informacion.objects.filter(categoria_producto="2").values,
-            'cont_cat2' : Informacion.objects.filter(categoria_producto="2").count(),
+            'cont_cat2' : all_count2,
             'all_cat3' : Informacion.objects.filter(categoria_producto="3").values,
-            'cont_cat3' : Informacion.objects.filter(categoria_producto="3").count(),
+            'cont_cat3' : all_count3,
             'all_cat4' : Informacion.objects.filter(categoria_producto="4").values,
-            'cont_cat4' : Informacion.objects.filter(categoria_producto="4").count(),
+            'cont_cat4' : all_count4,
         }
         print(data['all_cat1'])
         pdf = render_to_pdf('exportTabla.html', data)
