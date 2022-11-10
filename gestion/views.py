@@ -12,6 +12,8 @@ from pathlib import Path
 from os import path
 from datetime import datetime
 import matplotlib.pyplot as plt 
+import sympy as sp
+from sympy.abc import x
 # Create your views here.
 def make_autopct(values):
     def my_autopct(pct):
@@ -20,52 +22,25 @@ def make_autopct(values):
         return '{p:.2f}%\n({v:d})'.format(p=pct,v=val)
     return my_autopct
 
-def filter_max(productos):
-
-    cantidades =[] 
-    result = []
-
-    for producto in productos:
-        cantidades.append(producto[1])
-
-    maximo = max(cantidades)
-
-    for i in range(len(productos)):
-
-        if productos[i][1] == maximo:
-
-            result.append(productos[i])
-
-    return result
-
-def filter_min(productos):
-
-    cantidades =[] 
-    result = []
-
-    for producto in productos:
-        cantidades.append(producto[1])
-
-    minimo = min(cantidades)
-
-    for i in range(len(productos)):
-
-        if productos[i][1] == minimo:
-
-            result.append(productos[i])
-
-    return result
-
+def g_a_kg(valor):
+    return valor / 1000
 class exportResultadosPDF(View):
     def get(self, request, *args, **kwargs):
         BASE_DIR = Path(__file__).resolve().parent.parent
         date_now = datetime.now()
-        productos = [] #[['pony',50],['arroz', 20]]
-        cantidades = []#[50, 20]
+        suma_cantidad = 0
+        suma_peso = 0
+        productos = []
+        cantidades = []
         por_caducar = []
         vencidos = []
         fmt = "%Y-%m-%d"
         for objeto in Informacion.objects.values():
+            suma_cantidad = int((sp.integrate(1, (x,0,objeto["cantidad_productos"])))) + int(suma_cantidad)
+            if objeto["unidades"] == "2":
+                suma_peso = g_a_kg((sp.integrate(1, (x,0,objeto["peso_unidad"])))) + suma_peso
+            else:
+                suma_peso = float((sp.integrate(1, (x,0,objeto["peso_unidad"])))) + suma_peso
             auxiliar = []
             auxiliar.append(objeto['nombre_descripcion'])
             auxiliar.append(objeto['cantidad_productos'])
@@ -76,12 +51,11 @@ class exportResultadosPDF(View):
             ahora = time.mktime(date_now.timetuple())
 #
             if fecha_vencimiento < ahora:
-                # vencidos.append(objeto['nombre_descripcion'])
-                vencidos.append(f"Producto: {objeto['nombre_descripcion']}, vencio hace: {abs(datetime.strptime(str(objeto['fecha_vencimiento'].days), fmt) - date_now).days} días")
+                vencidos.append(f"ID: {objeto['id']}: {objeto['nombre_descripcion']}, vencio hace: {abs(datetime.strptime(str(objeto['fecha_vencimiento']), fmt) - date_now).days} días")
             if (fecha_vencimiento - ahora) <= 864000:
                 if ahora < fecha_vencimiento:
-                    # por_caducar.append(objeto['nombre_descripcion'])
-                    por_caducar.append(f"Producto: {objeto['nombre_descripcion']}, vencera en: {(datetime.strptime(str(objeto['fecha_vencimiento'].days), fmt) - date_now).days} días")
+                    por_caducar.append(f"ID: {objeto['id']}: {objeto['nombre_descripcion']}, vencera en: {(datetime.strptime(str(objeto['fecha_vencimiento']), fmt) - date_now).days} días")
+        print(f"INFO::::{Informacion.objects.filter(cantidad_productos=min(cantidades))}")
 
         all_count = Informacion.objects.filter(categoria_producto="1").count()
         all_count2 = Informacion.objects.filter(categoria_producto="2").count()
@@ -99,8 +73,10 @@ class exportResultadosPDF(View):
             'date' : date.today(),
             'path' : path.join(BASE_DIR, 'static'),
             'time' : time.strftime("%H:%M:%S"),
-            'max' : filter_max(productos),
-            'min' : filter_min(productos),
+            'max' : max(cantidades),
+            'maxinfo' : Informacion.objects.filter(cantidad_productos=max(cantidades)),
+            'min' : min(cantidades),
+            'mininfo' : Informacion.objects.filter(cantidad_productos=min(cantidades)),
             'total' : Informacion.objects.count(),
             'all_cat1' : Informacion.objects.filter(categoria_producto="1").values,
             'cont_cat1' : all_count,
@@ -112,8 +88,9 @@ class exportResultadosPDF(View):
             'cont_cat4' : all_count4,
             'vencidos' : vencidos,
             'por_caducar': por_caducar,
+            'suma_cantidad' : suma_cantidad,
+            'suma_peso' : round(suma_peso,2),
         }
-        print(vencidos)
         pdf = render_to_pdf('exportTabla.html', data)
         return HttpResponse(pdf, content_type='application/pdf')
 
@@ -126,7 +103,6 @@ class FormularioInformacionView(HttpRequest):
         if request.method == 'POST':
             formulario = formularioInformacion(data=request.POST, files=request.FILES)
             if formulario.is_valid():
-                print(formulario)
                 formulario.save()
                 messages.success(request, "Producto registrado correctamente")
                 return redirect(to='http://127.0.0.1:8000/lista/')
@@ -137,7 +113,6 @@ class FormularioInformacionView(HttpRequest):
     @login_required
     def modificar_producto(request, id):
         producto = get_object_or_404(Informacion, id=id)
-        # print('producto:',producto.cantidad_productos)
         data = {
             'form': formularioInformacion(instance=producto),
             'info': Informacion.objects.get(id=id)

@@ -9,7 +9,6 @@
 </head>
 <style>
     .fecha {
-        /* display: flex; */
         text-align: right;
     }
     .logo{
@@ -66,10 +65,22 @@
                 <td>{{informacion.unidades | transform_unidades}}</td>
                 <td>{{informacion.fecha_modificacion}}</td>
                 {{informacion.fecha_vencimiento|calcular_vencimiento}}
-                <td>{{informacion.stock_minimo}}</td>
                 <td>{{informacion.stock_maximo}}</td>
+                <td>{{informacion.stock_minimo}}</td>
             </tr>
             {% endfor %}
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>{{suma_cantidad}}</td>
+                <td>&nbsp;</td>
+                <td>{{suma_peso}}kg</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
         </tbody>
     </table>
 
@@ -78,50 +89,54 @@
     <table border="1" class="roundedTable">
         <thead>
             <th>Total productos</th>
-            <th>Mayor cantidad de los productos</th>
-            <th>Menor cantidad de los productos</th>
-            <th>Producto(s) tipo alimentos</th>
-            <th>Producto(s) tipo bebidas</th>
-            <th>Producto(s) tipo limpieza</th>
-            <th>Producto(s) tipo otros</th>
+            <th>Mayor cantidad de los productos: {{max}}</th>
+            <th>Menor cantidad de los productos: {{min}}</th>
+            <th>Producto(s) tipo alimentos: {{all_cat1|length}}</th>
+            <th>Producto(s) tipo bebidas: {{all_cat2|length}}</th>
+            <th>Producto(s) tipo limpieza: {{all_cat3|length}}</th>
+            <th>Producto(s) tipo "otros": {{all_cat4|length}}</th>
         </thead>
         <tbody>
             <tr>
                 <td>
-                    Hay un total de: {{total}} productos
+                    {{total}} productos
                 </td>
             
                 <td>
-                    Cantidad mayor de los productos: {{max}}
+                    {% for i in maxinfo %}
+                    <p>
+                        {{i.nombre_descripcion}}
+                    </p>
+                    {% endfor %}
+                </td>
+
+                <td>
+                    {% for mininfo in mininfo %}
+                    <p>
+                        {{mininfo.nombre_descripcion}}
+                    </p>
+                    {% endfor %}
                 </td>
                 
                 <td>
-                    Cantidad menor de los productos: {{min}}
-                </td>
-                
-                <td>
-                    Hay una cantidad de {{all_cat1|length}} productos las cuales son las siguientes:
                         <p>
                             {% for all_cat1 in all_cat1 %} {{all_cat1.nombre_descripcion}}, {% endfor %}
                         </p>
                 </td>
                 
                 <td>
-                    Hay una cantidad de {{all_cat2|length}} productos las cuales son las siguientes:
                         <p>
                             {% for all_cat1 in all_cat2 %} {{all_cat1.nombre_descripcion}}, {% endfor %}
                         </p>
                 </td>
                 
                 <td>
-                    Hay una cantidad de {{all_cat2|length}} productos las cuales son las siguientes:
                         <p>
                             {% for all_cat1 in all_cat3 %} {{all_cat1.nombre_descripcion}}, {% endfor %}
                         </p>
                 </td>
                 
                 <td>
-                    Hay una cantidad de {{all_cat4|length}} productos las cuales son las siguientes:
                         <p>
                             {% for all_cat1 in all_cat4 %} {{all_cat1.nombre_descripcion}}, {% endfor %}
                         </p>
@@ -132,24 +147,26 @@
     </table>
     <table border="1" class="roundedTable">
         <thead>
-            <th>Productos a vencer</th>
-            <th>Productos vencidos</th>
+            <th>Productos a vencer: {{por_caducar | length}}</th>
+            <th>Productos vencidos: {{vencidos | length}}</th>
         </thead>
         <tbody>
             <tr>
                 <td>
-                    Vencimiento: 
-                    {% for vencimiento in vencidos %}
-                        {{vencimiento}} 
+                    {% for i in por_caducar %}
+                        <p>{{i}}</p>
                     {% endfor %}
                 </td>
                 <td>
-                    Por caducar: {{por_caducar}}
+
+                    {% for i in vencidos %}
+                    <p>{{i}}</p>
+                    {% endfor %}
                 </td>
             </tr>
         </tbody>
     </table>
-    <h2>Gráfico de cantidades de acuerdo a la categoria</h2>
+    <h2  class="center">Gráfico de cantidades de acuerdo a la categoria</h2>
     <img src="{{path}}\grafico.png" width="250" height="250" class="logo"><p class="center">
     </body>
 </html>
