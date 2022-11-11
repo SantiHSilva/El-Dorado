@@ -16,7 +16,7 @@ def ecuacionlineal(x,y,z,n):
 def inicial(request):
     return render(request,"base.html")
 
-def menu2(request):
+def menu2(request): 
     return render(request,"menu_derecha.html", {"username": User.objects.all()})
 
 @login_required

@@ -46,7 +46,6 @@ class exportResultadosPDF(View):
             auxiliar.append(objeto['cantidad_productos'])
             cantidades.append(objeto['cantidad_productos'])
             productos.append(auxiliar)
-
             fecha_vencimiento = time.mktime(objeto['fecha_vencimiento'].timetuple()) 
             ahora = time.mktime(date_now.timetuple())
             if fecha_vencimiento < ahora:
@@ -86,7 +85,7 @@ class exportResultadosPDF(View):
             'vencidos' : vencidos,
             'por_caducar': por_caducar,
             'suma_cantidad' : suma_cantidad,
-            'suma_peso' : round(suma_peso,2),
+            # 'suma_peso' : round(suma_peso,2),
         }
         pdf = render_to_pdf('exportTabla.html', data)
         return HttpResponse(pdf, content_type='application/pdf')
