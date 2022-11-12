@@ -3,7 +3,7 @@ import numpy as np
 import sympy as sp
 from sympy.abc import x
 import numpy.linalg as lin
-from gestion.models import Informacion
+from gestion.models import Informacion, Producto
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
@@ -74,11 +74,17 @@ def g_a_kg(valor):
 @login_required
 def lista_completa(request):
     info = []
+    info2 = []
     suma_cantidad = 0
-    suma_peso = 0
+    for xd in Producto.objects.all():
+        
+        info2.append(xd)
+
     for objeto in Informacion.objects.values():
         objeto["stock_reserva"] = int(objeto["cantidad_productos"]*0.2)
         info.append(objeto)
+        print(objeto)
+        
         suma_cantidad = int((sp.integrate(1, (x,0,objeto["cantidad_productos"])))) + int(suma_cantidad)
         # if objeto["unidades"] == "2":
         #     suma_peso = g_a_kg((sp.integrate(1, (x,0,objeto["peso_unidad"])))) + suma_peso
@@ -87,6 +93,7 @@ def lista_completa(request):
     data = {
         'info' : info,
         'suma_cantidad' : suma_cantidad,
+        'producto' : info2,
         # 'suma_peso' : round(suma_peso,2),
     }
     print(data["info"])

@@ -39,24 +39,29 @@
                     <th>Nombre y descripción</th>
                     <th>Unidades</th>
                     <th>Categoria</th>
-                    <th>Peso/u</th>
+                    {% comment %} <th>Peso/u</th> {% endcomment %}
                     <th>Unidad de proveedor</th>
-                    <th>Fecha de modificación</th>
-                    <th>Fecha de vencimiento</th>
+                    {% comment %} <th>Fecha de modificación</th> {% endcomment %}
+                    {% comment %} <th>Fecha de vencimiento</th> {% endcomment %}
                     <th>Editar</th>
                 </tr>    
             </thead>
             <tbody>
-            {% for info in info %}
-            <tr class="{{info.categoria_producto}}">
-                <td>{{info.id}}</td>
-                <td>{{info.nombre_descripcion}}</td>
-                <td>{{info.cantidad_productos}}</td>
-                <td>{{info.categoria_producto | transform_categoria}}</td>
-                <td>{% conversion_g_a_kg info.peso_unidad info.unidades info.categoria_producto %}</td>
-                <td>{{info.unidades  | transform_unidades }}</td>
-                <td>{{info.fecha_modificacion}}</td>
-                {{info.fecha_vencimiento|calcular_vencimiento}}
+                {{info.cantidad_productos}}
+            {% for producto in producto %}
+            <tr class="{{producto.categoria_producto}}">
+                <td>{{producto.id}}</td>
+                <td>{{producto.nombre_descripcion}}</td>
+                <td>
+                    {% if info.producto_id == producto.id %}
+                    {{info.cantidad_productos}}
+                    {% endif %}
+                </td>
+                <td>{{producto.categoria_producto | transform_categoria}}</td>
+                {% comment %} <td>{% conversion_g_a_kg info.peso_unidad info.unidades info.categoria_producto %}</td> {% endcomment %}
+                <td>{{producto.unidades  | transform_unidades }}</td>
+                {% comment %} <td>{{producto.fecha_modificacion}}</td> {% endcomment %}
+                {% comment %} {{info.fecha_vencimiento|calcular_vencimiento}} {% endcomment %}
                 <td>
                     <!-- Button trigger modal -->
                     <button type="button" aria-label="{{info.nombre_descripcion}}" class="btn" id="click_{{info.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -69,9 +74,6 @@
                 <td></td>
                 <td>Total</td>
                 <td>{{suma_cantidad}}</td>
-                <td></td>
-                <td>{{suma_peso}}kg</td>
-                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
