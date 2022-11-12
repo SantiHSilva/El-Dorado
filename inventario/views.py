@@ -74,29 +74,43 @@ def g_a_kg(valor):
 @login_required
 def lista_completa(request):
     info = []
-    info2 = []
+    productos = []
+    cantidad = [] #[[producto, cantidad], [producto, cantidad]]
     suma_cantidad = 0
-    for xd in Producto.objects.all():
-        
-        info2.append(xd)
 
     for objeto in Informacion.objects.values():
-        objeto["stock_reserva"] = int(objeto["cantidad_productos"]*0.2)
+
+        objeto["stock_reserva"] = int(objeto["cantidad_productos"]*0.2) # ¡¿que es esto papu?!
         info.append(objeto)
-        print(objeto)
-        
         suma_cantidad = int((sp.integrate(1, (x,0,objeto["cantidad_productos"])))) + int(suma_cantidad)
+        cantidad.append([objeto['producto_id'],objeto["cantidad_productos"]])
+
+    for conjunto_producto in Producto.objects.all():
+        setattr(conjunto_producto, 'cantidad', 0)
+        productos.append(conjunto_producto)
+
+    for cantidad_producto in cantidad:
+
+        for producto in productos:
+            if cantidad_producto[0] == producto.id_producto:
+                
+                setattr(producto, 'cantidad', (producto.cantidad + cantidad_producto[1]))
+        
+
+        # print(objeto)
+        
         # if objeto["unidades"] == "2":
         #     suma_peso = g_a_kg((sp.integrate(1, (x,0,objeto["peso_unidad"])))) + suma_peso
         # else:
         #     suma_peso = float((sp.integrate(1, (x,0,objeto["peso_unidad"])))) + suma_peso
+    # print(cantidad)
     data = {
         'info' : info,
         'suma_cantidad' : suma_cantidad,
-        'producto' : info2,
+        'producto' : productos,
         # 'suma_peso' : round(suma_peso,2),
     }
-    print(data["info"])
+    # print(data["producto"])
     return render(request,"lista_completa.html", data)
 
 def debug(request):

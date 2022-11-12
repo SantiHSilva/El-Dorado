@@ -23,10 +23,6 @@ class Informacion(models.Model):
 
 #   Relación de uno a muchos
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE, null=True)
-
-
-
-    
     proveedor =  models.CharField(max_length = 255, verbose_name="Proveedor")
     direccion_proveedor =  models.CharField(max_length = 255, verbose_name="Dirección del proveedor")
     numero_proveedor =  models.CharField(max_length = 255, verbose_name="Número del contacto del proveedor")

@@ -7,7 +7,9 @@
 <style>
 
     .contain{
+        /* background-color: red; */
         display: flex;
+        justify-content: center;
     }
 
     .wrapper{
@@ -17,7 +19,6 @@
 
     .selects{
         position: fixed;
-        right: 20px;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -32,12 +33,12 @@
 
 &nbsp;
 <div class="contain" style="text-align: center;">   
-        <table id="mi-tablaXD" border="1" style="margin: 0 auto" class="roundedTable">
+        <table id="mi-tablaXD" border="1" style="margin: 0" class="roundedTable">
             <thead>
                 <tr title="Organiza de mayor a menor o lo contrario">
                     <th>ID</th>
                     <th>Nombre y descripción</th>
-                    <th>Unidades</th>
+                    <th>Cantidad</th>
                     <th>Categoria</th>
                     {% comment %} <th>Peso/u</th> {% endcomment %}
                     <th>Unidad de proveedor</th>
@@ -47,15 +48,15 @@
                 </tr>    
             </thead>
             <tbody>
-                {{info.cantidad_productos}}
+                
             {% for producto in producto %}
+                <!-- stock_max:{{producto.stock_minimo}}
+                stock_min:{{producto.stock_maximo}} recordar que estan al reves mano -->
             <tr class="{{producto.categoria_producto}}">
-                <td>{{producto.id}}</td>
+                <td>{{producto.id_producto}}</td>
                 <td>{{producto.nombre_descripcion}}</td>
                 <td>
-                    {% if info.producto_id == producto.id %}
-                    {{info.cantidad_productos}}
-                    {% endif %}
+                    {{producto.cantidad}}
                 </td>
                 <td>{{producto.categoria_producto | transform_categoria}}</td>
                 {% comment %} <td>{% conversion_g_a_kg info.peso_unidad info.unidades info.categoria_producto %}</td> {% endcomment %}
@@ -64,9 +65,9 @@
                 {% comment %} {{info.fecha_vencimiento|calcular_vencimiento}} {% endcomment %}
                 <td>
                     <!-- Button trigger modal -->
-                    <button type="button" aria-label="{{info.nombre_descripcion}}" class="btn" id="click_{{info.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <button type="button" aria-label="{{producto.nombre_descripcion}}" class="btn" id="click_{{producto.id_producto}}" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         <img width="25" height="25"
-                        src="{% static '/edit2.png'%}" id="click-img_{{info.id}}" alt="{{info.nombre_descripcion}}">
+                        src="{% static '/edit2.png'%}" id="click-img_{{producto.id_producto}}" alt="{{producto.nombre_descripcion}}">
                     </button>                 
                 </td>
             </tr>
@@ -108,7 +109,32 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                        ...
+                        
+
+                            <table style="margin: 0 auto">
+                                <thead>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>Cantidad</th>
+                                        <th>Fecha vencimiento</th>
+                                        <th>proveedor</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="hola">
+                                    {% for info in info%} 
+ 
+                                        <tr id="{{info.producto_id}}">
+                                            <td>{{info.id}}</td>
+                                            <td>{{info.cantidad}}</td>
+                                            <td>{{info.fecha_vencimiento}}</td>
+                                            <td>{{info.proveedor}}</td>
+                                        </tr>
+
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+
+
                         </div>
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -233,7 +259,9 @@
                 if($element.nodeName.toLowerCase() === "img") $modal.textContent= $element.alt
                 $('#url_modificar2').attr('onclick', 'eliminarProducto('+ e.target.id.split('_')[1] +')')
                 $('#url_modificar').attr('href', 'http://127.0.0.1:8000/modificar/'+ e.target.id.split('_')[1]  )
-        });
+
+                
+            });
 
 </script>
     {%endblock%}
