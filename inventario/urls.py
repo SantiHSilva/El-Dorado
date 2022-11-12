@@ -35,6 +35,7 @@ urlpatterns = [
     path('modificar/<id>/', FormularioInformacionView.modificar_producto),
     path('eliminar/<id>/', FormularioInformacionView.eliminar_producto),
     path('registrar/', FormularioInformacionView.index, name='registrarProductos'),
+    path('agregar/', FormularioInformacionView.agregar_producto, name='agregarProductos'),
 ]
 
 if settings.DEBUG:

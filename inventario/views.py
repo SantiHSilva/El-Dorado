@@ -80,14 +80,14 @@ def lista_completa(request):
         objeto["stock_reserva"] = int(objeto["cantidad_productos"]*0.2)
         info.append(objeto)
         suma_cantidad = int((sp.integrate(1, (x,0,objeto["cantidad_productos"])))) + int(suma_cantidad)
-        if objeto["unidades"] == "2":
-            suma_peso = g_a_kg((sp.integrate(1, (x,0,objeto["peso_unidad"])))) + suma_peso
-        else:
-            suma_peso = float((sp.integrate(1, (x,0,objeto["peso_unidad"])))) + suma_peso
+        # if objeto["unidades"] == "2":
+        #     suma_peso = g_a_kg((sp.integrate(1, (x,0,objeto["peso_unidad"])))) + suma_peso
+        # else:
+        #     suma_peso = float((sp.integrate(1, (x,0,objeto["peso_unidad"])))) + suma_peso
     data = {
         'info' : info,
         'suma_cantidad' : suma_cantidad,
-        'suma_peso' : round(suma_peso,2),
+        # 'suma_peso' : round(suma_peso,2),
     }
     print(data["info"])
     return render(request,"lista_completa.html", data)
