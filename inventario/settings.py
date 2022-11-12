@@ -48,7 +48,6 @@ DEFAULT_APPS = [
     'django.contrib.staticfiles',
     'gestion',
     'crispy_forms',
-    'latexify',
  ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

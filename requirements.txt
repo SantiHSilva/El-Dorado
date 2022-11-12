@@ -3,3 +3,4 @@ django-admin-interface==0.21.0
 django-crispy-forms==1.14.0
 sympy==1.11.1
 xhtml2pdf==0.2.8
+matplotlib==3.6.2
