@@ -33,6 +33,7 @@ urlpatterns = [
     path('resultado/', views.resultadoCalculo),                             #Resultado del calculo de incognitas
     path('export/', exportResultadosPDF.as_view()),                         #Exportar resultados a PDF
     path('modificar/<id>/', FormularioInformacionView.modificar_producto),  #Modificar producto base
+    path('modificarbase/<id>/', FormularioInformacionView.modificar_base),  #Modificar producto base
     path('eliminar/<id>/', FormularioInformacionView.eliminar_producto),    #Eliminar producto base
     path('agregar/', FormularioInformacionView.agregar_producto),           #Registrar productos base
     path('registrar/', FormularioInformacionView.index),                    #Registrar sub productos para productos base

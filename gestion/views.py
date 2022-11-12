@@ -13,7 +13,7 @@ from django.views.generic import View
 from sympy.abc import x
 
 from gestion.forms import formularioInformacion, ProductoForm
-from gestion.models import Informacion
+from gestion.models import Informacion, Producto
 
 from .utils import render_to_pdf
 
@@ -58,17 +58,34 @@ class FormularioInformacionView(HttpRequest):
                 data["form"] = formulario
         return render(request, 'sub_productos.html', data)
 
-    #Vista para la edición del producto base
+    #Vista para la edición del subproducto
 
     @login_required
     def modificar_producto(request, id):
         producto = get_object_or_404(Informacion, id=id)
         data = {
             'form': formularioInformacion(instance=producto),
-            'info': Informacion.objects.get(id=id)
+            'info': Producto.objects.get(id_producto=id)
         }
         if request.method == 'POST':
             formulario = formularioInformacion(data=request.POST, instance=producto, files = request.FILES)
+            if formulario.is_valid():
+                producto.save()
+                messages.success(request, "Producto modificado correctamente")
+                return redirect(to='http://127.0.0.1:8000/lista/')
+            data["form"] = formulario
+        return render(request, 'modificar_producto.html', data)
+
+    #Vista para la edición del producto base
+
+    @login_required
+    def modificar_base(request, id):
+        producto = get_object_or_404(Producto, id_producto=id)
+        data = {
+            'form': ProductoForm(instance=producto),
+        }
+        if request.method == 'POST':
+            formulario = ProductoForm(data=request.POST, instance=producto, files = request.FILES)
             if formulario.is_valid():
                 producto.save()
                 messages.success(request, "Producto modificado correctamente")

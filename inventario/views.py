@@ -22,7 +22,7 @@ def lista_completa(request):
 
     for objeto in Informacion.objects.values():
 
-        objeto["stock_reserva"] = int(objeto["cantidad_productos"]*0.2) # ¡¿que es esto papu?!
+        objeto["stock_reserva"] = int(objeto["cantidad_productos"]*0.2) # ¡¿que es esto papu?!, eso era para el stock de reserva, que era el 20% de su cantidad actual
         info.append(objeto)
         suma_cantidad = int((sp.integrate(1, (x,0,objeto["cantidad_productos"])))) + int(suma_cantidad)
         cantidad.append([objeto['producto_id'],objeto["cantidad_productos"]])
@@ -41,7 +41,7 @@ def lista_completa(request):
         'suma_cantidad' : suma_cantidad,
         'producto' : productos,
     }
-    return render(request,"lista_completa.html", data)
+    return render(request,"newList.html", data)
 
 #Vista de la página principal de calculo de incognitas para álgebra lineal
 

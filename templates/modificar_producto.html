@@ -13,7 +13,6 @@
                 papu hay un problema
             </div>
             {% endif %}
-
             &nbsp;
             <h2>&nbsp;&nbsp;Modificando: {{info}}</h2>
             <hr>
@@ -40,7 +39,7 @@
 
 <script>
 
-    $formCantidad = document.querySelector("#id_cantidad_productos");
+    {% comment %} $formCantidad = document.querySelector("#id_cantidad_productos");
     $formStockMin = document.querySelector("#id_stock_maximo");
     $formStockMax = document.querySelector("#id_stock_minimo");
     $formBtn = document.querySelector("#id_btn");
@@ -57,7 +56,7 @@
             document.querySelector("form").submit();
         }
 
-    });
+    }); {% endcomment %}
     
     </script>
 {%endblock%}
