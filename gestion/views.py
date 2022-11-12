@@ -19,25 +19,81 @@ from .utils import render_to_pdf
 
 
 # Create your views here.
-def make_autopct(values):
-    def my_autopct(pct):
-        total = sum(values)
-        val = int(round(pct*total/100.0))
-        return '{p:.2f}%\n({v:d})'.format(p=pct,v=val)
-    return my_autopct
 
-def g_a_kg(valor):
-    return valor / 1000
+#Formulario para el manejo de los productos
+
+class FormularioInformacionView(HttpRequest):
+
+    #Vista para la creación base de los productos
+
+    @login_required
+    def index(request):
+        data = {
+            'form': formularioInformacion()
+        }
+        if request.method == 'POST':
+            formulario = formularioInformacion(data=request.POST, files=request.FILES)
+            if formulario.is_valid():
+                formulario.save()
+                messages.success(request, "Producto registrado correctamente")
+                return redirect(to='http://127.0.0.1:8000/lista/')
+            else:
+                data["form"] = formulario
+        return render(request, 'informacionIndex.html', data)
+
+    #Vista para la creación de subproductos
+
+    @login_required
+    def agregar_producto(request):
+        data ={
+            'form': ProductoForm(),
+        }
+        if request.method == 'POST':
+            formulario = ProductoForm(data=request.POST)
+            if formulario.is_valid():
+                formulario.save()
+                messages.success(request, "Producto registrado correctamente")
+                return redirect(to='http://127.0.0.1:8000/lista/')
+            else:
+                data["form"] = formulario
+        return render(request, 'sub_productos.html', data)
+
+    #Vista para la edición del producto base
+
+    @login_required
+    def modificar_producto(request, id):
+        producto = get_object_or_404(Informacion, id=id)
+        data = {
+            'form': formularioInformacion(instance=producto),
+            'info': Informacion.objects.get(id=id)
+        }
+        if request.method == 'POST':
+            formulario = formularioInformacion(data=request.POST, instance=producto, files = request.FILES)
+            if formulario.is_valid():
+                producto.save()
+                messages.success(request, "Producto modificado correctamente")
+                return redirect(to='http://127.0.0.1:8000/lista/')
+            data["form"] = formulario
+        return render(request, 'modificar_producto.html', data)
+    
+    #Vista para la eliminación del producto base
+
+    @login_required
+    def eliminar_producto(request, id):
+        producto = get_object_or_404(Informacion, id=id)
+        producto.delete()
+        messages.success(request, "Producto eliminado correctamente")
+        return redirect(to='http://127.0.0.1:8000/lista/')
+
+
+#Exportación de resultados globales a pdf
+
 class exportResultadosPDF(View):
     def get(self, request, *args, **kwargs):
         BASE_DIR = Path(__file__).resolve().parent.parent
         date_now = datetime.now()
-        suma_cantidad = 0
-        suma_peso = 0
-        productos = []
-        cantidades = []
-        por_caducar = []
-        vencidos = []
+        suma_peso, suma_cantidad = 0, 0
+        productos, cantidades, por_caducar, vencidos = [], [], [], []
         fmt = "%Y-%m-%d"
         for objeto in Informacion.objects.values():
             suma_cantidad = int((sp.integrate(1, (x,0,objeto["cantidad_productos"])))) + int(suma_cantidad)
@@ -89,64 +145,18 @@ class exportResultadosPDF(View):
             'vencidos' : vencidos,
             'por_caducar': por_caducar,
             'suma_cantidad' : suma_cantidad,
-            # 'suma_peso' : round(suma_peso,2),
         }
         pdf = render_to_pdf('exportTabla.html', data)
         return HttpResponse(pdf, content_type='application/pdf')
 
-class FormularioInformacionView(HttpRequest):
-    @login_required
-    def index(request):
-        data = {
-            'form': formularioInformacion()
-        }
-        if request.method == 'POST':
-            formulario = formularioInformacion(data=request.POST, files=request.FILES)
-            if formulario.is_valid():
-                formulario.save()
-                messages.success(request, "Producto registrado correctamente")
-                return redirect(to='http://127.0.0.1:8000/lista/')
-            else:
-                data["form"] = formulario
-        return render(request, 'informacionIndex.html', data)
+#Funciónes utilizadas
 
-    @login_required
-    def agregar_producto(request):
-        print('hola que hace')
-        data ={
-            'form': ProductoForm(),
-        }
+def make_autopct(values):
+    def my_autopct(pct):
+        total = sum(values)
+        val = int(round(pct*total/100.0))
+        return '{p:.2f}%\n({v:d})'.format(p=pct,v=val)
+    return my_autopct
 
-        if request.method == 'POST':
-            formulario = ProductoForm(data=request.POST)
-            if formulario.is_valid():
-                formulario.save()
-                messages.success(request, "Producto registrado correctamente")
-                return redirect(to='http://127.0.0.1:8000/lista/')
-            else:
-                data["form"] = formulario
-
-        return render(request, 'sub_productos.html', data)
-
-    @login_required
-    def modificar_producto(request, id):
-        producto = get_object_or_404(Informacion, id=id)
-        data = {
-            'form': formularioInformacion(instance=producto),
-            'info': Informacion.objects.get(id=id)
-        }
-        if request.method == 'POST':
-            formulario = formularioInformacion(data=request.POST, instance=producto, files = request.FILES)
-            if formulario.is_valid():
-                producto.save()
-                messages.success(request, "Producto modificado correctamente")
-                return redirect(to='http://127.0.0.1:8000/lista/')
-            data["form"] = formulario
-        return render(request, 'modificar_producto.html', data)
-    
-    @login_required
-    def eliminar_producto(request, id):
-        producto = get_object_or_404(Informacion, id=id)
-        producto.delete()
-        messages.success(request, "Producto eliminado correctamente")
-        return redirect(to='http://127.0.0.1:8000/lista/')
+def g_a_kg(valor):
+    return valor / 1000

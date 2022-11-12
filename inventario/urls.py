@@ -21,22 +21,22 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-admin.site.site_header = " - El Dorado - "
-admin.site.site_title = "El Dorado"
-admin.site.index_title = "Panel de administración"
+# admin.site.site_header = " - El Dorado - "
+# admin.site.site_title = "El Dorado"
+# admin.site.index_title = "Panel de administración"
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', views.inicial),
-    path('lista/', views.lista_completa),
-    path('algebra/', views.algebraLineal),
-    path('resultado/', views.resultadoCalculo),
-    path('export/', exportResultadosPDF.as_view()),
-    path('modificar/<id>/', FormularioInformacionView.modificar_producto),
-    path('eliminar/<id>/', FormularioInformacionView.eliminar_producto),
-    path('registrar/', FormularioInformacionView.index, name='registrarProductos'),
-    path('agregar/', FormularioInformacionView.agregar_producto, name='agregarProductos'),
+    path('admin/', admin.site.urls),                                        #Admin page
+    path('', views.inicial),                                                #Base page
+    path('lista/', views.lista_completa),                                   #Lista de productos
+    path('algebra/', views.algebraLineal),                                  #Calculo de incognitas
+    path('resultado/', views.resultadoCalculo),                             #Resultado del calculo de incognitas
+    path('export/', exportResultadosPDF.as_view()),                         #Exportar resultados a PDF
+    path('modificar/<id>/', FormularioInformacionView.modificar_producto),  #Modificar producto base
+    path('eliminar/<id>/', FormularioInformacionView.eliminar_producto),    #Eliminar producto base
+    path('agregar/', FormularioInformacionView.agregar_producto),           #Registrar productos base
+    path('registrar/', FormularioInformacionView.index),                    #Registrar sub productos para productos base
 ]
 
-if settings.DEBUG:
+if settings.DEBUG:                                                        #Para poder ver las imagenes en el servidor de desarrollo                                             
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

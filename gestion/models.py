@@ -2,7 +2,10 @@ from django.db import models
 
 # Create your models here.
 
+#Clase para la creación de productos base
+
 class Producto(models.Model):
+    #Campos para la creación de productos base
     opciones_unidades = (('1', 'Kg'), ('2', 'g'), ('3', 'L'), ('4', 'Unidades'), ('5', 'Otros'))
     opciones_categoria = (('1', 'Alimentos'), ('2', 'Bebidas'), ('3', 'Limpieza'), ('4', 'Otros'))
     id_producto = models.AutoField(primary_key=True)
@@ -14,15 +17,15 @@ class Producto(models.Model):
     def __str__(self):
         return self.nombre_descripcion
 
+#Clase para la creación de subproductos
+
 class Informacion(models.Model):
-    #como se vera el modelo en la página
     class Meta:
         verbose_name_plural = 'Información'
-    #elementos de la base de datos
     id = models.AutoField(primary_key=True)
-
-#   Relación de uno a muchos
+    #   Relación de uno a muchos con la clase Producto
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE, null=True)
+    #   Campos de la clase
     proveedor =  models.CharField(max_length = 255, verbose_name="Proveedor")
     direccion_proveedor =  models.CharField(max_length = 255, verbose_name="Dirección del proveedor")
     numero_proveedor =  models.CharField(max_length = 255, verbose_name="Número del contacto del proveedor")

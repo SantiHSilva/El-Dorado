@@ -32,9 +32,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-#ya vuelvo
-
-
 # Application definition
 
 DEFAULT_APPS = [
@@ -46,11 +43,11 @@ DEFAULT_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'gestion',
-    'crispy_forms',
+    'gestion',      #Gestión de modelos de la base de datos
+    'crispy_forms', #Formularios más esteticos
  ]
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_TEMPLATE_PACK = 'bootstrap4' #Utilización de Bootstrap 4 para los formularios
 
 THIRD_PARTY_APPS =[
      # add apps which you install using pip
@@ -58,7 +55,6 @@ THIRD_PARTY_APPS =[
 
 LOCAL_APPS =[
      # add local apps which you create using startapp
-    #  "filter"
  ]
 
  # Application definition

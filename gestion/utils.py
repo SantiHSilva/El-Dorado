@@ -1,11 +1,9 @@
 from io import BytesIO
-from os import path
 from django.http import HttpResponse
-from pathlib import Path 
-
 from django.template.loader import get_template
 from xhtml2pdf import pisa
-# from ..inventario import settings
+
+#Utils para renderizar páginas HTML a PDF
 
 def render_to_pdf(template_src, context_dict={}):
     template = get_template(template_src)
