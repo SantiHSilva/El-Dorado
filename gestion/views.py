@@ -1,19 +1,23 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpRequest, HttpResponse
-from gestion.models import Informacion
-from gestion.forms import formularioInformacion
+import time
+from datetime import date, datetime
+from os import path
+from pathlib import Path
+
+import matplotlib.pyplot as plt
+import sympy as sp
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from datetime import date
-import time
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import View
-from .utils import render_to_pdf
-from pathlib import Path
-from os import path
-from datetime import datetime
-import matplotlib.pyplot as plt 
-import sympy as sp
 from sympy.abc import x
+
+from gestion.forms import formularioInformacion, ProductoForm
+from gestion.models import Informacion
+
+from .utils import render_to_pdf
+
+
 # Create your views here.
 def make_autopct(values):
     def my_autopct(pct):
@@ -105,6 +109,24 @@ class FormularioInformacionView(HttpRequest):
             else:
                 data["form"] = formulario
         return render(request, 'informacionIndex.html', data)
+
+    @login_required
+    def agregar_producto(request):
+        print('hola que hace')
+        data ={
+            'form': ProductoForm(),
+        }
+
+        if request.method == 'POST':
+            formulario = ProductoForm(data=request.POST)
+            if formulario.is_valid():
+                formulario.save()
+                messages.success(request, "Producto registrado correctamente")
+                return redirect(to='http://127.0.0.1:8000/lista/')
+            else:
+                data["form"] = formulario
+
+        return render(request, 'sub_productos.html', data)
 
     @login_required
     def modificar_producto(request, id):

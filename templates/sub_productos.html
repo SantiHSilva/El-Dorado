@@ -1,7 +1,8 @@
 {% extends "base.html"%}
 {% load crispy_forms_tags %}
-{% block title %} Adición producto {% endblock %}
+{% block title %} Modificar elemento {% endblock %}
 {%block content %}
+
 <br>
 <br>
 <div class="row">
@@ -39,24 +40,26 @@
 </div>
 
 <script>
-    // $formCantidad = document.querySelector("#id_cantidad_productos");
-    // $formStockMin = document.querySelector("#id_stock_maximo");
-    // $formStockMax = document.querySelector("#id_stock_minimo");
-    // $formBtn = document.querySelector("#id_btn");
+    $formCantidad = document.querySelector("#id_cantidad_productos");
+    $formStockMin = document.querySelector("#id_stock_maximo");
+    $formStockMax = document.querySelector("#id_stock_minimo");
+    $formBtn = document.querySelector("#id_btn");
     
-    // $formBtn.addEventListener("click", function (e) {
-    //     e.preventDefault();
-    //     if(+$formStockMin.value > +$formCantidad.value){
-    //         alert("El stock minimo no puede ser mayor a la cantidad de productos")
-    //     }else if(+$formCantidad.value > +$formStockMax.value){
-    //         alert("la cantidad de productos no puede ser mayor a el stock maximo")
-    //     }else if (+$formStockMax.value < +$formStockMin.value){
-    //         alert("El stock minimo no puede ser mayor a la cantidad de productos")
-    //     } else{
-    //         document.querySelector("form").submit();
-    //     }
+    $formBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        // if(+$formStockMin.value > +$formCantidad.value){
+        //     alert("El stock minimo no puede ser mayor a la cantidad de productos")
+        // }else if(+$formCantidad.value > +$formStockMax.value){
+        //     alert("la cantidad de productos no puede ser mayor a el stock maximo")
+        // }else if (+$formStockMax.value < +$formStockMin.value){
+        //     alert("El stock minimo no puede ser mayor a la cantidad de productos")
+        // } else{
+        //     document.querySelector("form").submit();
+        // }
+        document.querySelector("form").submit();
 
-    // });
+    });
     
     </script>
-{%endblock%}
+
+{% endblock %}
