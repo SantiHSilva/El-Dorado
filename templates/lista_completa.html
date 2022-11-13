@@ -18,7 +18,6 @@
     }
 
     .selects{
-        position: fixed;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -231,25 +230,25 @@
     }
 
 
-    $(this).click(function() {
-                    $(function(){
-                    $('#mi-tablaXD').tablesorter(); 
-                    });
-                });
-        $(document).ready(() => {
-            $('th').each(function(columna) {
-                $(this).hover(function() {
-                    $(this).addClass('resaltar');
-                }, function() {
-                    $(this).removeClass('resaltar');
-                });
-                $(this).click(function() {
-                    $(function(){
-                    $('#mi-tablaXD').tablesorter(); 
-                    });
-                });
-            });
-        });
+    // $(this).click(function() {
+    //                 $(function(){
+    //                 $('#mi-tablaXD').tablesorter(); 
+    //                 });
+    //             });
+    //     $(document).ready(() => {
+    //         $('th').each(function(columna) {
+    //             $(this).hover(function() {
+    //                 $(this).addClass('resaltar');
+    //             }, function() {
+    //                 $(this).removeClass('resaltar');
+    //             });
+    //             $(this).click(function() {
+    //                 $(function(){
+    //                 $('#mi-tablaXD').tablesorter(); 
+    //                 });
+    //             });
+    //         });
+    //     });
 
         document.addEventListener('click', (e)=>{
                 const $element = document.querySelector('#'+e.target.id)
@@ -257,11 +256,20 @@
                 const $product = document.querySelector('#nombre_producto')
                 if($element.nodeName.toLowerCase() === "button") $modal.textContent = $element.getAttribute("aria-label")
                 if($element.nodeName.toLowerCase() === "img") $modal.textContent= $element.alt
+                console.log('hola')
                 $('#url_modificar2').attr('onclick', 'eliminarProducto('+ e.target.id.split('_')[1] +')')
                 $('#url_modificar').attr('href', 'http://127.0.0.1:8000/modificar/'+ e.target.id.split('_')[1]  )
 
-                
+                const $tbodyModal = document.querySelector('#hola')
+                $tbodyModal.childNodes().forEach((element) => {
+                    console.log(element)
+                    if(element.id === e.target.id.split('_')[1]){
+                        element.style.display = 'none'
+                    }
+                })
+
             });
+
 
 </script>
     {%endblock%}
