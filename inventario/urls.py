@@ -34,7 +34,8 @@ urlpatterns = [
     path('export/', exportResultadosPDF.as_view()),                         #Exportar resultados a PDF
     path('modificar/<id>/', FormularioInformacionView.modificar_producto),  #Modificar producto base
     path('modificarbase/<id>/', FormularioInformacionView.modificar_base),  #Modificar producto base
-    path('eliminar/<id>/', FormularioInformacionView.eliminar_producto),    #Eliminar producto base
+    path('eliminarBase/<id>/', FormularioInformacionView.eliminar_productoBase),    #Eliminar producto base
+    path('eliminarSubProducto/<id>/', FormularioInformacionView.eliminar_subProductos),    #Eliminar producto base
     path('agregar/', FormularioInformacionView.agregar_producto),           #Registrar productos base
     path('registrar/', FormularioInformacionView.index),                    #Registrar sub productos para productos base
 ]

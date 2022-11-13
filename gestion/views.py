@@ -65,13 +65,13 @@ class FormularioInformacionView(HttpRequest):
         producto = get_object_or_404(Informacion, id=id)
         data = {
             'form': formularioInformacion(instance=producto),
-            'info': Producto.objects.get(id_producto=id)
+            'info': Producto
         }
         if request.method == 'POST':
             formulario = formularioInformacion(data=request.POST, instance=producto, files = request.FILES)
             if formulario.is_valid():
                 producto.save()
-                messages.success(request, "Producto modificado correctamente")
+                messages.success(request, "Subproducto modificado correctamente")
                 return redirect(to='http://127.0.0.1:8000/lista/')
             data["form"] = formulario
         return render(request, 'modificar_producto.html', data)
@@ -88,7 +88,7 @@ class FormularioInformacionView(HttpRequest):
             formulario = ProductoForm(data=request.POST, instance=producto, files = request.FILES)
             if formulario.is_valid():
                 producto.save()
-                messages.success(request, "Producto modificado correctamente")
+                messages.success(request, "Producto base modificado correctamente")
                 return redirect(to='http://127.0.0.1:8000/lista/')
             data["form"] = formulario
         return render(request, 'modificar_producto.html', data)
@@ -96,10 +96,19 @@ class FormularioInformacionView(HttpRequest):
     #Vista para la eliminación del producto base
 
     @login_required
-    def eliminar_producto(request, id):
+    def eliminar_productoBase(request, id):
+        producto = get_object_or_404(Producto, id_producto=id)
+        producto.delete()
+        messages.success(request, "Producto base eliminado correctamente")
+        return redirect(to='http://127.0.0.1:8000/lista/')
+
+    #Vista para la eliminación del subproductos
+
+    @login_required
+    def eliminar_subProductos(request, id):
         producto = get_object_or_404(Informacion, id=id)
         producto.delete()
-        messages.success(request, "Producto eliminado correctamente")
+        messages.success(request, "Subproducto eliminado correctamente")
         return redirect(to='http://127.0.0.1:8000/lista/')
 
 

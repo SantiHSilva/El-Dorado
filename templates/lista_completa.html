@@ -56,10 +56,10 @@
                 <td>{{producto.id_producto}}</td>
                 <td>{{producto.nombre_descripcion}}</td>
                 <td>
-                    {{producto.cantidad}}
+                    {% observerNumber {{producto.cantidad}} {{producto.stock_minimo}} {{producto.stock_maximo}}%}
+                    {% comment %} {{producto.cantidad}} {% endcomment %}
                 </td>
                 <td>{{producto.categoria_producto | transform_categoria}}</td>
-                {% comment %} <td>{% conversion_g_a_kg info.peso_unidad info.unidades info.categoria_producto %}</td> {% endcomment %}
                 <td>{{producto.unidades  | transform_unidades }}</td>
                 {% comment %} <td>{{producto.fecha_modificacion}}</td> {% endcomment %}
                 {% comment %} {{info.fecha_vencimiento|calcular_vencimiento}} {% endcomment %}
@@ -111,7 +111,7 @@
                         <div class="modal-body">
                         
 
-                            <table style="margin: 0 auto">
+                            <table style="margin: 0 auto" id="mi-tablaXD">
                                 <thead>
                                     <tr>
                                         <th>id</th>

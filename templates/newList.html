@@ -7,6 +7,23 @@
 <style>
 
 </style>
+
+<select class="form-select" aria-label="Default select example">
+    <option selected>Open this select menu</option>
+    <option value="1">One</option>
+    <option value="2">Two</option>
+    <option value="3">Three</option>
+  </select>
+
+
+    <div class="selects"> 
+        <select id="XDXD" onchange="manejadorCategorias()" >
+            <option value="0">Categorizar productos</option>
+            {% for info in '1234' %}
+            <option id="{{info}}" value="{{info}}">{{info|transform_categoria}}</option>
+            {% endfor %}
+        </select>
+
   <body>
     <div class="container">
         <div class="table-wrapper">
@@ -17,38 +34,29 @@
 					</div>
                 </div>
             </div>
-            <table id="mi-tablaXD" class="table table-striped table-hover">
+            <table id="mi-tablaXD" class="table table-striped table-hover" style="text-align: center;">
                 <thead>
                     <tr>
-						<th>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="selectAll">
-								<label for="selectAll"></label>
-							</span>
-						</th>
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Cantidad</th>
 						<th>Categoria</th>
                         <th>Unidad de proveedor</th>
+                        <th>Stock Minimo</th>
+                        <th>Stock Maximo</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {{producto}}
                 {%for producto in producto %}
-                    <tr>
-						<td>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox1" name="options[]" value="1">
-								<label for="checkbox1"></label>
-							</span>
-						</td>
+                    <tr class="{{producto.categoria_producto}}">
                         <td>{{producto.id_producto}}</td>
                         <td>{{producto.nombre_descripcion}}</td>
-						<td>{{producto.cantidad}}</td>
+                        {% observerNumber producto.cantidad producto.stock_minimo producto.stock_maximo%}
                         <td>{{producto.categoria_producto | transform_categoria}}</td>
                         <td>{{producto.unidades | transform_unidades}}</td>
+                        <td>{{producto.stock_maximo}}</td>
+                        <td>{{producto.stock_minimo}}</td>
                         <td>                       
                                &nbsp;<a data-bs-target="#previewProduct-{{forloop.counter}}" href="#previewProduct-{{forloop.counter}}" class="edit" data-bs-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                         </td>
@@ -90,7 +98,10 @@
                                         <td>{{info.fecha_modificacion}}</td>
                                         <td>{{info.fecha_vencimiento}}</td>
                                         <td>{{info.proveedor}}</td>
-                                        <td><a href="http://127.0.0.1:8000/modificar/{{info.id}}"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a></td>
+                                        <td>
+                                            <a href="http://127.0.0.1:8000/modificar/{{info.id}}"><i style="color: #FFC107;" class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i></a>
+                                            <a onclick="eliminarSubProductos({{info.id}})"><i style="color: #F44336;" class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>
+                                        </td>
                                     </tr>
 
                                 {% endfor %}
@@ -98,8 +109,8 @@
                         </table>			
 					</div>
 					<div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Borrar</button>
-                        <input type="submit" class="btn btn-warning" value="Añadir">
+                        <a onclick="eliminarProductoBase({{producto.id_producto}})"><button type="button" class="btn btn-danger" data-bs-dismiss="modal">Borrar</button></a>
+                        <a href="http://127.0.0.1:8000/registrar/"><button type="button" class="btn btn-warning">Añadir</button></a>
                         <a href="http://127.0.0.1:8000/modificarbase/{{producto.id_producto}}"><button type="button" class="btn btn-primary">Editar base</button></a>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
 					</div>
@@ -111,7 +122,27 @@
 </body>
 <script>
 //!TODO falta arreglar todas las funciones
-function eliminarProducto(id){
+function eliminarSubProductos(id){
+    console.log(id)
+    Swal.fire({
+        title: '¿Estas seguro de eliminar este producto?',
+        text: "No podras revertir esta accion",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, eliminar',
+        cancelButtonText: 'Cancelar',
+        reversebuttons: true
+    })
+    .then(function(result){
+        if(result.isConfirmed){
+            window.location.href = "http://127.0.0.1:8000/eliminarSubProducto/" + id + "/";
+        }
+    })
+}
+
+function eliminarProductoBase(id){
         console.log(id)
         Swal.fire({
             title: '¿Estas seguro de eliminar este producto?',
@@ -126,7 +157,7 @@ function eliminarProducto(id){
         })
         .then(function(result){
             if(result.isConfirmed){
-                window.location.href = "http://127.0.0.1:8000/eliminar/" + id + "/";
+                window.location.href = "http://127.0.0.1:8000/eliminarBase/" + id + "/";
             }
         })
     }
@@ -178,14 +209,24 @@ function eliminarProducto(id){
                 console.log("value" + value)
             }else{
                 tr.style.display = '';
-            }
-            
+            }   
         }
-
     }
 
+$(document).ready(function(){
+    $("#mi-tablaXD").tablesorter();
 
-    $(this).click(function() {
+    $("tbody tr").mouseenter(function(){
+        $(this).css("background-color", "#e3e3e3");
+    });
+
+    $("tbody tr").mouseleave(function(){
+        $(this).css("background-color", "#fff");
+    });
+
+})
+
+    {% comment %} $(this).click(function() {
                     $(function(){
                     $('#mi-tablaXD').tablesorter(); 
                     });
@@ -203,9 +244,9 @@ function eliminarProducto(id){
                     });
                 });
             });
-        });
+        }); {% endcomment %}
 
-        document.addEventListener('click', (e)=>{
+        {% comment %} document.addEventListener('click', (e)=>{
                 const $element = document.querySelector('#'+e.target.id)
                 const $modal = document.querySelector('#exampleModalLabel')
                 const $product = document.querySelector('#nombre_producto')
@@ -213,10 +254,8 @@ function eliminarProducto(id){
                 if($element.nodeName.toLowerCase() === "img") $modal.textContent= $element.alt
                 $('#url_modificar2').attr('onclick', 'eliminarProducto('+ e.target.id.split('_')[1] +')')
                 $('#url_modificar').attr('href', 'http://127.0.0.1:8000/modificar/'+ e.target.id.split('_')[1]  )
-
-                
             });
-
+ {% endcomment %}
 
 </script>
 

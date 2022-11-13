@@ -6,6 +6,16 @@ import time
 register = Library()
 
 @register.simple_tag
+def observerNumber(cantidad, stock_maximo, stock_minimo):
+    print(f'Cantidad: {cantidad} Stock minimo: {stock_minimo} Stock maximo: {stock_maximo}')
+    if cantidad < stock_minimo:
+        return mark_safe(f'<td style="color: red; text-decoration: underline;" title="Cantidad menor al stock mínimo">{cantidad}</td>')
+    elif cantidad > stock_maximo:
+        return mark_safe(f'<td style="color: #fc7303; text-decoration: underline;" title="Cantidad mayor al stock máximo">{cantidad}</td>')
+    else:
+        return mark_safe(f'<td style="color: black;" title="Cantidad dentro del rango">{cantidad}</td>')
+
+@register.simple_tag
 def conversion_g_a_kg(value, unidades, categoria):
     return template_g_a_kg(value, unidades, categoria)
 
