@@ -34,5 +34,5 @@ class Informacion(models.Model):
     cantidad_productos = models.IntegerField(verbose_name="Cantidad actual")
     peso_unidad = models.FloatField(verbose_name="Peso por unidad")
     #El nombre para reflejarlo en la página, en este caso que muestre el nombre y descripción
-    def __str__(self):
-        return self.nombre_descripcion
+    # def __str__(self):
+    #     return self.producto

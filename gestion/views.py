@@ -116,64 +116,133 @@ class FormularioInformacionView(HttpRequest):
 
 class exportResultadosPDF(View):
     def get(self, request, *args, **kwargs):
+        info, productos, cantidad, cantidades, fecha_vencimiento, vencidos, por_caducar = [],[], [], [], [], [], []
+        suma_cantidad = 0
         BASE_DIR = Path(__file__).resolve().parent.parent
-        date_now = datetime.now()
-        suma_peso, suma_cantidad = 0, 0
-        productos, cantidades, por_caducar, vencidos = [], [], [], []
         fmt = "%Y-%m-%d"
+
+        for conjunto_producto in Producto.objects.all():
+            setattr(conjunto_producto, 'cantidad', 0)
+            productos.append(conjunto_producto)
+
         for objeto in Informacion.objects.values():
-            suma_cantidad = int((sp.integrate(1, (x,0,objeto["cantidad_productos"])))) + int(suma_cantidad)
-            if objeto["unidades"] == "2":
-                suma_peso = g_a_kg((sp.integrate(1, (x,0,objeto["peso_unidad"])))) + suma_peso
-            else:
-                suma_peso = float((sp.integrate(1, (x,0,objeto["peso_unidad"])))) + suma_peso
-            auxiliar = []
-            auxiliar.append(objeto['nombre_descripcion'])
-            auxiliar.append(objeto['cantidad_productos'])
+            objeto["stock_reserva"] = int(objeto["cantidad_productos"]*0.2) # ¡¿que es esto papu?!, eso era para el stock de reserva, que era el 20% de su cantidad actual
+            info.append(objeto)
             cantidades.append(objeto['cantidad_productos'])
-            productos.append(auxiliar)
+            suma_cantidad = int((sp.integrate(1, (x,0,objeto["cantidad_productos"])))) + int(suma_cantidad)
+            cantidad.append([objeto['producto_id'],objeto["cantidad_productos"]])
             fecha_vencimiento = time.mktime(objeto['fecha_vencimiento'].timetuple()) 
-            ahora = time.mktime(date_now.timetuple())
-            if fecha_vencimiento < ahora:
-                vencidos.append(f"ID: {objeto['id']}: {objeto['nombre_descripcion']}, vencio hace: {abs(datetime.strptime(str(objeto['fecha_vencimiento']), fmt) - date_now).days} días")
-            if (fecha_vencimiento - ahora) <= 864000:
-                if ahora < fecha_vencimiento:
-                    por_caducar.append(f"ID: {objeto['id']}: {objeto['nombre_descripcion']}, vencera en: {(datetime.strptime(str(objeto['fecha_vencimiento']), fmt) - date_now).days} días")
-        all_count = Informacion.objects.filter(categoria_producto="1").count()
-        all_count2 = Informacion.objects.filter(categoria_producto="2").count()
-        all_count3 = Informacion.objects.filter(categoria_producto="3").count()
-        all_count4 = Informacion.objects.filter(categoria_producto="4").count()
+            ahora = time.mktime(datetime.now().timetuple())
+            for producto in Producto.objects.values():
+                if producto["id_producto"] == objeto["producto_id"]:
+                    if fecha_vencimiento < ahora:
+                        vencidos.append(f"({producto['id_producto']}) Producto: {producto['nombre_descripcion']}, P-ID: {objeto['id']}: vencio hace: {abs(datetime.strptime(str(objeto['fecha_vencimiento']), fmt) - datetime.now()).days} días")
+                    if (fecha_vencimiento - ahora) <= 864000:
+                        if ahora < fecha_vencimiento:
+                            por_caducar.append(f"({producto['id_producto']}) Producto: {producto['nombre_descripcion']}, P-ID: {objeto['id']}: vencera en: {(datetime.strptime(str(objeto['fecha_vencimiento']), fmt) - datetime.now()).days} días")
+
+        for cantidad_producto in cantidad:
+            for producto in productos:
+                if cantidad_producto[0] == producto.id_producto:
+                    setattr(producto, 'cantidad', (producto.cantidad + cantidad_producto[1]))
+
+        all_count = Producto.objects.filter(categoria_producto="1").count()
+        all_count2 = Producto.objects.filter(categoria_producto="2").count()
+        all_count3 = Producto.objects.filter(categoria_producto="3").count()
+        all_count4 = Producto.objects.filter(categoria_producto="4").count()
         labels = 'Alimentos', 'Bebidas', 'Limpieza', 'Otros'
         sizes = [all_count, all_count2, all_count3, all_count4]
         fig, ax = plt.subplots()
         ax.pie(sizes, autopct=make_autopct(sizes))
         ax.legend(labels, loc='upper right')
         ax.set_aspect('equal')
-        plt.savefig("static/grafico.png" , bbox_inches='tight', pad_inches=0.0)
+        plt.savefig("static/grafico.png" , bbox_inches='tight', pad_inches=0.0) 
         data = {
-            'informacion': Informacion.objects.all(),
-            'date' : date.today(),
-            'path' : path.join(BASE_DIR, 'static'),
-            'time' : time.strftime("%H:%M:%S"),
-            'max' : max(cantidades),
-            'maxinfo' : Informacion.objects.filter(cantidad_productos=max(cantidades)),
-            'min' : min(cantidades),
-            'mininfo' : Informacion.objects.filter(cantidad_productos=min(cantidades)),
-            'total' : Informacion.objects.count(),
-            'all_cat1' : Informacion.objects.filter(categoria_producto="1").values,
+            'info' : info,
+            'path' : path.join(BASE_DIR, 'static'),     #Path para ingresar imagenes de Static
+            'date' : date.today(),                      #Fecha de generación
+            'time' : time.strftime("%H:%M:%S"),         #Hora de generación
+            'producto' : productos,
+            'productos' : Producto.objects.values(),
+            'suma_cantidad' : suma_cantidad,
+            'max_number' : max(cantidades),
+            'max_number_info' : Informacion.objects.filter(cantidad_productos=max(cantidades)).values,
+            'min_number' : min(cantidades),
+            'min_number_info' : Informacion.objects.filter(cantidad_productos=min(cantidades)).values,
+            'all_cat1' : Producto.objects.filter(categoria_producto="1").values,
             'cont_cat1' : all_count,
-            'all_cat2' : Informacion.objects.filter(categoria_producto="2").values,
+            'all_cat2' : Producto.objects.filter(categoria_producto="2").values,
             'cont_cat2' : all_count2,
-            'all_cat3' : Informacion.objects.filter(categoria_producto="3").values,
+            'all_cat3' : Producto.objects.filter(categoria_producto="3").values,
             'cont_cat3' : all_count3,
-            'all_cat4' : Informacion.objects.filter(categoria_producto="4").values,
+            'all_cat4' : Producto.objects.filter(categoria_producto="4").values,
             'cont_cat4' : all_count4,
             'vencidos' : vencidos,
             'por_caducar': por_caducar,
-            'suma_cantidad' : suma_cantidad,
         }
         pdf = render_to_pdf('exportTabla.html', data)
         return HttpResponse(pdf, content_type='application/pdf')
+
+# class exportResultadosPDF(View):
+#     def get(self, request, *args, **kwargs):
+#         BASE_DIR = Path(__file__).resolve().parent.parent
+#         date_now = datetime.now()
+#         suma_peso, suma_cantidad = 0, 0
+#         productos, cantidades, por_caducar, vencidos = [], [], [], []
+#         fmt = "%Y-%m-%d"
+#         for objeto in Informacion.objects.values():
+#             suma_cantidad = int((sp.integrate(1, (x,0,objeto["cantidad_productos"])))) + int(suma_cantidad)
+#             if objeto["unidades"] == "2":
+#                 suma_peso = g_a_kg((sp.integrate(1, (x,0,objeto["peso_unidad"])))) + suma_peso
+#             else:
+#                 suma_peso = float((sp.integrate(1, (x,0,objeto["peso_unidad"])))) + suma_peso
+#             auxiliar = []
+#             auxiliar.append(objeto['nombre_descripcion'])
+#             auxiliar.append(objeto['cantidad_productos'])
+#             cantidades.append(objeto['cantidad_productos'])
+#             productos.append(auxiliar)
+#             fecha_vencimiento = time.mktime(objeto['fecha_vencimiento'].timetuple()) 
+#             ahora = time.mktime(date_now.timetuple())
+#             if fecha_vencimiento < ahora:
+#                 vencidos.append(f"ID: {objeto['id']}: {objeto['nombre_descripcion']}, vencio hace: {abs(datetime.strptime(str(objeto['fecha_vencimiento']), fmt) - date_now).days} días")
+#             if (fecha_vencimiento - ahora) <= 864000:
+#                 if ahora < fecha_vencimiento:
+#                     por_caducar.append(f"ID: {objeto['id']}: {objeto['nombre_descripcion']}, vencera en: {(datetime.strptime(str(objeto['fecha_vencimiento']), fmt) - date_now).days} días")
+#         all_count = Informacion.objects.filter(categoria_producto="1").count()
+#         all_count2 = Informacion.objects.filter(categoria_producto="2").count()
+#         all_count3 = Informacion.objects.filter(categoria_producto="3").count()
+#         all_count4 = Informacion.objects.filter(categoria_producto="4").count()
+#         labels = 'Alimentos', 'Bebidas', 'Limpieza', 'Otros'
+#         sizes = [all_count, all_count2, all_count3, all_count4]
+#         fig, ax = plt.subplots()
+#         ax.pie(sizes, autopct=make_autopct(sizes))
+#         ax.legend(labels, loc='upper right')
+#         ax.set_aspect('equal')
+#         plt.savefig("static/grafico.png" , bbox_inches='tight', pad_inches=0.0)
+#         data = {
+#             'informacion': Informacion.objects.all(),
+#             'date' : date.today(),
+#             'path' : path.join(BASE_DIR, 'static'),
+#             'time' : time.strftime("%H:%M:%S"),
+#             'max' : max(cantidades),
+#             'maxinfo' : Informacion.objects.filter(cantidad_productos=max(cantidades)),
+#             'min' : min(cantidades),
+#             'mininfo' : Informacion.objects.filter(cantidad_productos=min(cantidades)),
+#             'total' : Informacion.objects.count(),
+#             'all_cat1' : Informacion.objects.filter(categoria_producto="1").values,
+#             'cont_cat1' : all_count,
+#             'all_cat2' : Informacion.objects.filter(categoria_producto="2").values,
+#             'cont_cat2' : all_count2,
+#             'all_cat3' : Informacion.objects.filter(categoria_producto="3").values,
+#             'cont_cat3' : all_count3,
+#             'all_cat4' : Informacion.objects.filter(categoria_producto="4").values,
+#             'cont_cat4' : all_count4,
+#             'vencidos' : vencidos,
+#             'por_caducar': por_caducar,
+#             'suma_cantidad' : suma_cantidad,
+#         }
+#         pdf = render_to_pdf('exportTabla.html', data)
+#         return HttpResponse(pdf, content_type='application/pdf')
 
 #Funciónes utilizadas
 

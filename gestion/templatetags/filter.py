@@ -7,7 +7,7 @@ register = Library()
 
 @register.simple_tag
 def observerNumber(cantidad, stock_maximo, stock_minimo):
-    print(f'Cantidad: {cantidad} Stock minimo: {stock_minimo} Stock maximo: {stock_maximo}')
+    # print(f'Cantidad: {cantidad} Stock minimo: {stock_minimo} Stock maximo: {stock_maximo}')
     if cantidad < stock_minimo:
         return mark_safe(f'<td style="color: red; text-decoration: underline;" title="Cantidad menor al stock mínimo">{cantidad}</td>')
     elif cantidad > stock_maximo:

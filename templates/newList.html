@@ -106,12 +106,12 @@ select{
                                             <td>{{info.id}}</td>
                                             <td>{{info.cantidad_productos}}</td>
                                             <td>{{info.fecha_modificacion}}</td>
-                                            <td>{{info.fecha_vencimiento}}</td>
+                                            {{info.fecha_vencimiento | calcular_vencimiento}}
                                             <td>{{info.proveedor}}</td>
                                             <td>
                                                 <a href="http://127.0.0.1:8000/modificar/{{info.id}}"><i style="color: #FFC107;" class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i></a>
-                                                <a ><i style="color: #F44336;" class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>
-                                                <!-- onclick="eliminarSubProductos({{info.id}})" -->
+                                                <a onclick="eliminarSubProductos({{info.id}})"><i style="color: #F44336;" class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>
+                                                <!--  -->
                                             </td>
                                         </tr>
                                     {%endif%}
@@ -120,8 +120,7 @@ select{
                         </table>			
 					</div>
 					<div class="modal-footer">
-                        <a ><button type="button" class="btn btn-danger" data-bs-dismiss="modal">Borrar</button></a>
-                        <!-- onclick="eliminarProductoBase({{producto.id_producto}})" -->
+                        <a ><button type="button" onclick="eliminarProductoBase({{producto.id_producto}})" class="btn btn-danger" data-bs-dismiss="modal">Borrar</button></a>
                         <a href="http://127.0.0.1:8000/registrar/"><button type="button" class="btn btn-warning">Añadir</button></a>
                         <a href="http://127.0.0.1:8000/modificarbase/{{producto.id_producto}}"><button type="button" class="btn btn-primary">Editar base</button></a>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

@@ -29,6 +29,10 @@
     }
 </style>
 <body>
+    {% comment %} zona testing {% endcomment %}
+
+    {% comment %} zona testing {% endcomment %}
+
     <p class="fecha">Fecha de creación: {{ date }}, {{time}}</p>
     <div>
         <img src="{{path}}\logo.png" width="50" height="50" class="logo"><p class="center">El Dorado</p>
@@ -41,36 +45,26 @@
         <thead>
             <th>ID</th>
             <th>Nombre</th>
-            <th>Proveedor</th>
-            <th>Contacto</th>
             <th>Cantidad</th>
             <th>Categoria</th>
-            <th>Peso/u</th>
-            <th>Unidad de proveedor</th>
-            <th>Fecha de modificación</th>
-            <th>Fecha de vencimiento</th>
+            <th>Unidades</th>
+            {% comment %} <th>Fecha de modificación reciente</th>
+            <th>Fecha de vencimiento proxima</th> {% endcomment %}
             <th>Stock Min</th>
             <th>Stock Max</th>
         </thead>
         <tbody>
-            {% for informacion in informacion %}
+            {% for producto in producto %}
             <tr>
-                <td>{{informacion.id}}</td>
-                <td>{{informacion.nombre_descripcion}}</td>
-                <td>{{informacion.proveedor}}</td>
-                <td>{{informacion.numero_proveedor}}</td>
-                <td>{{informacion.cantidad_productos}}</td>
-                <td>{{informacion.categoria_producto | transform_categoria}}</td>
-                <td>{% conversion_g_a_kg informacion.peso_unidad informacion.unidades informacion.categoria_producto %}</td>
-                <td>{{informacion.unidades | transform_unidades}}</td>
-                <td>{{informacion.fecha_modificacion}}</td>
-                {{informacion.fecha_vencimiento|calcular_vencimiento}}
-                <td>{{informacion.stock_maximo}}</td>
-                <td>{{informacion.stock_minimo}}</td>
+                <td>{{producto.id_producto}}</td>
+                <td>{{producto.nombre_descripcion}}</td>
+                {% observerNumber producto.cantidad producto.stock_minimo producto.stock_maximo%}
+                <td>{{producto.categoria_producto | transform_categoria}}</td>
+                <td>{{producto.unidades  | transform_unidades }}</td>
+                <td>{{producto.stock_maximo}}</td>
+                <td>{{producto.stock_minimo}}</td>
             </tr>
             {% endfor %}
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 <td>{{suma_cantidad}}</td>
@@ -78,19 +72,15 @@
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
         </tbody>
     </table>
-
-    <h2 class="center">Análisis de datos</h2>
+    <h2 class="center">Análisis general</h2>
 
     <table border="1" class="roundedTable">
         <thead>
             <th>Total productos</th>
-            <th>Mayor cantidad de los productos: {{max}}</th>
-            <th>Menor cantidad de los productos: {{min}}</th>
+            <th>Mayor cantidad de los productos: {{max_number}}</th>
+            <th>Menor cantidad de los productos: {{min_number}}</th>
             <th>Producto(s) tipo alimentos: {{all_cat1|length}}</th>
             <th>Producto(s) tipo bebidas: {{all_cat2|length}}</th>
             <th>Producto(s) tipo limpieza: {{all_cat3|length}}</th>
@@ -99,47 +89,88 @@
         <tbody>
             <tr>
                 <td>
-                    {{total}} productos
+                    {{producto | length}} productos
                 </td>
             
                 <td>
-                    {% for i in maxinfo %}
-                    <p>
-                        {{i.nombre_descripcion}}
-                    </p>
-                    {% endfor %}
+                    {% for productos in productos %}
+                        {% for max_number_info in max_number_info%} 
+                            {%if productos.id_producto == max_number_info.producto_id%}
+                                <p>
+                                    Producto: {{productos.nombre_descripcion}}, con una cantidad de: {{max_number_info.cantidad_productos}} {{productos.unidades  | transform_unidades }}
+                                </p>
+                            {%endif%}
+                        {%endfor%}
+                    {%endfor%}
                 </td>
 
+
                 <td>
-                    {% for mininfo in mininfo %}
-                    <p>
-                        {{mininfo.nombre_descripcion}}
-                    </p>
+                    {% for productos in productos %}
+                        {% for min_number_info in min_number_info%} 
+                            {%if productos.id_producto == min_number_info.producto_id%}
+                                <p>
+                                    Producto: {{productos.nombre_descripcion}}, con una cantidad de: {{min_number_info.cantidad_productos}} {{productos.unidades  | transform_unidades }}
+                                </p>
+                            {%endif%}
+                        {%endfor%}
+                    {%endfor%}
+                </td>
+                
+                <td>
+                    {% if all_cat1 %}
+                    {% for all_cat1 in all_cat1 %} 
+                        <p>
+                            {{all_cat1.nombre_descripcion}}
+                        </p>
                     {% endfor %}
+                    {% else %}
+                        <p>
+                            No hay productos de esta categoría
+                        </p>
+                    {% endif %}
                 </td>
                 
                 <td>
+                    {% if all_cat2 %}
+                    {% for all_cat2 in all_cat2 %} 
                         <p>
-                            {% for all_cat1 in all_cat1 %} {{all_cat1.nombre_descripcion}}, {% endfor %}
+                            {{all_cat2.nombre_descripcion}}
                         </p>
+                    {% endfor %}
+                    {% else %}
+                        <p>
+                            No hay productos de esta categoría
+                        </p>
+                    {% endif %}
                 </td>
                 
                 <td>
+                    {% if all_cat3 %}
+                    {% for all_cat3 in all_cat3 %} 
                         <p>
-                            {% for all_cat1 in all_cat2 %} {{all_cat1.nombre_descripcion}}, {% endfor %}
+                            {{all_cat3.nombre_descripcion}}
                         </p>
+                    {% endfor %}
+                    {% else %}
+                        <p>
+                            No hay productos de esta categoría
+                        </p>
+                    {% endif %}
                 </td>
                 
                 <td>
+                    {% if all_cat4 %}
+                    {% for all_cat4 in all_cat4 %} 
                         <p>
-                            {% for all_cat1 in all_cat3 %} {{all_cat1.nombre_descripcion}}, {% endfor %}
+                            {{all_cat4.nombre_descripcion}}
                         </p>
-                </td>
-                
-                <td>
+                    {% endfor %}
+                    {% else %}
                         <p>
-                            {% for all_cat1 in all_cat4 %} {{all_cat1.nombre_descripcion}}, {% endfor %}
+                            No hay productos de esta categoría
                         </p>
+                    {% endif %}
                 </td>
                 
             </tr>
@@ -153,22 +184,72 @@
         <tbody>
             <tr>
                 <td>
-                    {% for i in por_caducar %}
-                        <p>{{i}}</p>
+                    {% if por_caducar %}
+                    {% for por_caducar in por_caducar %} 
+                        <p>
+                            {{por_caducar}}
+                        </p>
                     {% endfor %}
+                    {% else %}
+                        <p>
+                            No hay productos por caducar
+                        </p>
+                    {% endif %}
                 </td>
                 <td>
 
-                    {% for i in vencidos %}
-                    <p>{{i}}</p>
+                    {% if vencidos %}
+                    {% for vencidos in vencidos %} 
+                        <p>
+                            {{vencidos}}
+                        </p>
                     {% endfor %}
+                    {% else %}
+                        <p>
+                            No hay productos vencidos
+                        </p>
+                    {% endif %}
                 </td>
             </tr>
         </tbody>
     </table>
+
     <h2  class="center">Gráfico de cantidades de acuerdo a la categoria</h2>
     <img src="{{path}}\grafico.png" width="250" height="250" class="logo"><p class="center">
     </body>
+
+    {% for producto in producto %}
+    <H2 class="center">
+        Detalles del producto: {{producto.nombre_descripcion}}
+    </H2>
+        <table border="1" class="roundedTable">
+            <thead>
+                <th>ID</th>
+                <th>Cantidad</th>
+                <th>Fecha Modificación</th>
+                <th>Fecha de vencimiento</th>
+                <th>Peso/u</th>
+                <th>Proveedor</th>
+                <th>Dirección P.</th>
+                <th>Número contacto P.</th>
+            </thead>
+            <tbody>
+                {% for info in info%} 
+                {%if producto.id_producto == info.producto_id%}
+                    <tr>
+                        <td>&nbsp;{{info.id}}</td>
+                        <td>&nbsp;{{info.cantidad_productos}}</td>
+                        <td>&nbsp;{{info.fecha_modificacion}}</td>
+                        {{info.fecha_vencimiento | calcular_vencimiento}}
+                        <td>&nbsp;{{info.peso_unidad}}</td>
+                        <td>&nbsp;{{info.proveedor}}</td>
+                        <td>&nbsp;{{info.direccion_proveedor}}</td>
+                        <td>&nbsp;{{info.numero_proveedor}}</td>
+                {%endif%}
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endfor%}
 </html>
 
 
