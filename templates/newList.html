@@ -5,33 +5,42 @@
 {%block content %}
 
 <style>
+.table-title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
+.selects{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: start;
+}
+
+select{
+    padding: .5rem;
+    margin: .5rem;
+    border: none;
+    border-radius: 10px;
+}
 </style>
-
-<select class="form-select" aria-label="Default select example">
-    <option selected>Open this select menu</option>
-    <option value="1">One</option>
-    <option value="2">Two</option>
-    <option value="3">Three</option>
-  </select>
-
-
-    <div class="selects"> 
-        <select id="XDXD" onchange="manejadorCategorias()" >
-            <option value="0">Categorizar productos</option>
-            {% for info in '1234' %}
-            <option id="{{info}}" value="{{info}}">{{info|transform_categoria}}</option>
-            {% endfor %}
-        </select>
 
   <body>
     <div class="container">
         <div class="table-wrapper">
             <div class="table-title">
-                <div class="row">
-                    <div class="col-sm-6">
+                    <div class="title" >
 						<h2>Manejo de <b>Productos</b></h2>
 					</div>
+
+                <div class="selects"> 
+                    <select id="XDXD" onchange="manejadorCategorias()" >
+                        <option value="0">Categorizar productos</option>
+                        {% for info in '1234' %}
+                        <option id="{{info}}" value="{{info}}">{{info|transform_categoria}}</option>
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
             <table id="mi-tablaXD" class="table table-striped table-hover" style="text-align: center;">
@@ -69,6 +78,7 @@
 
 	<!-- Edit Modal HTML -->
     {%for producto in producto %}
+
 	<div id="previewProduct-{{forloop.counter}}" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -91,25 +101,27 @@
                             </thead>
                             <tbody id="hola">
                                 {% for info in info%} 
-
-                                    <tr id="{{info.producto_id}}">
-                                        <td>{{info.id}}</td>
-                                        <td>{{info.cantidad_productos}}</td>
-                                        <td>{{info.fecha_modificacion}}</td>
-                                        <td>{{info.fecha_vencimiento}}</td>
-                                        <td>{{info.proveedor}}</td>
-                                        <td>
-                                            <a href="http://127.0.0.1:8000/modificar/{{info.id}}"><i style="color: #FFC107;" class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i></a>
-                                            <a onclick="eliminarSubProductos({{info.id}})"><i style="color: #F44336;" class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>
-                                        </td>
-                                    </tr>
-
+                                    {%if producto.id_producto == info.producto_id%}
+                                        <tr>
+                                            <td>{{info.id}}</td>
+                                            <td>{{info.cantidad_productos}}</td>
+                                            <td>{{info.fecha_modificacion}}</td>
+                                            <td>{{info.fecha_vencimiento}}</td>
+                                            <td>{{info.proveedor}}</td>
+                                            <td>
+                                                <a href="http://127.0.0.1:8000/modificar/{{info.id}}"><i style="color: #FFC107;" class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i></a>
+                                                <a ><i style="color: #F44336;" class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>
+                                                <!-- onclick="eliminarSubProductos({{info.id}})" -->
+                                            </td>
+                                        </tr>
+                                    {%endif%}
                                 {% endfor %}
                             </tbody>
                         </table>			
 					</div>
 					<div class="modal-footer">
-                        <a onclick="eliminarProductoBase({{producto.id_producto}})"><button type="button" class="btn btn-danger" data-bs-dismiss="modal">Borrar</button></a>
+                        <a ><button type="button" class="btn btn-danger" data-bs-dismiss="modal">Borrar</button></a>
+                        <!-- onclick="eliminarProductoBase({{producto.id_producto}})" -->
                         <a href="http://127.0.0.1:8000/registrar/"><button type="button" class="btn btn-warning">Añadir</button></a>
                         <a href="http://127.0.0.1:8000/modificarbase/{{producto.id_producto}}"><button type="button" class="btn btn-primary">Editar base</button></a>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -213,49 +225,49 @@ function eliminarProductoBase(id){
         }
     }
 
-$(document).ready(function(){
-    $("#mi-tablaXD").tablesorter();
+// $(document).ready(function(){
+//     $("#mi-tablaXD").tablesorter();
 
-    $("tbody tr").mouseenter(function(){
-        $(this).css("background-color", "#e3e3e3");
-    });
+//     $("tbody tr").mouseenter(function(){
+//         $(this).css("background-color", "#e3e3e3");
+//     });
 
-    $("tbody tr").mouseleave(function(){
-        $(this).css("background-color", "#fff");
-    });
+//     $("tbody tr").mouseleave(function(){
+//         $(this).css("background-color", "#fff");
+//     });
 
-})
+// })
 
-    {% comment %} $(this).click(function() {
-                    $(function(){
-                    $('#mi-tablaXD').tablesorter(); 
-                    });
-                });
-        $(document).ready(() => {
-            $('th').each(function(columna) {
-                $(this).hover(function() {
-                    $(this).addClass('resaltar');
-                }, function() {
-                    $(this).removeClass('resaltar');
-                });
-                $(this).click(function() {
-                    $(function(){
-                    $('#mi-tablaXD').tablesorter(); 
-                    });
-                });
-            });
-        }); {% endcomment %}
+    // {% comment %} $(this).click(function() {
+    //                 $(function(){
+    //                 $('#mi-tablaXD').tablesorter(); 
+    //                 });
+    //             });
+    //     $(document).ready(() => {
+    //         $('th').each(function(columna) {
+    //             $(this).hover(function() {
+    //                 $(this).addClass('resaltar');
+    //             }, function() {
+    //                 $(this).removeClass('resaltar');
+    //             });
+    //             $(this).click(function() {
+    //                 $(function(){
+    //                 $('#mi-tablaXD').tablesorter(); 
+    //                 });
+    //             });
+    //         });
+    //     }); {% endcomment %}
 
-        {% comment %} document.addEventListener('click', (e)=>{
-                const $element = document.querySelector('#'+e.target.id)
-                const $modal = document.querySelector('#exampleModalLabel')
-                const $product = document.querySelector('#nombre_producto')
-                if($element.nodeName.toLowerCase() === "button") $modal.textContent = $element.getAttribute("aria-label")
-                if($element.nodeName.toLowerCase() === "img") $modal.textContent= $element.alt
-                $('#url_modificar2').attr('onclick', 'eliminarProducto('+ e.target.id.split('_')[1] +')')
-                $('#url_modificar').attr('href', 'http://127.0.0.1:8000/modificar/'+ e.target.id.split('_')[1]  )
-            });
- {% endcomment %}
+//         {% comment %} document.addEventListener('click', (e)=>{
+//                 const $element = document.querySelector('#'+e.target.id)
+//                 const $modal = document.querySelector('#exampleModalLabel')
+//                 const $product = document.querySelector('#nombre_producto')
+//                 if($element.nodeName.toLowerCase() === "button") $modal.textContent = $element.getAttribute("aria-label")
+//                 if($element.nodeName.toLowerCase() === "img") $modal.textContent= $element.alt
+//                 $('#url_modificar2').attr('onclick', 'eliminarProducto('+ e.target.id.split('_')[1] +')')
+//                 $('#url_modificar').attr('href', 'http://127.0.0.1:8000/modificar/'+ e.target.id.split('_')[1]  )
+//             });
+//  {% endcomment %}
 
 </script>
 
