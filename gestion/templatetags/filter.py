@@ -8,9 +8,6 @@ register = Library()
 
 @register.simple_tag
 def sumatoriaUnidades(value, unidades, categoria):
-    print(f'Valor ingresado: {value}')
-    print(f'Unidades: {unidades}')
-    print(f'Categoria: {categoria}')
     return (template_g_a_kg(value, unidades, categoria))
 
 @register.simple_tag
