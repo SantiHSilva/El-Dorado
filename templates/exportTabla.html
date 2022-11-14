@@ -27,20 +27,21 @@
         padding: 1px;
         text-align:center;
     }
+
 </style>
 <body>
     {% comment %} zona testing {% endcomment %}
 
-    {% comment %} zona testing {% endcomment %}
 
+    {% comment %} zona testing {% endcomment %}
     <p class="fecha">Fecha de creación: {{ date }}, {{time}}</p>
     <div>
         <img src="{{path}}\logo.png" width="50" height="50" class="logo"><p class="center">El Dorado</p>
     </div>
     <hr>
-    <H2 class="center">
+    <H1 class="center">
         Tabla General
-    </H2>
+    </H1>
     <table border="1" class="roundedTable">
         <thead>
             <th>ID</th>
@@ -74,6 +75,7 @@
                 <td>&nbsp;</td>
         </tbody>
     </table>
+    <pdf:nextpage/>
     <h2 class="center">Análisis general</h2>    
 
     <table border="1" class="roundedTable">
@@ -213,11 +215,13 @@
             </tr>
         </tbody>
     </table>
-
     <h2  class="center">Gráfico de cantidades de acuerdo a la categoria</h2>
     <img src="{{path}}\grafico.png" width="250" height="250" class="logo"><p class="center">
+    <h2  class="center">Gráfico de cantidades de acuerdo por producto</h2>
+    <img src="{{path}}\grafico2.png" width="500" height="400" class="logo"><p class="center">
     </body>
-
+    <pdf:nextpage/>
+    <h1 class="center">Detalles por cada producto</h1>
     {% for producto in producto %}
     <H2 class="center">
         Detalles del producto: {{producto.nombre_descripcion}}
@@ -241,7 +245,7 @@
                         <td>&nbsp;{{info.cantidad_productos}}</td>
                         <td>&nbsp;{{info.fecha_modificacion}}</td>
                         {{info.fecha_vencimiento | calcular_vencimiento}}
-                        <td>&nbsp;{{info.peso_unidad}}</td>
+                        <td>&nbsp;{% sumatoriaUnidades info.peso_unidad producto.unidades producto.categoria_producto %}</td>
                         <td>&nbsp;{{info.proveedor}}</td>
                         <td>&nbsp;{{info.direccion_proveedor}}</td>
                         <td>&nbsp;{{info.numero_proveedor}}</td>
@@ -253,8 +257,12 @@
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>{% sumatoriaUnidades producto.cantidad_peso producto.unidades producto.categoria_producto %}</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
             </tbody>
         </table>
+        <pdf:nextpage/>
     {% endfor%}
 </html>
 

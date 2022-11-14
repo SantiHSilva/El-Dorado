@@ -64,7 +64,7 @@ class FormularioInformacionView(HttpRequest):
             'info': Producto
         }
         if request.method == 'POST':
-            formulario = formularioInformacion(data=request.POST, instance=producto, files = request.FILES)
+            formulario = formularioInformacion(data=request.POST, instance=producto)
             if formulario.is_valid():
                 producto.save()
                 messages.success(request, "Subproducto modificado correctamente")
@@ -114,7 +114,7 @@ class FormularioInformacionView(HttpRequest):
 class exportResultadosPDF(View):
     def get(self, request, *args, **kwargs):
         #Declaración de variables
-        info, productos, cantidad, cantidades, fecha_vencimiento, cantidad_peso, vencidos, por_caducar= [], [], [], [], [], [], [], []
+        info, productos, cantidad, cantidades, total_informacion_por_producto ,fecha_vencimiento, cantidad_peso, vencidos, por_caducar= [], [], [], [], [], [], [], [], []
         suma_cantidad = 0
         BASE_DIR = Path(__file__).resolve().parent.parent
         fmt = "%Y-%m-%d"
@@ -130,12 +130,15 @@ class exportResultadosPDF(View):
             #Stock reserva
             objeto["stock_reserva"] = int(objeto["cantidad_productos"]*0.2) 
             info.append(objeto)
+
             #Sumatoria de las cantidades de la información de los productos
             cantidades.append(objeto['cantidad_productos'])
             suma_cantidad = int((sp.integrate(1, (x,0,objeto["cantidad_productos"])))) + int(suma_cantidad)
+
             #Sumatoria de las cantidades de la información de los productos por peso
             cantidad.append([objeto['producto_id'],objeto["cantidad_productos"]])
             cantidad_peso.append([objeto['producto_id'],objeto["peso_unidad"]])
+
             #Filtrado de productos por vencimiento
             fecha_vencimiento = time.mktime(objeto['fecha_vencimiento'].timetuple()) 
             ahora = time.mktime(datetime.now().timetuple())
@@ -159,12 +162,25 @@ class exportResultadosPDF(View):
                 if cantidad_producto[0] == producto.id_producto:
                     setattr(producto, 'cantidad_peso', (producto.cantidad_peso + cantidad_producto[1]))
 
+        #Diagrama de barras de la cantidade de información por producto
+        #Obtención de datos para el diagrama de barras
+        total_nombre_productos = (list(Producto.objects.values_list('nombre_descripcion', flat=True)))
+        for i in (Producto.objects.values_list('id_producto', flat=True)):
+            total_informacion_por_producto.append(Informacion.objects.filter(producto_id=i).count())
+        
+        #Configuración de la gráfica
+        fig2, ax2 = plt.subplots()
+        ax2.barh(total_nombre_productos, total_informacion_por_producto, align='center', height=0.3)
+        fig2.tight_layout()
+        fig2.savefig("static/grafico2.png")
+
         #Creación de la tabla de resultados globales
         #Definición de variables
         all_count = Producto.objects.filter(categoria_producto="1").count()
         all_count2 = Producto.objects.filter(categoria_producto="2").count()
         all_count3 = Producto.objects.filter(categoria_producto="3").count()
         all_count4 = Producto.objects.filter(categoria_producto="4").count()
+
         #Configuración de la tabla
         labels = 'Alimentos', 'Bebidas', 'Limpieza', 'Otros'
         sizes = [all_count, all_count2, all_count3, all_count4]
@@ -172,8 +188,9 @@ class exportResultadosPDF(View):
         ax.pie(sizes, autopct=make_autopct(sizes))
         ax.legend(labels, loc='upper right')
         ax.set_aspect('equal')
+
         #Guardar tabla
-        plt.savefig("static/grafico.png" , bbox_inches='tight', pad_inches=0.0) 
+        fig.savefig("static/grafico.png" , bbox_inches='tight', pad_inches=0.0) 
 
         #Datos globales para la utlización de la plantilla
         data = {
@@ -184,7 +201,7 @@ class exportResultadosPDF(View):
             #Fecha de generación
             'date' : date.today(),                  
             #Hora de generación    
-            'time' : time.strftime("%H:%M:%S"),      
+            'time' : time.strftime("%H:%M:%S"),
             #Información de los productos base
             'producto' : productos,
             'productos' : Producto.objects.values(),
