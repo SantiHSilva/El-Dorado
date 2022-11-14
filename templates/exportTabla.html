@@ -74,7 +74,7 @@
                 <td>&nbsp;</td>
         </tbody>
     </table>
-    <h2 class="center">Análisis general</h2>
+    <h2 class="center">Análisis general</h2>    
 
     <table border="1" class="roundedTable">
         <thead>
@@ -246,7 +246,13 @@
                         <td>&nbsp;{{info.direccion_proveedor}}</td>
                         <td>&nbsp;{{info.numero_proveedor}}</td>
                 {%endif%}
+                    </tr>          
             {% endfor %}
+                    <td>Total</td>
+                    {% observerNumber producto.cantidad producto.stock_minimo producto.stock_maximo%}
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>{% sumatoriaUnidades producto.cantidad_peso producto.unidades producto.categoria_producto %}</td>
             </tbody>
         </table>
     {% endfor%}

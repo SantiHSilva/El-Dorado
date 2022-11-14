@@ -2,7 +2,6 @@ import time
 from datetime import date, datetime
 from os import path
 from pathlib import Path
-
 import matplotlib.pyplot as plt
 import sympy as sp
 from django.contrib import messages
@@ -11,12 +10,9 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import View
 from sympy.abc import x
-
 from gestion.forms import formularioInformacion, ProductoForm
 from gestion.models import Informacion, Producto
-
 from .utils import render_to_pdf
-
 
 # Create your views here.
 
@@ -82,6 +78,7 @@ class FormularioInformacionView(HttpRequest):
     def modificar_base(request, id):
         producto = get_object_or_404(Producto, id_producto=id)
         data = {
+            'producto' : Producto.objects.filter(id_producto=id).get(),
             'form': ProductoForm(instance=producto),
         }
         if request.method == 'POST':
@@ -116,13 +113,14 @@ class FormularioInformacionView(HttpRequest):
 
 class exportResultadosPDF(View):
     def get(self, request, *args, **kwargs):
-        info, productos, cantidad, cantidades, fecha_vencimiento, vencidos, por_caducar = [],[], [], [], [], [], []
+        info, productos, cantidad, cantidades, fecha_vencimiento, cantidad_peso, vencidos, por_caducar= [],[],[],[], [], [], [], []
         suma_cantidad = 0
         BASE_DIR = Path(__file__).resolve().parent.parent
         fmt = "%Y-%m-%d"
 
         for conjunto_producto in Producto.objects.all():
             setattr(conjunto_producto, 'cantidad', 0)
+            setattr(conjunto_producto, 'cantidad_peso', 0)
             productos.append(conjunto_producto)
 
         for objeto in Informacion.objects.values():
@@ -131,20 +129,25 @@ class exportResultadosPDF(View):
             cantidades.append(objeto['cantidad_productos'])
             suma_cantidad = int((sp.integrate(1, (x,0,objeto["cantidad_productos"])))) + int(suma_cantidad)
             cantidad.append([objeto['producto_id'],objeto["cantidad_productos"]])
+            cantidad_peso.append([objeto['producto_id'],objeto["peso_unidad"]])
             fecha_vencimiento = time.mktime(objeto['fecha_vencimiento'].timetuple()) 
             ahora = time.mktime(datetime.now().timetuple())
             for producto in Producto.objects.values():
                 if producto["id_producto"] == objeto["producto_id"]:
                     if fecha_vencimiento < ahora:
-                        vencidos.append(f"({producto['id_producto']}) Producto: {producto['nombre_descripcion']}, P-ID: {objeto['id']}: vencio hace: {abs(datetime.strptime(str(objeto['fecha_vencimiento']), fmt) - datetime.now()).days} días")
+                        vencidos.append(f"({producto['id_producto']}) Producto: {producto['nombre_descripcion']}, P-ID: {objeto['id']}: vencio hace: {(abs(datetime.strptime(str(objeto['fecha_vencimiento']), fmt) - datetime.now()).days)+1} días")
                     if (fecha_vencimiento - ahora) <= 864000:
                         if ahora < fecha_vencimiento:
-                            por_caducar.append(f"({producto['id_producto']}) Producto: {producto['nombre_descripcion']}, P-ID: {objeto['id']}: vencera en: {(datetime.strptime(str(objeto['fecha_vencimiento']), fmt) - datetime.now()).days} días")
+                            por_caducar.append(f"({producto['id_producto']}) Producto: {producto['nombre_descripcion']}, P-ID: {objeto['id']}: vencera en: {((datetime.strptime(str(objeto['fecha_vencimiento']), fmt) - datetime.now()).days)+1} días")
 
         for cantidad_producto in cantidad:
             for producto in productos:
                 if cantidad_producto[0] == producto.id_producto:
                     setattr(producto, 'cantidad', (producto.cantidad + cantidad_producto[1]))
+        for cantidad_producto in cantidad_peso:
+            for producto in productos:
+                if cantidad_producto[0] == producto.id_producto:
+                    setattr(producto, 'cantidad_peso', (producto.cantidad_peso + cantidad_producto[1]))
 
         all_count = Producto.objects.filter(categoria_producto="1").count()
         all_count2 = Producto.objects.filter(categoria_producto="2").count()

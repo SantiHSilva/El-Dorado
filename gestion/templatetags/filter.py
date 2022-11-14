@@ -5,6 +5,14 @@ import time
 
 register = Library()
 
+
+@register.simple_tag
+def sumatoriaUnidades(value, unidades, categoria):
+    print(f'Valor ingresado: {value}')
+    print(f'Unidades: {unidades}')
+    print(f'Categoria: {categoria}')
+    return (template_g_a_kg(value, unidades, categoria))
+
 @register.simple_tag
 def observerNumber(cantidad, stock_maximo, stock_minimo):
     # print(f'Cantidad: {cantidad} Stock minimo: {stock_minimo} Stock maximo: {stock_maximo}')
@@ -14,10 +22,6 @@ def observerNumber(cantidad, stock_maximo, stock_minimo):
         return mark_safe(f'<td style="color: #fc7303; text-decoration: underline;" title="Cantidad mayor al stock máximo">{cantidad}</td>')
     else:
         return mark_safe(f'<td style="color: black;" title="Cantidad dentro del rango">{cantidad}</td>')
-
-@register.simple_tag
-def conversion_g_a_kg(value, unidades, categoria):
-    return template_g_a_kg(value, unidades, categoria)
 
 @register.filter(name='transform_unidades')
 def transform_unidades(unidades):
