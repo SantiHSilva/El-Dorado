@@ -28,7 +28,7 @@ class FormularioInformacionView(HttpRequest):
             'form': formularioInformacion()
         }
         if request.method == 'POST':
-            formulario = formularioInformacion(data=request.POST, files=request.FILES)
+            formulario = formularioInformacion(data=request.POST)
             if formulario.is_valid():
                 formulario.save()
                 messages.success(request, "Producto registrado correctamente")
@@ -118,7 +118,7 @@ class exportResultadosPDF(View):
         suma_cantidad = 0
         BASE_DIR = Path(__file__).resolve().parent.parent
         fmt = "%Y-%m-%d"
-        
+
         #Creación de atributos para la sumatoria de los productos por información
         for conjunto_producto in Producto.objects.all():
             setattr(conjunto_producto, 'cantidad', 0)
@@ -161,12 +161,12 @@ class exportResultadosPDF(View):
             for producto in productos:
                 if cantidad_producto[0] == producto.id_producto:
                     setattr(producto, 'cantidad_peso', (producto.cantidad_peso + cantidad_producto[1]))
-
         #Diagrama de barras de la cantidade de información por producto
         #Obtención de datos para el diagrama de barras
         total_nombre_productos = (list(Producto.objects.values_list('nombre_descripcion', flat=True)))
         for i in (Producto.objects.values_list('id_producto', flat=True)):
             total_informacion_por_producto.append(Informacion.objects.filter(producto_id=i).count())
+
         
         #Configuración de la gráfica
         fig2, ax2 = plt.subplots()

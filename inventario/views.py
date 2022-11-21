@@ -9,24 +9,23 @@ from django.contrib.auth.decorators import login_required
 #Vista base
 
 def inicial(request):
-    return render(request,"base.html")
+    return render(request, "base.html")
 
 #Vista de la tabla general de los productos
 
 @login_required
 def lista_completa(request):
-    info = []
-    productos = []
-    cantidad = [] #[[producto, cantidad], [producto, cantidad]]
+    #Definir las variables
+    info, productos, cantidad = [], [], []
     suma_cantidad = 0
 
+    #Obtener la cantidad de productos
     for objeto in Informacion.objects.values():
-
-        objeto["stock_reserva"] = int(objeto["cantidad_productos"]*0.2) # ¡¿que es esto papu?!, eso era para el stock de reserva, que era el 20% de su cantidad actual
         info.append(objeto)
         suma_cantidad = int((sp.integrate(1, (x,0,objeto["cantidad_productos"])))) + int(suma_cantidad)
         cantidad.append([objeto['producto_id'],objeto["cantidad_productos"]])
 
+    #Obtener los productos
     for conjunto_producto in Producto.objects.all():
         setattr(conjunto_producto, 'cantidad', 0)
         productos.append(conjunto_producto)
@@ -41,7 +40,8 @@ def lista_completa(request):
         'suma_cantidad' : suma_cantidad,
         'producto' : productos,
     }
-    return render(request,"newList.html", data)
+
+    return render(request, "newList.html", data)
 
 #Vista de la página principal de calculo de incognitas para álgebra lineal
 
@@ -91,16 +91,3 @@ def ecuacionlineal(x,y,z,n):
 
 def g_a_kg(valor):
     return valor / 1000
-
-# @login_required
-# def buscar(request):
-#     return render(request,"busqueda.html")
-
-# @login_required
-# def resultado(request):
-#     if request.GET["prd"]:
-#         resultado = Informacion.objects.filter(nombre_descripcion__icontains=(request.GET["prd"]))
-#     try:
-#         return render(request, "resultado.html", {"name": request.GET["prd"], "info": resultado})
-#     except:
-#         return render(request, "resultado.html", {"name": ""})
