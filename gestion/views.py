@@ -25,17 +25,17 @@ class FormularioInformacionView(HttpRequest):
     @login_required
     def index(request):
         data = {
-            'form': formularioInformacion()
+            'form': formularioInformacion()  # Se crea el formulario
         }
-        if request.method == 'POST':
-            formulario = formularioInformacion(data=request.POST)
-            if formulario.is_valid():
-                formulario.save()
-                messages.success(request, "Producto registrado correctamente")
-                return redirect(to='http://127.0.0.1:8000/lista/')
+        if request.method == 'POST': # Si el método es POST
+            formulario = formularioInformacion(data=request.POST) # Se crea el formulario con los datos del POST
+            if formulario.is_valid(): # Si el formulario es válido
+                formulario.save() # Se guarda el formulario
+                messages.success(request, "Producto registrado correctamente") # Se muestra un mensaje de éxito
+                return redirect(to='http://127.0.0.1:8000/lista/') # Se redirecciona a la lista de productos
             else:
-                data["form"] = formulario
-        return render(request, 'informacionIndex.html', data)
+                data["form"] = formulario # Si el formulario no es válido, se muestra el formulario con los errores
+        return render(request, 'informacionIndex.html', data) # Se muestra el formulario
 
     #Vista para la creación de subproductos
 
@@ -140,46 +140,48 @@ class exportResultadosPDF(View):
             cantidad_peso.append([objeto['producto_id'],objeto["peso_unidad"]])
 
             #Filtrado de productos por vencimiento
-            fecha_vencimiento = time.mktime(objeto['fecha_vencimiento'].timetuple()) 
-            ahora = time.mktime(datetime.now().timetuple())
-            for producto in Producto.objects.values():
-                if producto["id_producto"] == objeto["producto_id"]:
-                    if fecha_vencimiento < ahora:
+            fecha_vencimiento = time.mktime(objeto['fecha_vencimiento'].timetuple())  # Fecha de vencimiento
+            ahora = time.mktime(datetime.now().timetuple()) # Fecha actual
+            for producto in Producto.objects.values(): # Se recorre la lista de productos
+                if producto["id_producto"] == objeto["producto_id"]: # Si el id del producto es igual al id del producto de la información
+                    if fecha_vencimiento < ahora: # Si la fecha de vencimiento es menor a la fecha actual
+                        # Se agrega el producto a la lista de vencidos
                         vencidos.append(f"({producto['id_producto']}) Producto: {producto['nombre_descripcion']}, P-ID: {objeto['id']}: vencio hace: {(abs(datetime.strptime(str(objeto['fecha_vencimiento']), fmt) - datetime.now()).days)+1} días")
-                    if (fecha_vencimiento - ahora) <= 864000:
+                    if (fecha_vencimiento - ahora) <= 864000: # Si la fecha de vencimiento es menor a 10 días
+                        # Se agrega el producto a la lista de por caducar
                         if ahora < fecha_vencimiento:
                             por_caducar.append(f"({producto['id_producto']}) Producto: {producto['nombre_descripcion']}, P-ID: {objeto['id']}: vencera en: {((datetime.strptime(str(objeto['fecha_vencimiento']), fmt) - datetime.now()).days)+1} días")
         
         #Sumatoria de las cantidades de los productos por cantidad
-        for cantidad_producto in cantidad:
-            for producto in productos:
-                if cantidad_producto[0] == producto.id_producto:
-                    setattr(producto, 'cantidad', (producto.cantidad + cantidad_producto[1]))
+        for cantidad_producto in cantidad: # Se recorre la lista de cantidades de productos
+            for producto in productos: # Se recorre la lista de productos 
+                if cantidad_producto[0] == producto.id_producto: # Si el id del producto es igual al id del producto de la información
+                    setattr(producto, 'cantidad', (producto.cantidad + cantidad_producto[1])) # Se le suma la cantidad de productos a la cantidad de productos del producto
 
         #Sumatoria de las cantidades de los productos por peso
-        for cantidad_producto in cantidad_peso:
-            for producto in productos:
-                if cantidad_producto[0] == producto.id_producto:
-                    setattr(producto, 'cantidad_peso', (producto.cantidad_peso + cantidad_producto[1]))
-        #Diagrama de barras de la cantidade de información por producto
-        #Obtención de datos para el diagrama de barras
-        total_nombre_productos = (list(Producto.objects.values_list('nombre_descripcion', flat=True)))
-        for i in (Producto.objects.values_list('id_producto', flat=True)):
-            total_informacion_por_producto.append(Informacion.objects.filter(producto_id=i).count())
+        for cantidad_producto in cantidad_peso: # Se recorre la lista de cantidades de productos
+            for producto in productos: # Se recorre la lista de productos
+                if cantidad_producto[0] == producto.id_producto: # Si el id del producto es igual al id del producto de la información
+                    setattr(producto, 'cantidad_peso', (producto.cantidad_peso + cantidad_producto[1])) # Se le suma la cantidad de productos a la cantidad de productos del producto
+        #Diagrama de barras de la cantidade de información por producto base
+        #Obtención de datos para el diagrama de barras de la cantidad de información por producto base
+        total_nombre_productos = (list(Producto.objects.values_list('nombre_descripcion', flat=True))) # Se obtiene una lista con los nombres de los productos
+        for i in (Producto.objects.values_list('id_producto', flat=True)): # Se recorre la lista de id de productos
+            total_informacion_por_producto.append(Informacion.objects.filter(producto_id=i).count()) # Se obtiene la cantidad de información por producto y se agrega a la lista de total de información por producto
 
         
         #Configuración de la gráfica
-        fig2, ax2 = plt.subplots()
-        ax2.barh(total_nombre_productos, total_informacion_por_producto, align='center', height=0.3)
-        fig2.tight_layout()
-        fig2.savefig("static/grafico2.png")
+        fig2, ax2 = plt.subplots() # Se crea la figura y los ejes
+        ax2.barh(total_nombre_productos, total_informacion_por_producto, align='center', height=0.3) # Se crea la gráfica de barras
+        fig2.tight_layout() # Se ajusta la gráfica
+        fig2.savefig("static/grafico2.png") # Se guarda la gráfica en la carpeta static
 
         #Creación de la tabla de resultados globales
         #Definición de variables
-        all_count = Producto.objects.filter(categoria_producto="1").count()
-        all_count2 = Producto.objects.filter(categoria_producto="2").count()
-        all_count3 = Producto.objects.filter(categoria_producto="3").count()
-        all_count4 = Producto.objects.filter(categoria_producto="4").count()
+        all_count = Producto.objects.filter(categoria_producto="1").count() #Conteo de productos tipo Alimento
+        all_count2 = Producto.objects.filter(categoria_producto="2").count() #Conteo de productos tipo Bebida
+        all_count3 = Producto.objects.filter(categoria_producto="3").count() #Conteo de productos tipo Limpieza
+        all_count4 = Producto.objects.filter(categoria_producto="4").count() #Conteo de productos tipo Otros
 
         #Configuración de la tabla
         labels = 'Alimentos', 'Bebidas', 'Limpieza', 'Otros'
@@ -216,17 +218,17 @@ class exportResultadosPDF(View):
             #Información del producto con menor cantidad
             'min_number_info' : Informacion.objects.filter(cantidad_productos=min(cantidades)).values,
             #Información de los productos de la categoria de Alimentos
-            'all_cat1' : Producto.objects.filter(categoria_producto="1").values,
+            'all_cat1' : Producto.objects.filter(categoria_producto="1").values, # Información de los productos de la categoria de Alimentos
             'cont_cat1' : all_count,
             #Información de los productos de la categoria de Bebidas
-            'all_cat2' : Producto.objects.filter(categoria_producto="2").values,
+            'all_cat2' : Producto.objects.filter(categoria_producto="2").values, # Información de los productos de la categoria de Bebidas
             'cont_cat2' : all_count2,
-            #Información de los productos de la categoria de Limpieza
-            'all_cat3' : Producto.objects.filter(categoria_producto="3").values,
+            #Información de los productos de la categoria de Limpieza 
+            'all_cat3' : Producto.objects.filter(categoria_producto="3").values, # Información de los productos de la categoria de Limpieza
             'cont_cat3' : all_count3,
             #Información de los productos de la categoria de Otros
-            'all_cat4' : Producto.objects.filter(categoria_producto="4").values,
-            'cont_cat4' : all_count4,
+            'all_cat4' : Producto.objects.filter(categoria_producto="4").values, # Información de los productos de la categoria de Otros
+            'cont_cat4' : all_count4,  
             #Información de los productos vencidos
             'vencidos' : vencidos,
             #Información de los productos por caducar

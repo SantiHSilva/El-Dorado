@@ -58,7 +58,8 @@ select{
                 </thead>
                 <tbody>
                 {%for producto in producto %}
-                    <tr class="{{producto.categoria_producto}}">
+                <!--Aqui se agrega la clase de la categoria al hijo de la tabla-->
+                    <tr class="{{producto.categoria_producto}}"> <!--1. Alimentos | 2. Bebidas | 3. Limpieza | 4. Otros -->
                         <td>{{producto.id_producto}}</td>
                         <td>{{producto.nombre_descripcion}}</td>
                         {% observerNumber producto.cantidad producto.stock_minimo producto.stock_maximo%}
@@ -130,7 +131,7 @@ select{
     {% endfor %}
 </body>
 <script>
-//!TODO falta arreglar todas las funciones
+
 function eliminarSubProductos(id){
     console.log(id)
     Swal.fire({
@@ -171,100 +172,25 @@ function eliminarProductoBase(id){
         })
     }
 
-    //  Función para filtrar las fechas de vencimiento
-    function manejadorVencimientos(){
-        const value = document.getElementById("caducidad").value;
-        const table = document.querySelectorAll("#mi-tablaXD>tbody>tr>td");
+//aplicacion de conjuntos mediante filtros
 
-        for (const td of table){
-            //rgb(252, 115, 3)
-
-            if(td.hasAttribute('style')){
-                
-                if(value != "0"){
-                    if(td.style.color === value){
-
-                        td.parentElement.style.display = ""
-                    }else{
-                        td.parentElement.style.display = "none"
-                    }
-                }else{
-                    td.parentElement.style.display = ""
-                }
-                
-            }
-               
-        }
-
-
-    }
-
-
-    function manejadorCategorias(){
-        const value = document.getElementById("XDXD").value;
-        const table = document.querySelectorAll('#mi-tablaXD>tbody>tr');
+    function manejadorCategorias(){  // Funcion para manejar el filtro de categorias
+        const value = document.getElementById("XDXD").value; // Obtenemos el valor del select
+        const table = document.querySelectorAll('#mi-tablaXD>tbody>tr');  // Obtenemos todas las filas de la tabla
        
-        console.log(table)
-        for (const tr of table) {
+        for (const tr of table) {  // Recorremos todas las filas
 
-            if(value != 0){
-                if (tr.classList.contains(value)) {
-                    tr.style.display = '';
-                } else {
-                    tr.style.display = 'none';
-                }
-                console.log(tr.classList.contains(value))
-                console.log(tr.classList.classList)
-                console.log("value" + value)
+            if(value != 0){  // Si el valor del select es diferente de 0
+                if (tr.classList.contains(value)) {  // Si la fila contiene la clase del valor del select
+                    tr.style.display = '';  // Mostramos la fila
+                } else {  // Si no 
+                    tr.style.display = 'none';  // Ocultamos la fila
+                }  
             }else{
-                tr.style.display = '';
+                tr.style.display = '';  // Si el valor del select es 0, mostramos todas las filas
             }   
         }
     }
-
-// $(document).ready(function(){
-//     $("#mi-tablaXD").tablesorter();
-
-//     $("tbody tr").mouseenter(function(){
-//         $(this).css("background-color", "#e3e3e3");
-//     });
-
-//     $("tbody tr").mouseleave(function(){
-//         $(this).css("background-color", "#fff");
-//     });
-
-// })
-
-    // {% comment %} $(this).click(function() {
-    //                 $(function(){
-    //                 $('#mi-tablaXD').tablesorter(); 
-    //                 });
-    //             });
-    //     $(document).ready(() => {
-    //         $('th').each(function(columna) {
-    //             $(this).hover(function() {
-    //                 $(this).addClass('resaltar');
-    //             }, function() {
-    //                 $(this).removeClass('resaltar');
-    //             });
-    //             $(this).click(function() {
-    //                 $(function(){
-    //                 $('#mi-tablaXD').tablesorter(); 
-    //                 });
-    //             });
-    //         });
-    //     }); {% endcomment %}
-
-//         {% comment %} document.addEventListener('click', (e)=>{
-//                 const $element = document.querySelector('#'+e.target.id)
-//                 const $modal = document.querySelector('#exampleModalLabel')
-//                 const $product = document.querySelector('#nombre_producto')
-//                 if($element.nodeName.toLowerCase() === "button") $modal.textContent = $element.getAttribute("aria-label")
-//                 if($element.nodeName.toLowerCase() === "img") $modal.textContent= $element.alt
-//                 $('#url_modificar2').attr('onclick', 'eliminarProducto('+ e.target.id.split('_')[1] +')')
-//                 $('#url_modificar').attr('href', 'http://127.0.0.1:8000/modificar/'+ e.target.id.split('_')[1]  )
-//             });
-//  {% endcomment %}
 
 </script>
 
