@@ -10,8 +10,8 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import View
 from sympy.abc import x
-from gestion.forms import formularioInformacion, ProductoForm
-from gestion.models import Informacion, Producto
+from gestion.forms import formularioInformacion, ProductoForm, formularioProveedores
+from gestion.models import Informacion, Producto, Proveedores
 from .utils import render_to_pdf
 
 # Create your views here.
@@ -53,6 +53,23 @@ class FormularioInformacionView(HttpRequest):
             else:
                 data["form"] = formulario
         return render(request, 'sub_productos.html', data)
+    
+    #Vista para la creación de proveedores
+
+    @login_required
+    def agregar_proveedor(request):
+        data ={
+            'form': formularioProveedores(),
+        }
+        if request.method == 'POST':
+            formulario = formularioProveedores(data=request.POST)
+            if formulario.is_valid():
+                formulario.save()
+                messages.success(request, "Proveedor registrado correctamente")
+                return redirect(to='http://127.0.0.1:8000/proveedores/')
+            else:
+                data["form"] = formulario
+        return render(request, 'proveedores.html', data)
 
     #Vista para la edición del subproducto
 
@@ -71,6 +88,24 @@ class FormularioInformacionView(HttpRequest):
                 return redirect(to='http://127.0.0.1:8000/lista/')
             data["form"] = formulario
         return render(request, 'modificar_producto.html', data)
+    
+    #Vista para la edición del proveedor
+
+    @login_required
+    def modificar_proveedor(request, id):
+        proveedor = get_object_or_404(Proveedores, id=id)
+        data = {
+            'form': formularioProveedores(instance=proveedor),
+            'info': Proveedores.objects.filter(id=id).get()
+        }
+        if request.method == 'POST':
+            formulario = formularioProveedores(data=request.POST, instance=proveedor)
+            if formulario.is_valid():
+                proveedor.save()
+                messages.success(request, "Proveedor modificado correctamente")
+                return redirect(to='http://127.0.0.1:8000/proveedores/')
+            data["form"] = formulario
+        return render(request, 'modificar_proveedor.html', data)
 
     #Vista para la edición del producto base
 
@@ -107,7 +142,15 @@ class FormularioInformacionView(HttpRequest):
         producto.delete()
         messages.success(request, "Subproducto eliminado correctamente")
         return redirect(to='http://127.0.0.1:8000/lista/')
+    
+    #Vista para la eliminación del proveedor
 
+    @login_required
+    def eliminar_proveedor(request, id):
+        proveedor = get_object_or_404(Proveedores, id=id)
+        proveedor.delete()
+        messages.success(request, "Proveedor eliminado correctamente")
+        return redirect(to='http://127.0.0.1:8000/proveedores/')
 
 #Exportación de resultados globales a pdf
 

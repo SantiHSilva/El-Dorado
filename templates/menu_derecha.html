@@ -42,6 +42,17 @@
         {% if user.is_authenticated %}
 
         <div id="menu-items">
+
+            <div class="item">
+                <a href="http://127.0.0.1:8000/proveedores/" title="Gestión general de los proveedores">
+                    <div class="icon"><img src="{% static '/proveedor.png'%}"/></div>
+                    <div class="title"><span>Gestionar proveedores</span></div>
+                </a>
+            </div>
+
+            <div class="item separator">   
+            </div>
+
             <div class="item">
                 <a href="http://127.0.0.1:8000/lista/" title="Abre la información general de los productos">
                     <div class="icon"><img src="{% static '/information.png'%}" alt=""> </div>
@@ -73,12 +84,7 @@
                 </a>
             </div>
 
-            <div class="item" title="Desarrollo de calculos">
-                <a href="http://127.0.0.1:8000/algebra">
-                    <div class="icon"><img src="{% static '/resources.png'%}" /></div>
-                    <div class="title"><span>Calculos</span></div>
-                </a>
-            </div>
+            
             <div class="item" title="Cerrar Sesión">
                 <a href="http://127.0.0.1:8000/admin/logout">
                     <div class="icon"><img src="{% static '/logout.png'%}" /></div>

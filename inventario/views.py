@@ -3,7 +3,7 @@ import numpy as np
 import sympy as sp
 from sympy.abc import x
 import numpy.linalg as lin
-from gestion.models import Informacion, Producto
+from gestion.models import Informacion, Producto, Proveedores
 from django.contrib.auth.decorators import login_required
 
 #Vista base
@@ -42,6 +42,15 @@ def lista_completa(request):
     }
 
     return render(request, "newList.html", data)
+
+#Vista de la tabla general de los proveedores
+
+@login_required
+def lista_proveedores(request):
+    data = {
+        'proveedores' : Proveedores.objects.all(),
+    }
+    return render(request, "lista_proveedores.html", data)
 
 #Vista de la página principal de calculo de incognitas para álgebra lineal
 

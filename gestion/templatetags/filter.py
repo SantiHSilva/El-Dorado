@@ -5,7 +5,6 @@ import time
 
 register = Library()
 
-
 @register.simple_tag
 def sumatoriaUnidades(value, unidades, categoria):
     return (template_g_a_kg(value, unidades, categoria))
@@ -77,27 +76,30 @@ def transform_date(fecha):
     return dia + " de " + mes + " de " + ano
 
 def template_unidades(unidades):
-    if unidades == "1":
-        return "Kilogramos"
-    elif unidades == "2":
-        return "Gramos"
-    elif unidades == "3":
-        return "Litros"
-    elif unidades == "4":
-        return "Unidades"
-    elif unidades == "5":
-        return "Otros"
+    match unidades:
+        case "1":
+            return "Kilogramos"
+        case "2":
+            return "Gramos"
+        case "3":
+            return "Litros"
+        case "4":
+            return "Unidades"
+        case _:
+            return "Otros"
     
 def template_categoria(categoria):
-    if categoria == "1":
-        return "Alimentos"
-    elif categoria == "2":
-        return "Bebidas"
-    elif categoria == "3":
-        return "Limpieza"
-    elif categoria == "4":
-        return "Otros"
-
+    match categoria:
+        case "1":
+            return "Alimentos y Bebidas"
+        case "2":
+            return "Limpieza"
+        case "3":
+            return "Papeleria"
+        case "4":
+            return "Salud"
+        case _:
+            return "Otros"
 
 def templateVencimiento(fecha):
     date_now = datetime.now()

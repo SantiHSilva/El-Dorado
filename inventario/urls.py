@@ -26,14 +26,18 @@ urlpatterns = [
     path('admin/', admin.site.urls),                                                   #Admin page
     path('', views.inicial),                                                           #Base page
     path('lista/', views.lista_completa),                                              #Lista de productos
+    path('proveedores/', views.lista_proveedores),                                     #Lista de proveedores
     path('algebra/', views.algebraLineal),                                             #Calculo de incognitas
     path('resultado/', views.resultadoCalculo),                                        #Resultado del calculo de incognitas
     path('export/', exportResultadosPDF.as_view()),                                    #Exportar resultados a PDF
     path('modificar/<id>/', FormularioInformacionView.modificar_producto),             #Modificar información de un producto
+    path('modificarProveedor/<id>/', FormularioInformacionView.modificar_proveedor),   #Modificar información de un proveedor
     path('modificarbase/<id>/', FormularioInformacionView.modificar_base),             #Modificar producto base
     path('eliminarBase/<id>/', FormularioInformacionView.eliminar_productoBase),       #Eliminar producto base
     path('eliminarSubProducto/<id>/', FormularioInformacionView.eliminar_subProductos),#Eliminar información que tiene un producto base
+    path('eliminarProveedor/<id>/', FormularioInformacionView.eliminar_proveedor),     #Eliminar proveedor
     path('agregar/', FormularioInformacionView.agregar_producto),                      #Registrar productos base
+    path('agregar_proveedor/', FormularioInformacionView.agregar_proveedor),           #Registrar proveedores
     path('registrar/', FormularioInformacionView.index),                               #Registrar sub productos para productos base
 ]
 

@@ -7,7 +7,7 @@ from django.db import models
 class Producto(models.Model):
     #Campos para la creación de productos base
     opciones_unidades = (('1', 'Kg'), ('2', 'g'), ('3', 'L'), ('4', 'Unidades'), ('5', 'Otros'))
-    opciones_categoria = (('1', 'Alimentos'), ('2', 'Bebidas'), ('3', 'Limpieza'), ('4', 'Otros'))
+    opciones_categoria = (('1', 'Alimentos y Bebidas'), ('2', 'Productos de limpieza'), ('3', 'Papeleria'), ('4', 'Salud'), ('5', 'Otros'))
     id_producto = models.AutoField(primary_key=True)
     nombre_descripcion = models.CharField(max_length = 255, verbose_name="Nombre y descripción")
     categoria_producto = models.CharField(max_length = 100, verbose_name="Categoria del producto", choices = opciones_categoria)
@@ -36,3 +36,23 @@ class Informacion(models.Model):
     #El nombre para reflejarlo en la página, en este caso que muestre el nombre y descripción
     # def __str__(self):
     #     return self.producto
+
+class Proveedores(models.Model):
+    class Meta:
+        verbose_name_plural = 'Proveedores'
+    id = models.AutoField(primary_key=True)
+    nombre_proveedor = models.CharField(max_length = 255, verbose_name="Nombre del proveedor")
+    direccion_proveedor = models.CharField(max_length = 255, verbose_name="Dirección del proveedor")
+    numero_proveedor = models.CharField(max_length = 255, verbose_name="Número del contacto del proveedor")
+    correo_proveedor = models.CharField(max_length = 255, verbose_name="Correo del proveedor")
+    dias_entrega_general = models.IntegerField(verbose_name="Días de entrega general")
+    def __str__(self):
+        return self.nombre_proveedor
+    
+class Auditoria(models.Model):
+    class Meta:
+        verbose_name_plural = 'Auditoria'
+    user = models.CharField(max_length = 255, verbose_name="Usuario")
+    model = models.CharField(max_length = 255, verbose_name="Modelo")
+    accion = models.CharField(max_length = 255, verbose_name="Acción")
+    timestamp = models.DateTimeField(auto_now_add=True, verbose_name="Fecha y hora")

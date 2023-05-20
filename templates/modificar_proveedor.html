@@ -1,6 +1,6 @@
 {% extends "base.html"%}
 {% load crispy_forms_tags %}
-{% block title %} Adición producto {% endblock %}
+{% block title %} Modificar elemento {% endblock %}
 {%block content %}
 <br>
 <br>
@@ -13,9 +13,8 @@
                 papu hay un problema
             </div>
             {% endif %}
-
             &nbsp;
-            <h2>&nbsp;&nbsp;Registrar nuevo producto</h2>
+            <h2>&nbsp;&nbsp; Modificando: {{info.nombre_proveedor}}</h2>
             <hr>
             <div class="card-body">                
                 <form action="" method="POST" enctype="multipart/form-data">
@@ -37,5 +36,4 @@
         </div>
     </div>
 </div>
-
 {%endblock%}

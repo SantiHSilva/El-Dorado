@@ -1,0 +1,162 @@
+{% extends "base.html"%}
+{% load filter%}
+{% block title %} Listado Completo {% endblock %}
+
+{%block content %}
+
+<style>
+.table-title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.selects{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: start;
+}
+
+select{
+    padding: .5rem;
+    margin: .5rem;
+    border: none;
+    border-radius: 10px;
+}
+
+.Agregar-proveedor{
+    padding: .5rem;
+    margin: .5rem;
+    border: none;
+    border-radius: 10px;
+    background-color: #ffffff;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-align: center;
+    width: 100%;
+    text-decoration: none;
+}
+
+.texto-agregar{
+    color: #000000;
+    text-decoration: none;
+}
+
+</style>
+
+  <body>
+    <div class="container">
+        <div class="table-wrapper">
+            <div class="table-title">
+                    <div class="title" >
+						<h2>Manejo de <b>Proveedores</b></h2>
+					</div>
+
+                <div class="selects"> 
+                    <div class="Agregar-proveedor">
+                        <a class="texto-agregar" href="http://127.0.0.1:8000/agregar_proveedor/">Agregar nuevo proveedor</a>
+                    </div>
+                </div>
+            </div>
+            <table id="mi-tablaXD" class="table table-striped table-hover" style="text-align: center;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre entidad</th>
+                        <th>Número de contacto</th>
+						<th>Correo de contacto</th>
+                        <th>Dirección</th>
+                        <th>Días estimados de entrega de productos</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {%for proveedor in proveedores %}
+                <!--Aqui se agrega la clase de la categoria al hijo de la tabla-->
+                    <tr> 
+                        <td>{{proveedor.id}}</td>
+                        <td>{{proveedor.nombre_proveedor}}</td>
+                        <td>{{proveedor.numero_proveedor}}</td>
+                        <td>{{proveedor.correo_proveedor}}
+                        <td>{{proveedor.direccion_proveedor}}</td>
+                        <td>{{proveedor.dias_entrega_general}} días habiles</td>
+                        <td>
+                            <a href="http://127.0.0.1:8000/modificarProveedor/{{proveedor.id}}"><i style="color: #FFC107;" class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i></a>
+                            <a onclick="eliminarProveedor({{proveedor.id}})"><i style="color: #F44336;" class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>   
+                        </td>
+                    </tr>
+                {% endfor %} 
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+<script>
+
+function eliminarSubProductos(id){
+    console.log(id)
+    Swal.fire({
+        title: '¿Estas seguro de eliminar este producto?',
+        text: "No podras revertir esta accion",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, eliminar',
+        cancelButtonText: 'Cancelar',
+        reversebuttons: true
+    })
+    .then(function(result){
+        if(result.isConfirmed){
+            window.location.href = "http://127.0.0.1:8000/eliminarSubProducto/" + id + "/";
+        }
+    })
+}
+
+function eliminarProveedor(id){
+        console.log(id)
+        Swal.fire({
+            title: '¿Estas seguro de eliminar este proveedor?',
+            text: "No podras revertir esta accion",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Si, eliminar',
+            reverseButtons: true
+        })
+        .then(function(result){
+            if(result.isConfirmed){
+                window.location.href = "http://127.0.0.1:8000/eliminarProveedor/" + id + "/";
+            }
+        })
+    }
+
+//aplicacion de conjuntos mediante filtros
+
+    function manejadorCategorias(){  // Funcion para manejar el filtro de categorias
+        const value = document.getElementById("XDXD").value; // Obtenemos el valor del select
+        const table = document.querySelectorAll('#mi-tablaXD>tbody>tr');  // Obtenemos todas las filas de la tabla
+       
+        for (const tr of table) {  // Recorremos todas las filas
+
+            if(value != 0){  // Si el valor del select es diferente de 0
+                if (tr.classList.contains(value)) {  // Si la fila contiene la clase del valor del select
+                    tr.style.display = '';  // Mostramos la fila
+                } else {  // Si no 
+                    tr.style.display = 'none';  // Ocultamos la fila
+                }  
+            }else{
+                tr.style.display = '';  // Si el valor del select es 0, mostramos todas las filas
+            }   
+        }
+    }
+
+</script>
+
+{%endblock%}
