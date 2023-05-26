@@ -110,6 +110,8 @@ select{
                                             {{info.fecha_vencimiento | calcular_vencimiento}}
                                             <td>{{info.proveedor}}</td>
                                             <td>
+                                                <a href="http://127.0.0.1:8000/salida/{{info.id}}"><i style="color: #ff0707;" class="material-icons" data-toggle="tooltip" title="Salidas"></i></a>
+                                                <a href="http://127.0.0.1:8000/entrada/{{info.id}}"><i style="color: #07ff17;" class="material-icons" data-toggle="tooltip" title="Entradas"></i></a>
                                                 <a href="http://127.0.0.1:8000/modificar/{{info.id}}"><i style="color: #FFC107;" class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i></a>
                                                 <a onclick="eliminarSubProductos({{info.id}})"><i style="color: #F44336;" class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>                                            </td>
                                         </tr>

@@ -10,7 +10,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import View
 from sympy.abc import x
-from gestion.forms import formularioInformacion, ProductoForm, formularioProveedores
+from gestion.forms import *
 from gestion.models import Informacion, Producto, Proveedores
 from .utils import render_to_pdf, guardar_entrada_salida, acciones
 
@@ -78,6 +78,54 @@ class FormularioInformacionView(HttpRequest):
                 data["form"] = formulario
         return render(request, 'proveedores.html', data)
 
+    # Entrada de subproductos
+
+    @login_required
+    def entrada_producto(request, id):
+        producto = get_object_or_404(Informacion, id=id)
+        form = formularioEntradaInformacion(instance=producto)
+        form.initial['cantidad_productos'] = 0
+        data = {
+            'form': form,
+            'info': Informacion.objects.filter(id=id).get().producto,
+            'actual' : Informacion.objects.filter(id=id).get().cantidad_productos
+        }
+        if request.method == 'POST':
+            formulario = formularioEntradaInformacion(data=request.POST, instance=producto)
+            print(f'Cantidad de productos: {formulario["cantidad_productos"].value()}')
+            if formulario.is_valid():
+                producto = Informacion.objects.filter(id=id).get()
+                producto.cantidad_productos = int(producto.cantidad_productos) + int(formulario['cantidad_productos'].value())
+                producto.save()
+                messages.success(request, "Entrada registrada correctamente")
+                return redirect(to='http://127.0.0.1:8000/lista/')
+            else:
+                data["form"] = formulario
+        return render(request, 'entradas.html', data)
+    
+    # Salida de subproductos
+
+    @login_required
+    def salida_informacion(request, id):
+        producto = get_object_or_404(Informacion, id=id)
+        form = formularioSalidaInformacion(instance=producto)
+        form.initial['cantidad_productos'] = 0
+        data = {
+            'form': form,
+            'info': Informacion.objects.filter(id=id).get().producto,
+            'actual' : Informacion.objects.filter(id=id).get().cantidad_productos
+        }
+        if request.method == 'POST':
+            formulario = formularioSalidaInformacion(data=request.POST, instance=producto)
+            if formulario.is_valid():
+                producto = Informacion.objects.filter(id=id).get()
+                producto.cantidad_productos = int(producto.cantidad_productos) - int(formulario['cantidad_productos'].value())
+                producto.save()
+                messages.success(request, "Salida registrada correctamente")
+                return redirect(to='http://127.0.0.1:8000/lista/')
+            else:
+                data["form"] = formulario
+        return render(request, 'salidas.html', data)
     #Vista para la edición del subproducto
 
     @login_required
@@ -85,7 +133,7 @@ class FormularioInformacionView(HttpRequest):
         producto = get_object_or_404(Informacion, id=id)
         data = {
             'form': formularioInformacion(instance=producto),
-            'info': Producto
+            'info': Informacion.objects.filter(id=id).get().producto
         }
         if request.method == 'POST':
             formulario = formularioInformacion(data=request.POST, instance=producto)

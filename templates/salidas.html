@@ -14,7 +14,7 @@
             </div>
             {% endif %}
             &nbsp;
-            <h2>&nbsp;&nbsp; Modificando: {{info}}</h2>
+            <h2>&nbsp;&nbsp; Retirando cantidad de: {{info}}</h2>
             <hr>
             <div class="card-body">                
                 <form action="" method="POST" enctype="multipart/form-data">
@@ -24,6 +24,7 @@
                         se logro papu
                     </div>
                     {% endif %}
+                    Cantidad actual de elementos: {{actual}}
                     {{ form|crispy }}
                     <br>
                     <div class="d-flex justify-content-center">
@@ -32,6 +33,7 @@
                         <input id="id_btn" type="submit" value="Guardar" class="btn btn-primary">
                     </div>
                 </form>
+                
             </div>
         </div>
     </div>
