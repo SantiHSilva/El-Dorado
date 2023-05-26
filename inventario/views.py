@@ -11,6 +11,12 @@ from django.contrib.auth.decorators import login_required
 def inicial(request):
     return render(request, "base.html")
 
+#Vista de la auditoria
+
+@login_required
+def auditoria(request):
+    return render(request, "entradas_salidas.html")
+
 #Vista de la tabla general de los productos
 
 @login_required

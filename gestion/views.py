@@ -12,7 +12,7 @@ from django.views.generic import View
 from sympy.abc import x
 from gestion.forms import formularioInformacion, ProductoForm, formularioProveedores
 from gestion.models import Informacion, Producto, Proveedores
-from .utils import render_to_pdf
+from .utils import render_to_pdf, guardar_entrada_salida, acciones
 
 # Create your views here.
 
@@ -46,8 +46,15 @@ class FormularioInformacionView(HttpRequest):
         }
         if request.method == 'POST':
             formulario = ProductoForm(data=request.POST)
+            # request first name and last name
+            # print(request.user.first_name)
+            # print(request.user.last_name)
+            # print(request.POST)
+            # print(acciones.ENTRADA.name)
             if formulario.is_valid():
                 formulario.save()
+                autor = request.user.first_name + " " + request.user.last_name
+                guardar_entrada_salida(autor, request.POST["nombre_descripcion"], acciones.ENTRADA)
                 messages.success(request, "Producto registrado correctamente")
                 return redirect(to='http://127.0.0.1:8000/lista/')
             else:

@@ -27,8 +27,6 @@ class Informacion(models.Model):
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE, null=True)
     #   Campos de la clase
     proveedor =  models.CharField(max_length = 255, verbose_name="Proveedor")
-    direccion_proveedor =  models.CharField(max_length = 255, verbose_name="Dirección del proveedor")
-    numero_proveedor =  models.CharField(max_length = 255, verbose_name="Número del contacto del proveedor")
     fecha_modificacion =  models.DateField(max_length = 20,verbose_name = "Fecha de modificación")
     fecha_vencimiento =  models.DateField(max_length = 20,verbose_name="Fecha de vencimiento")
     cantidad_productos = models.IntegerField(verbose_name="Cantidad actual")
