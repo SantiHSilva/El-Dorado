@@ -31,6 +31,21 @@ def transform_categoria(categoria):
 def calcular_vencimiento(fecha):
     return (templateVencimiento(fecha))
 
+@register.filter(name="motivo")
+def convert_motivo(number):
+    return (convert_motivo(int(number)))
+
+def convert_motivo(number):
+    match number:
+        case 1:
+            return "Consumo"
+        case 2:
+            return "Dañado"
+        case 3:
+            return "Donación"
+        case _:
+            return "Otros"
+
 def template_g_a_kg(value, unidades, categoria):
     if unidades == "1":
         return (f'{round(value,2)}kg')

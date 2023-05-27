@@ -3,13 +3,23 @@ import numpy as np
 import sympy as sp
 from sympy.abc import x
 import numpy.linalg as lin
-from gestion.models import Informacion, Producto, Proveedores
+from gestion.models import Informacion, Producto, Proveedores, AuditoriaEntrada, AuditoriaSalidas
 from django.contrib.auth.decorators import login_required
 
 #Vista base
 
 def inicial(request):
     return render(request, "base.html")
+
+#Registros entradas y salidas
+
+@login_required
+def registros(request):
+    data = {
+        'entradas' : reversed(AuditoriaEntrada.objects.all()),
+        'salidas' : reversed(AuditoriaSalidas.objects.all()),
+    }
+    return render(request, "registros.html", data)
 
 #Vista de la auditoria
 

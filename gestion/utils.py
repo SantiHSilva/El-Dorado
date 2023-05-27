@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 from enum import Enum
-from .models import Auditoria
+from .models import AuditoriaEntrada, AuditoriaSalidas
 
 #Utils para renderizar páginas HTML a PDF
 
@@ -16,13 +16,20 @@ def render_to_pdf(template_src, context_dict={}):
         return HttpResponse(result.getvalue(), content_type='application/pdf')
     return None
 
-class acciones(Enum):
-    ENTRADA = 1
-    SALIDAS = 2
+def guardar_entrada(nombre : str, producto : str, proveedor : str, cantidad : int):
+    auditoria = AuditoriaEntrada()
+    auditoria.responsable = nombre
+    auditoria.producto = producto
+    auditoria.cantidad = cantidad
+    auditoria.proveedor = proveedor
+    auditoria.save()
+    # print(f'Entrada guardada: {nombre} {producto} {cantidad} {proveedor}')
 
-def guardar_entrada_salida(nombre, producto, acccion : acciones):
-    auditoria = Auditoria()
-    auditoria.user = nombre
-    auditoria.model = acccion.name
-    auditoria.accion = producto
+def guardar_salida(nombre : str, producto : str, proveedor : str, cantidad : int, razon : str):
+    auditoria = AuditoriaSalidas()
+    auditoria.responsable = nombre
+    auditoria.producto = producto
+    auditoria.cantidad = cantidad
+    auditoria.razon = razon
+    auditoria.proveedor = proveedor
     auditoria.save()

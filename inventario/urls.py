@@ -39,9 +39,9 @@ urlpatterns = [
     path('agregar/', FormularioInformacionView.agregar_producto),                      #Registrar productos base
     path('agregar_proveedor/', FormularioInformacionView.agregar_proveedor),           #Registrar proveedores
     path('registrar/', FormularioInformacionView.index),                               #Registrar sub productos para productos base
-    path('entrada/<id>/', FormularioInformacionView.entrada_producto),              #Registrar entrada de productos
+    path('entrada/<id>/', FormularioInformacionView.entrada_producto),                 #Registrar entrada de productos
     path('salida/<id>/', FormularioInformacionView.salida_informacion),                #Registrar salida de productos
-    path('auditoria/', views.auditoria)
+    path('registros/', views.registros),                                               #Lista de registros
 ]
 
 if settings.DEBUG:  #Para poder ver las imagenes en el servidor de desarrollo                                             

@@ -1,0 +1,120 @@
+{% extends "base.html"%}
+{% load filter%}
+
+{% block title %} Auditoria {% endblock %}
+
+{%block content %}
+
+
+<style>
+
+    .table>:not(caption)>*>*{
+        border-left-width: 1px;
+    }
+
+    .table-title{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .selects{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: start;
+    }
+    
+    select{
+        padding: .5rem;
+        margin: .5rem;
+        border: none;
+        border-radius: 10px;
+    }
+
+    </style>
+        <body>
+        <div class="container">
+            <div class="table-wrapper">
+                <div class="table-title">
+                        <div class="title" >
+                            <h2>Auditoria <b>Entradas y Salidas</b></h2>
+                        </div>    
+                </div>
+                <table id="mi-tablaXD" class="table table-striped table-hover" style="text-align: center;">
+                    <thead>
+                        <tr>
+                            <th>Entradas</th>
+                            <th>Salidas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <p class="opacity-0">###################################</p>
+                                {% for entrada in entradas %}
+                                <div class="d-flex flex-column flex-md-row  justify-content-center  ">
+                                    <div class="list-group">
+                                        <div href="#" class="list-group-item list-group-item-action d-flex" aria-current="true">
+                                            <img src="../static/entrada.png" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
+                                            <div class="d-flex gap-2 w-100 justify-content-between">
+                                                <div>
+                                                    <h6 class="mb-0">&nbsp;Entrada #{{entrada.id}}</h6>
+                                                    <p class="mb-0 opacity-75">{{entrada.responsable}} <b>adiciono</b></p>
+                                                    <p class="mb-0 opacity-75">en: {{entrada.producto}} ({{entrada.proveedor}})</p>
+                                                    <small class="opacity-25 text-nowrap">{{entrada.timestamp}}</small>
+
+                                                </div>
+                                                <small class="opacity-50 text-nowrap"><b>+{{entrada.cantidad}}</b></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                &nbsp;
+                                {% endfor %}
+                            </td>
+                            <td>
+                                <p class="opacity-0">###################################</p>
+                                {% for salida in salidas %}
+                                <div class="d-flex flex-column flex-md-row  justify-content-center  ">
+                                    <div class="list-group">
+                                        <div href="#" class="list-group-item list-group-item-action d-flex" aria-current="true">
+                                            <img src="../static/salida.png" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
+                                            <div class="d-flex gap-2 w-100 justify-content-between">
+                                                <div>
+                                                    <h6 class="mb-0">&nbsp;Salida #{{salida.id}}</h6> 
+                                                    <p class="mb-0 opacity-75">{{salida.responsable}} <b>removio</b></p>
+                                                    <p class="mb-0 opacity-75">en: {{salida.producto}} ({{salida.proveedor}})</p>
+                                                    <p class="mb-0 opacity-75">Motivo: {{salida.razon | motivo}}</p>
+                                                    <small class="opacity-25 text-nowrap">{{salida.timestamp}}</small>
+                                                </div>
+                                                <small class="opacity-50 text-nowrap"><b>-{{salida.cantidad}}</b></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                &nbsp;
+                                {% endfor %}
+                            </td>
+                        </tr>
+
+                    <!-- {%for producto in producto %}
+                    Aqui se agrega la clase de la categoria al hijo de la tabla
+                        <tr class="{{producto.categoria_producto}}"> 1. Alimentos | 2. Bebidas | 3. Limpieza | 4. Otros 
+                            <td>{{producto.id_producto}}</td>
+                            <td>{{producto.nombre_descripcion}}</td>
+                            <td>{{producto.stock_maximo}}</td>
+                            <td>{{producto.stock_minimo}}</td>
+                            <td>                       
+                                   &nbsp;<a data-bs-target="#previewProduct-{{forloop.counter}}" href="#previewProduct-{{forloop.counter}}" class="edit" data-bs-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}  -->
+                    
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+
+{%endblock%}

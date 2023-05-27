@@ -23,14 +23,16 @@ class formularioEntradaInformacion(forms.ModelForm):
     # Solo poder modificar la cantidad de productos
     class Meta:
         model = Informacion
-        fields = ['cantidad_productos']
+        fields = ['proveedor','cantidad_productos']
+    proveedor = forms.CharField(required=False, label="Proveedor", help_text="Proveedor de la información del producto", disabled=True)
     cantidad_productos = forms.IntegerField(required=True, min_value=1, label="", help_text="Ingrese la cantidad de productos a adicionar")  
 
 class formularioSalidaInformacion(forms.ModelForm):
     # Solo poder modificar la cantidad de productos
     class Meta:
         model = Informacion
-        fields = ['cantidad_productos']
+        fields = ['proveedor','cantidad_productos']
+    proveedor = forms.CharField(required=False, label="Proveedor", help_text="Proveedor de la información del producto", disabled=True)
     cantidad_productos = forms.IntegerField(required=True, min_value=1, label="", help_text="Ingrese la cantidad de productos a retirar") 
     razon_salida_opciones = (('1', 'Consumo'), ('2', 'Dañado'), ('3', 'Donación'), ('4', 'Otros'))
     razon_salida = forms.ChoiceField(choices=razon_salida_opciones, label="", help_text="Seleccione la razón de la salida") 

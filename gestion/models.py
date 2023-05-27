@@ -47,10 +47,23 @@ class Proveedores(models.Model):
     def __str__(self):
         return self.nombre_proveedor
     
-class Auditoria(models.Model):
+class AuditoriaEntrada(models.Model):
     class Meta:
         verbose_name_plural = 'Auditoria'
-    user = models.CharField(max_length = 255, verbose_name="Usuario")
-    model = models.CharField(max_length = 255, verbose_name="Modelo")
-    accion = models.CharField(max_length = 255, verbose_name="Acción")
+    id = models.AutoField(primary_key=True)
+    responsable = models.CharField(max_length = 255, verbose_name="Responsable")
     timestamp = models.DateTimeField(auto_now_add=True, verbose_name="Fecha y hora")
+    producto = models.CharField(max_length = 255, verbose_name="Producto")
+    cantidad = models.IntegerField(verbose_name="Cantidad")
+    proveedor = models.CharField(max_length = 255, verbose_name="Proveedor")
+
+class AuditoriaSalidas(models.Model):
+    class Meta:
+        verbose_name_plural = 'Auditoria'
+    id = models.AutoField(primary_key=True)
+    responsable = models.CharField(max_length = 255, verbose_name="Responsable")
+    timestamp = models.DateTimeField(auto_now_add=True, verbose_name="Fecha y hora")
+    producto = models.CharField(max_length = 255, verbose_name="Producto")
+    cantidad = models.IntegerField(verbose_name="Cantidad")
+    razon = models.CharField(max_length = 255, verbose_name="Razón")
+    proveedor = models.CharField(max_length = 255, verbose_name="Proveedor")

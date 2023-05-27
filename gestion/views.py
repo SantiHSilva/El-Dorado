@@ -12,7 +12,7 @@ from django.views.generic import View
 from sympy.abc import x
 from gestion.forms import *
 from gestion.models import Informacion, Producto, Proveedores
-from .utils import render_to_pdf, guardar_entrada_salida, acciones
+from .utils import render_to_pdf, guardar_entrada, guardar_salida
 
 # Create your views here.
 
@@ -53,8 +53,8 @@ class FormularioInformacionView(HttpRequest):
             # print(acciones.ENTRADA.name)
             if formulario.is_valid():
                 formulario.save()
-                autor = request.user.first_name + " " + request.user.last_name
-                guardar_entrada_salida(autor, request.POST["nombre_descripcion"], acciones.ENTRADA)
+                # autor = request.user.first_name + " " + request.user.last_name
+                # guardar_entrada_salida(autor, request.POST["nombre_descripcion"], acciones.ENTRADA)
                 messages.success(request, "Producto registrado correctamente")
                 return redirect(to='http://127.0.0.1:8000/lista/')
             else:
@@ -94,7 +94,14 @@ class FormularioInformacionView(HttpRequest):
             formulario = formularioEntradaInformacion(data=request.POST, instance=producto)
             print(f'Cantidad de productos: {formulario["cantidad_productos"].value()}')
             if formulario.is_valid():
+                autor = request.user.first_name + " " + request.user.last_name
                 producto = Informacion.objects.filter(id=id).get()
+                guardar_entrada(
+                    nombre = autor,
+                    producto = Informacion.objects.filter(id=id).get().producto,
+                    cantidad = formulario['cantidad_productos'].value(),
+                    proveedor = formulario['proveedor'].value(),
+                    )
                 producto.cantidad_productos = int(producto.cantidad_productos) + int(formulario['cantidad_productos'].value())
                 producto.save()
                 messages.success(request, "Entrada registrada correctamente")
@@ -119,6 +126,14 @@ class FormularioInformacionView(HttpRequest):
             formulario = formularioSalidaInformacion(data=request.POST, instance=producto)
             if formulario.is_valid():
                 producto = Informacion.objects.filter(id=id).get()
+                autor = request.user.first_name + " " + request.user.last_name
+                guardar_salida(
+                    nombre = autor,
+                    producto = Informacion.objects.filter(id=id).get().producto,
+                    cantidad = formulario['cantidad_productos'].value(),
+                    proveedor = formulario['proveedor'].value(),
+                    razon = formulario['razon_salida'].value(),
+                    )
                 producto.cantidad_productos = int(producto.cantidad_productos) - int(formulario['cantidad_productos'].value())
                 producto.save()
                 messages.success(request, "Salida registrada correctamente")
@@ -206,7 +221,6 @@ class FormularioInformacionView(HttpRequest):
         proveedor.delete()
         messages.success(request, "Proveedor eliminado correctamente")
         return redirect(to='http://127.0.0.1:8000/proveedores/')
-
 #Exportación de resultados globales a pdf
 
 class exportResultadosPDF(View):
